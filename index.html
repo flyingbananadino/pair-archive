@@ -526,6 +526,12 @@ mark.hl.flash{outline:2px solid var(--racc); outline-offset:2px}
 .lockico svg{width:24px; height:24px}
 .rcode{font-size:22px; letter-spacing:.12em; text-align:center; padding:14px; border:1px dashed var(--line); border-radius:12px; user-select:all}
 
+.tokbox{font-family:var(--f-mono); font-size:12px; line-height:1.5; word-break:break-all; resize:vertical; min-height:56px}
+.tokshort{font-size:12px; padding:9px 12px; border:1px dashed var(--line); border-radius:10px; color:var(--muted); word-break:break-all}
+.twsub{border-left:3px solid var(--line); padding-left:10px}
+.twthumbs{margin-top:6px; align-items:center}
+.tw-ctx .tw-media{margin-top:6px; border-radius:10px}
+
 /* customize groups */
 .czg{border-top:1px solid var(--line); padding-top:12px}
 .czg summary{font-weight:700; font-size:14px; cursor:pointer; list-style:none; display:flex; justify-content:space-between; align-items:center}
@@ -1435,7 +1441,7 @@ function tweetHTML(t, key, idx){
   const quote = qText(t.quote); const qImgs = (t.quote && t.quote.images) || [];
   return `<div class="tw2">
     ${idx ? `<span class="tw-idx">${idx}</span>` : ''}
-    ${t.reply ? `<div class="tw-ctx"><div class="tw-lbl">답글을 단 트윗</div><div class="tw-text">${linkify(t.reply)}</div></div><div class="tw-lbl">↳ 내 답글</div>` : ''}
+    ${t.reply || (t.replyImages || []).length ? `<div class="tw-ctx"><div class="tw-lbl">답글을 단 트윗</div>${t.reply ? `<div class="tw-text">${linkify(t.reply)}</div>` : ''}${(t.replyImages || []).length ? `<div class="tw-media">${collageHTML(t.replyImages, key + ':r')}</div>` : ''}</div><div class="tw-lbl">↳ 내 답글</div>` : ''}
     ${t.text ? `<div class="tw-text">${linkify(t.text)}</div>` : ''}
     ${(t.images || []).length ? `<div class="tw-media">${collageHTML(t.images, key)}</div>` : ''}
     ${quote || qImgs.length ? `<div class="tw-quote"><div class="tw-lbl">인용한 트윗</div>${quote ? `<div class="tw-text">${linkify(quote)}</div>` : ''}${qImgs.length ? `<div class="tw-media">${collageHTML(qImgs, key + ':q')}</div>` : ''}</div>` : ''}
@@ -1651,11 +1657,18 @@ function photoForm(pairId, id){
 function splitTweets(text){
   return String(text || '').replace(/\r/g, '').split(/\n[ \t]*-{3,}[ \t]*(?=\n|$)/).map(s => s.trim()).filter(Boolean);
 }
+const newTw = (text='') => ({text, reply:'', quote:'', showR:false, showQ:false, images:[], rImages:[], qImages:[]});
+const TW_IMG_KEY = {t:'images', r:'rImages', q:'qImages'};
+function twImgsHTML(t, i, k){
+  const arr = t[TW_IMG_KEY[k]] || [];
+  return `<div class="thumbs twthumbs">${arr.map((x, j) => `<span class="thumb"><img src="${esc(x.preview || imgSrc(x.ref))}" alt=""><button type="button" data-op="rmimg" data-i="${i}" data-k="${k}" data-j="${j}" aria-label="사진 빼기">${I.x}</button></span>`).join('')}
+    ${arr.length < 4 ? `<label class="btn small" for="f-img-${k}-${i}">${I.plus}사진${arr.length ? '' : ' 넣기'}</label><input type="file" id="f-img-${k}-${i}" class="sr" accept="image/*" multiple data-img="${k}" data-i="${i}">` : '<span class="hint">사진은 4장까지 넣을 수 있어요</span>'}</div>`;
+}
 function tweetForm(pairId, id){
   const old = id ? S.items[id] : null;
   const st = {tweets: old
-    ? (old.data.tweets || []).map(t => ({text:t.text || '', reply:t.reply || '', quote:qText(t.quote), showR:!!t.reply, showQ:!!qText(t.quote), images:t.images || [], qImages:(t.quote && t.quote.images) || []}))
-    : [{text:'', reply:'', quote:'', showR:false, showQ:false}]};
+    ? (old.data.tweets || []).map(t => ({text:t.text || '', reply:t.reply || '', quote:qText(t.quote), showR:!!(t.reply || (t.replyImages || []).length), showQ:!!(qText(t.quote) || (t.quote && (t.quote.images || []).length)), images:clone(t.images || []), rImages:clone(t.replyImages || []), qImages:clone((t.quote && t.quote.images) || [])}))
+    : [newTw()]};
   openModal({title: old ? '트윗 수정' : '트윗 넣기', wide:true, body:`
     <div id="f-tw" style="display:flex;flex-direction:column;gap:12px"></div>
     <div style="display:flex;flex-wrap:wrap;gap:8px">
@@ -1673,25 +1686,34 @@ function tweetForm(pairId, id){
     foot:`<button class="btn" data-m="cancel">취소</button><button class="btn primary" id="f-save">저장</button>`,
     onMount(root){
       const box = $('#f-tw', root); let mode = 'thread';
-      const sync = () => $$('[data-k]', box).forEach(el => { st.tweets[+el.dataset.i][el.dataset.k] = el.value; });
+      const sync = () => $$('textarea[data-k]', box).forEach(el => { st.tweets[+el.dataset.i][el.dataset.k] = el.value; });
       const draw = () => {
         const n = st.tweets.length;
         box.innerHTML = st.tweets.map((t, i) => `<div class="twblock">
           <div class="tb-head"><b>${n > 1 ? `${i + 1}번째 트윗` : '트윗'}</b>
             ${i > 0 ? `<button type="button" class="mini" data-op="up" data-i="${i}" title="위로">${I.arrowUp}</button>` : ''}
             ${n > 1 ? `<button type="button" class="mini" data-op="rm" data-i="${i}" title="이 트윗 빼기">${I.trash}</button>` : ''}</div>
-          ${t.showR ? `<div class="field"><label for="f-r-${i}">답글을 단 원래 트윗</label><textarea id="f-r-${i}" data-i="${i}" data-k="reply" rows="2" placeholder="내가 답글을 단 트윗 내용">${esc(t.reply)}</textarea></div>` : ''}
-          <div class="field"><label for="f-t-${i}">${t.showR ? '내 답글' : '트윗 내용'}</label><textarea id="f-t-${i}" data-i="${i}" data-k="text" rows="4">${esc(t.text)}</textarea></div>
-          ${t.showQ ? `<div class="field"><label for="f-q-${i}">인용한 트윗</label><textarea id="f-q-${i}" data-i="${i}" data-k="quote" rows="2" placeholder="내가 인용한 트윗 내용">${esc(t.quote)}</textarea></div>` : ''}
+          ${t.showR ? `<div class="field twsub"><label for="f-r-${i}">답글을 단 원래 트윗</label><textarea id="f-r-${i}" data-i="${i}" data-k="reply" rows="2" placeholder="내가 답글을 단 트윗 내용">${esc(t.reply)}</textarea>${twImgsHTML(t, i, 'r')}</div>` : ''}
+          <div class="field"><label for="f-t-${i}">${t.showR ? '내 답글' : '트윗 내용'}</label><textarea id="f-t-${i}" data-i="${i}" data-k="text" rows="4">${esc(t.text)}</textarea>${twImgsHTML(t, i, 't')}</div>
+          ${t.showQ ? `<div class="field twsub"><label for="f-q-${i}">인용한 트윗</label><textarea id="f-q-${i}" data-i="${i}" data-k="quote" rows="2" placeholder="내가 인용한 트윗 내용">${esc(t.quote)}</textarea>${twImgsHTML(t, i, 'q')}</div>` : ''}
           <div style="display:flex;flex-wrap:wrap;gap:6px">
             <button type="button" class="btn small" data-op="r" data-i="${i}">${t.showR ? '답글 빼기' : '↳ 답글로 만들기'}</button>
             <button type="button" class="btn small" data-op="q" data-i="${i}">${t.showQ ? '인용 빼기' : '인용 넣기'}</button>
           </div></div>`).join('');
         $('#f-modewrap', root).hidden = !!old || n < 2;
       };
-      box.addEventListener('input', e => { const el = e.target; if (el.dataset.k) st.tweets[+el.dataset.i][el.dataset.k] = el.value; });
+      box.addEventListener('input', e => { const el = e.target; if (el.dataset.k && el.tagName === 'TEXTAREA') st.tweets[+el.dataset.i][el.dataset.k] = el.value; });
+      box.addEventListener('change', e => {
+        const el = e.target; if (!el.dataset.img) return; sync();
+        const t = st.tweets[+el.dataset.i]; const key = TW_IMG_KEY[el.dataset.img]; t[key] = t[key] || [];
+        const files = Array.from(el.files || []).filter(f => f.type.startsWith('image/') || /\.(heic|heif)$/i.test(f.name));
+        files.slice(0, 4 - t[key].length).forEach(f => t[key].push({file:f, preview:URL.createObjectURL(f)}));
+        if (files.length > 4) toast('사진은 4장까지만 넣었어요.');
+        draw();
+      });
       box.addEventListener('click', e => {
         const b = e.target.closest('[data-op]'); if (!b) return; sync(); const i = +b.dataset.i; const op = b.dataset.op;
+        if (op === 'rmimg'){ const arr = st.tweets[i][TW_IMG_KEY[b.dataset.k]]; const x = arr.splice(+b.dataset.j, 1)[0]; if (x && x.preview) URL.revokeObjectURL(x.preview); draw(); return; }
         if (op === 'rm') st.tweets.splice(i, 1);
         if (op === 'up') [st.tweets[i-1], st.tweets[i]] = [st.tweets[i], st.tweets[i-1]];
         if (op === 'r') st.tweets[i].showR = !st.tweets[i].showR;
@@ -1700,12 +1722,12 @@ function tweetForm(pairId, id){
         const focusId = op === 'r' && st.tweets[i]?.showR ? `f-r-${i}` : op === 'q' && st.tweets[i]?.showQ ? `f-q-${i}` : null;
         if (focusId) $('#' + focusId, root)?.focus();
       });
-      $('#f-addtw', root).onclick = () => { sync(); st.tweets.push({text:'', reply:'', quote:'', showR:false, showQ:false}); draw(); $(`#f-t-${st.tweets.length - 1}`, root)?.focus(); };
+      $('#f-addtw', root).onclick = () => { sync(); st.tweets.push(newTw()); draw(); $(`#f-t-${st.tweets.length - 1}`, root)?.focus(); };
       const bb = $('#f-bulkbtn', root); if (bb) bb.onclick = () => { const b = $('#f-bulk', root); b.hidden = !b.hidden; if (!b.hidden) $('#f-bulktext', root).focus(); };
       const bo = $('#f-bulkok', root); if (bo) bo.onclick = () => {
         sync(); const parts = splitTweets($('#f-bulktext', root).value); if (!parts.length) return;
-        st.tweets = st.tweets.filter(t => t.text.trim() || t.reply.trim() || t.quote.trim());
-        parts.forEach(text => st.tweets.push({text, reply:'', quote:'', showR:false, showQ:false}));
+        st.tweets = st.tweets.filter(t => t.text.trim() || t.reply.trim() || t.quote.trim() || t.images.length || t.rImages.length || t.qImages.length);
+        parts.forEach(text => st.tweets.push(newTw(text)));
         $('#f-bulktext', root).value = ''; $('#f-bulk', root).hidden = true; draw(); toast(`트윗 ${parts.length}개로 나눴어요.`);
       };
       $('#f-mode', root).addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; mode = b.dataset.v; $$('#f-mode button', root).forEach(x => x.classList.toggle('on', x === b)); });
@@ -1713,22 +1735,29 @@ function tweetForm(pairId, id){
       $('[data-m=cancel]', root).onclick = () => closeModal();
       $('#f-save', root).onclick = async (ev) => {
         sync(); const btn = ev.currentTarget;
-        const tweets = st.tweets.filter(t => t.text.trim() || (t.images || []).length).map(t => {
-          const out = {text: t.text.trim()};
-          if (t.showR && t.reply.trim()) out.reply = t.reply.trim();
-          if (t.showQ && (t.quote.trim() || (t.qImages || []).length)) out.quote = (t.qImages || []).length ? {text: t.quote.trim(), images: t.qImages} : t.quote.trim();
-          if ((t.images || []).length) out.images = t.images;
-          return out;
-        });
-        if (!tweets.length){ toast('트윗 내용을 넣어 주세요.'); return; }
+        const keep = st.tweets.filter(t => t.text.trim() || t.images.length || (t.showR && (t.reply.trim() || t.rImages.length)) || (t.showQ && (t.quote.trim() || t.qImages.length)));
+        if (!keep.length){ toast('트윗 내용이나 사진을 넣어 주세요.'); return; }
         const common = await readCommonA(root, pairId); const note = $('#f-note', root).value;
         try {
           setBusy(btn, '저장 중…');
+          const pend = []; keep.forEach(t => { [t.images, t.showR ? t.rImages : [], t.showQ ? t.qImages : []].forEach(a => a.forEach(x => { if (x.file) pend.push(x); })); });
+          await uploadPending(pend, btn, {n:0, total:pend.length});
+          const refs = (a) => a.filter(x => x.ref).map(x => ({ref:x.ref}));
+          const tweets = keep.map(t => {
+            const out = {text: t.text.trim()};
+            if (t.showR && (t.reply.trim() || t.rImages.length)){ out.reply = t.reply.trim(); if (t.rImages.length) out.replyImages = refs(t.rImages); }
+            if (t.showQ && (t.quote.trim() || t.qImages.length)) out.quote = t.qImages.length ? {text: t.quote.trim(), images: refs(t.qImages)} : t.quote.trim();
+            if (t.images.length) out.images = refs(t.images);
+            return out;
+          });
+          const removed = old ? [...collectRefs(old.data)].filter(r => !collectRefs({tweets}).has(r)) : [];
+          setBusy(btn); setBusy(btn, '저장 중…');
           if (!old && mode === 'each' && tweets.length > 1){
             for (const t of tweets) await put('items', uid(), {...baseItem(pairId, 'tweet', null), ...common, title:'', data:{tweets:[t], note}});
             closeModal(); toast(`트윗 ${tweets.length}개를 따로 저장했어요.`); return;
           }
           await put('items', id || uid(), {...baseItem(pairId, 'tweet', old), ...common, title: old?.title || '', data:{tweets, note, url: old?.data?.url || ''}});
+          dropAssets(removed);
           closeModal(); toast(tweets.length > 1 ? '타래를 저장했어요.' : '트윗을 저장했어요.');
         } catch(e){ setBusy(btn); toast(errText(e)); }
       };
@@ -2768,8 +2797,10 @@ function ghSettingsHTML(){
       <div class="field"><label for="gh-repo">저장소</label><input type="text" id="gh-repo" placeholder="아이디/pair-archive-data" value="${esc(c.repo || '')}" autocomplete="off" spellcheck="false"></div>
       <div class="field"><label for="gh-branch">브랜치</label><input type="text" id="gh-branch" placeholder="main" value="${esc(c.branch || 'main')}" autocomplete="off" spellcheck="false"></div>
     </div>
-    <div class="field"><label for="gh-token">토큰</label><input type="password" id="gh-token" placeholder="github_pat_…" value="${esc(c.token || '')}" autocomplete="off" spellcheck="false">
-      <span class="hint">토큰은 이 브라우저에만 저장되고 저장소에는 올라가지 않아요. 기기마다 한 번씩 넣어 주세요.</span></div>
+    <div class="field"><div style="display:flex;align-items:center;gap:8px"><label for="gh-token" class="flabel" style="flex:1">토큰</label><button type="button" class="btn small" id="gh-tokfold" aria-expanded="true">접기</button></div>
+      <div id="gh-tokshort" class="tokshort mono" hidden></div>
+      <textarea id="gh-token" class="inp tokbox" rows="2" placeholder="github_pat_…" autocomplete="off" spellcheck="false" autocapitalize="off">${esc(c.token || '')}</textarea>
+      <span class="hint" id="gh-tokhint">토큰은 이 브라우저에만 저장되고 저장소에는 올라가지 않아요. 기기마다 한 번씩 넣어 주세요. 다른 사람이 볼 수 있는 곳에서는 접어 두세요.</span></div>
     <details class="czg"><summary>토큰 만드는 법</summary><div class="czb" style="font-size:13px;gap:6px">
       <div>1. GitHub에서 기록을 넣을 <b>비공개(Private)</b> 저장소를 새로 만들어요. 예: pair-archive-data</div>
       <div>2. GitHub 오른쪽 위 프로필 › Settings › Developer settings › Personal access tokens › <b>Fine-grained tokens</b> › Generate new token</div>
@@ -2789,10 +2820,21 @@ function ghSettingsHTML(){
 function ghSettingsMount(root){
   if (!isStandalone()) return;
   const msg = $('#gh-msg', root);
+  const tok = $('#gh-token', root), fold = $('#gh-tokfold', root), short = $('#gh-tokshort', root);
+  let folded = false; try { folded = localStorage.getItem('jk-tok-fold') === '1'; } catch(e){}
+  const paintTok = () => {
+    const v = tok.value.replace(/\s+/g, ''); const f = folded && !!v;
+    tok.hidden = f; short.hidden = !f;
+    short.textContent = v ? `토큰 넣어 둠 · ${v.slice(0, 11)}…${v.slice(-4)} (${v.length}자)` : '';
+    fold.textContent = f ? '펼쳐서 보기' : '접기'; fold.setAttribute('aria-expanded', String(!f)); fold.disabled = !v;
+  };
+  fold.onclick = () => { folded = !tok.hidden; try { localStorage.setItem('jk-tok-fold', folded ? '1' : '0'); } catch(e){} paintTok(); if (!folded) tok.focus(); };
+  tok.addEventListener('input', paintTok);
+  paintTok();
   const read = () => {
     GH.cfg.repo = $('#gh-repo', root).value.trim().replace(/^https?:\/\/github\.com\//, '').replace(/\.git$/, '').replace(/\/$/, '');
     GH.cfg.branch = $('#gh-branch', root).value.trim() || 'main';
-    GH.cfg.token = $('#gh-token', root).value.trim();
+    GH.cfg.token = $('#gh-token', root).value.replace(/\s+/g, '');
     GH.cfg.auto = $('#gh-auto', root).checked;
   };
   $('#gh-auto', root).addEventListener('change', () => { GH.cfg.auto = $('#gh-auto', root).checked; ghStore(); });
