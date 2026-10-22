@@ -99,16 +99,19 @@ h1,h2,h3{text-wrap:balance; margin:0}
 .pill{display:inline-flex; align-items:center; gap:5px; font-size:12px; padding:2px 8px; border-radius:99px; background:var(--sunk); color:var(--muted); white-space:nowrap}
 
 /* pair view */
-.pairview{--c1:#6C8CD5; --c2:#E58FA8; --acc:var(--c1); --pf:var(--f-body); --tf:var(--pf); --rad:14px; --fs:15px; --gapx:16px; --bandH:150px; --patA:30%; --tint:11%; --base:var(--bg); --card-bg:var(--surface); --card-line:var(--line);
-  min-height:100%; padding-bottom:64px; font-family:var(--pf); font-size:var(--fs); background:var(--base)}
+.pairview{--c1:#6C8CD5; --c2:#E58FA8; --acc:var(--c1); --pf:var(--f-body); --tf:var(--pf); --rad:14px; --fs:15px; --gapx:16px; --bandH:150px; --patA:30%; --tint:11%; --base:var(--bg); --base-img:none; --on-base:var(--ink); --on-base-muted:var(--muted); --card-bg:var(--surface); --card-line:var(--line);
+  min-height:100%; padding-bottom:64px; font-family:var(--pf); font-size:var(--fs); background:var(--base-img) var(--base)}
 .pairview.bg-soft{background:linear-gradient(170deg, color-mix(in srgb, var(--c1) var(--tint), var(--base)) 0%, var(--base) 45%, color-mix(in srgb, var(--c2) var(--tint), var(--base)) 100%)}
-.pairview.bg-dots{background-color:var(--base); background-image:radial-gradient(color-mix(in srgb, var(--acc) var(--patA), transparent) 1.2px, transparent 1.4px); background-size:18px 18px}
-.pairview.bg-lines{background-color:var(--base); background-image:repeating-linear-gradient(to bottom, transparent 0 27px, color-mix(in srgb, var(--acc) var(--patA), transparent) 27px 28px)}
-.pairview.bg-grid{background-color:var(--base); background-image:linear-gradient(color-mix(in srgb, var(--acc) var(--patA), transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--acc) var(--patA), transparent) 1px, transparent 1px); background-size:24px 24px}
-.pairview.bg-check{background-color:var(--base); background-image:conic-gradient(color-mix(in srgb, var(--c1) var(--patA), transparent) 25%, transparent 0 50%, color-mix(in srgb, var(--c2) var(--patA), transparent) 0 75%, transparent 0); background-size:44px 44px}
-.pairview.bg-stripe{background-color:var(--base); background-image:repeating-linear-gradient(135deg, color-mix(in srgb, var(--acc) var(--patA), transparent) 0 10px, transparent 10px 26px)}
+.pairview.bg-dots{background-color:var(--base); background-image:radial-gradient(color-mix(in srgb, var(--acc) var(--patA), transparent) 1.2px, transparent 1.4px), var(--base-img); background-size:18px 18px, 100% 100%}
+.pairview.bg-lines{background-color:var(--base); background-image:repeating-linear-gradient(to bottom, transparent 0 27px, color-mix(in srgb, var(--acc) var(--patA), transparent) 27px 28px), var(--base-img)}
+.pairview.bg-grid{background-color:var(--base); background-image:linear-gradient(color-mix(in srgb, var(--acc) var(--patA), transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--acc) var(--patA), transparent) 1px, transparent 1px), var(--base-img); background-size:24px 24px, 24px 24px, 100% 100%}
+.pairview.bg-check{background-color:var(--base); background-image:conic-gradient(color-mix(in srgb, var(--c1) var(--patA), transparent) 25%, transparent 0 50%, color-mix(in srgb, var(--c2) var(--patA), transparent) 0 75%, transparent 0), var(--base-img); background-size:44px 44px, 100% 100%}
+.pairview.bg-stripe{background-color:var(--base); background-image:repeating-linear-gradient(135deg, color-mix(in srgb, var(--acc) var(--patA), transparent) 0 10px, transparent 10px 26px), var(--base-img)}
 .pairview.bg-image{background:linear-gradient(color-mix(in srgb, var(--base) 84%, transparent), color-mix(in srgb, var(--base) 84%, transparent)), var(--bgimg) center/cover fixed, var(--base)}
-.pairview.bg-plain{background:var(--base)}
+.pairview.bg-plain{background:var(--base-img) var(--base)}
+.pairview .month h2, .pairview .month .mono, .pairview .sec-h h2, .pairview .folder-head h2, .pairview .fcard .fname, .pairview .empty h2,
+.pairview.tabs-binder .tab:not(.on), .pairview.tabs-under .tab, .pairview .pv-head.minimal .pv-title{color:var(--on-base)}
+.pairview .sec-h .hint, .pairview .folder-head p, .pairview .fcard .fmeta, .pairview .empty p, .pairview .pv-head.minimal .intro{color:var(--on-base-muted)}
 .pv-band{height:var(--bandH); background:linear-gradient(115deg, var(--c1) 0 50%, var(--c2) 50% 100%)}
 .band-vert .pv-band{background:linear-gradient(90deg, var(--c1) 0 50%, var(--c2) 50% 100%)}
 .band-stripe .pv-band{background:repeating-linear-gradient(135deg, var(--c1) 0 24px, var(--c2) 24px 48px)}
@@ -116,7 +119,9 @@ h1,h2,h3{text-wrap:balance; margin:0}
 .band-solid .pv-band{background:var(--acc)}
 .band-check .pv-band{background:conic-gradient(var(--c1) 25%, var(--c2) 0 50%, var(--c1) 0 75%, var(--c2) 0) 0 0/48px 48px}
 .band-dots .pv-band{background:radial-gradient(color-mix(in srgb, var(--c2) 85%, transparent) 5px, transparent 5.5px) 0 0/26px 26px, var(--c1)}
-.pairview .pv-band.cover{height:calc(var(--bandH) + 70px); background:var(--cimg) center/cover, linear-gradient(115deg, var(--c1), var(--c2))}
+.pairview .pv-band.cover{height:var(--coverH, 300px); background:var(--cimg) 50% var(--coverPos, 50%)/cover no-repeat, linear-gradient(115deg, var(--c1), var(--c2))}
+.pairview .pv-band.cover.fit-contain{background:var(--cimg) 50% var(--coverPos, 50%)/contain no-repeat, linear-gradient(115deg, color-mix(in srgb, var(--c1) 35%, var(--base)), color-mix(in srgb, var(--c2) 35%, var(--base)))}
+.pairview .pv-band.cover.fit-width{background:var(--cimg) 50% var(--coverPos, 50%)/100% auto no-repeat, linear-gradient(115deg, var(--c1), var(--c2))}
 .pairview.glass .card, .pairview.glass .pv-head:not(.minimal){backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px)}
 .pv-head:not(.minimal){background:var(--card-bg)}
 .deco{color:var(--acc); font-weight:400; margin:0 .25em}
@@ -433,6 +438,41 @@ h1,h2,h3{text-wrap:balance; margin:0}
 .gh-st.gh-error{border-color:var(--danger); color:var(--danger)}
 .gh-st.gh-saved{color:var(--ok)}
 
+/* music player */
+#music-root{position:fixed; right:max(16px, calc(env(safe-area-inset-right, 0px) + 12px)); bottom:max(16px, calc(env(safe-area-inset-bottom, 0px) + 12px)); z-index:45; width:min(380px, calc(100% - 32px)); font-family:var(--f-body); display:flex; flex-direction:column; gap:8px}
+body.has-mx .pairview{padding-bottom:150px}
+.mx-bar{display:grid; grid-template-columns:auto minmax(0, 1fr) auto auto auto auto; align-items:center; gap:2px 4px; padding:8px 8px 6px 10px; background:var(--surface); border:1px solid var(--line); border-radius:16px; box-shadow:0 14px 34px -14px rgba(0,0,0,.45)}
+.mx-disc{width:32px; height:32px; border-radius:50%; background:conic-gradient(var(--mc1) 0 50%, var(--mc2) 0 100%); position:relative; flex:none}
+.mx-disc::after{content:""; position:absolute; inset:12px; border-radius:50%; background:var(--surface)}
+#music-root.playing .mx-disc{animation:mxspin 4s linear infinite}
+@keyframes mxspin{to{transform:rotate(360deg)}}
+.mx-meta{border:0; background:none; text-align:left; min-width:0; display:flex; flex-direction:column; padding:0 6px; color:var(--ink)}
+.mx-t{font-weight:600; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.mx-a{font-size:11px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-height:1em}
+.mx-play{width:38px; height:38px; border-radius:50%; border:0; background:var(--ink); color:var(--surface); display:flex; align-items:center; justify-content:center}
+.mx-play svg{width:18px; height:18px}
+.mx-seek{grid-column:1 / span 5; width:100%; height:14px; accent-color:var(--mc1); margin:2px 0 0}
+.mx-time{font-size:11px; color:var(--muted); grid-column:6; text-align:right; white-space:nowrap}
+.mx-yt{aspect-ratio:16/9; width:100%; max-width:100%; border-radius:12px; overflow:hidden; background:#000; box-shadow:0 14px 34px -14px rgba(0,0,0,.45)}
+.mx-yt iframe, .mx-yt > div{width:100%; height:100%; border:0; display:block}
+.mx-panel{display:none; background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:8px; box-shadow:0 14px 34px -14px rgba(0,0,0,.45); flex-direction:column; gap:6px; max-height:min(46vh, 420px); overflow:auto}
+#music-root.open .mx-panel{display:flex}
+.mx-list{display:flex; flex-direction:column}
+.mx-item{display:flex; gap:10px; align-items:center; border:0; background:none; text-align:left; padding:7px 8px; border-radius:8px; font-size:13px; color:var(--ink)}
+.mx-item:hover{background:var(--sunk)}
+.mx-item.on{background:color-mix(in srgb, var(--mc1) 16%, var(--surface)); font-weight:600}
+.mx-item .mono{width:1.6em; color:var(--muted); font-size:11px; text-align:center}
+.mx-it{flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.mx-row{display:flex; gap:6px; align-items:center; flex-wrap:wrap; border-top:1px solid var(--line); padding:8px 4px 2px}
+.mx-row input[type=range]{flex:1 1 90px; accent-color:var(--mc1); min-width:0}
+#mx-shuf.on{color:var(--mc1); background:var(--sunk)}
+#mx-rep{width:auto; padding:0 8px; white-space:nowrap}
+body.has-mx .toast{bottom:max(130px, calc(env(safe-area-inset-bottom, 0px) + 126px))}
+
+.swatches{display:flex; flex-wrap:wrap; gap:6px}
+.swatches button{width:28px; height:28px; border-radius:50%; border:1px solid var(--line); background:var(--sw); padding:0}
+.swatches button:hover{transform:scale(1.08)}
+
 /* customize groups */
 .czg{border-top:1px solid var(--line); padding-top:12px}
 .czg summary{font-weight:700; font-size:14px; cursor:pointer; list-style:none; display:flex; justify-content:space-between; align-items:center}
@@ -470,6 +510,7 @@ h1,h2,h3{text-wrap:balance; margin:0}
 
 @media (max-width:560px){
   .pairview{--bandH:110px !important}
+  .pairview .pv-band.cover{height:calc(var(--coverH, 300px) * .62)}
   .pv-head{padding:16px; margin-top:-48px}
   .top-actions .lbl{display:none}
   .feed.layout-masonry{columns:1 !important}
@@ -489,6 +530,7 @@ h1,h2,h3{text-wrap:balance; margin:0}
 <div id="confirm-root"></div>
 <div id="rd-root"></div>
 <div id="lb-root"></div>
+<div id="music-root" hidden></div>
 <div id="toast-root" aria-live="polite"></div>
 
 <script>
@@ -506,8 +548,8 @@ const FONTS = {
 };
 const TYPES = {photo:'사진', tweet:'트윗', text:'글', check:'체크리스트'};
 const TYPE_ORDER = ['photo','tweet','text','check'];
-const DEFAULT_THEME = {font:'plex', titleFont:'', fontSize:15, layout:'masonry', cols:'auto', gap:16, radius:14, bg:'soft', bgImage:'', bgColor:'', tint:11, patAlpha:30,
-  header:'split', band:'diag', bandH:150, accent:'c1', accentCustom:'#4A6FA5', card:'border', cardAlpha:100, cardLine:'line',
+const DEFAULT_THEME = {font:'plex', titleFont:'', fontSize:15, layout:'masonry', cols:'auto', gap:16, radius:14, bg:'soft', bgImage:'', bgColor:'', bgColor2:'#F6C8D6', bgMode:'', tint:11, patAlpha:30,
+  header:'split', band:'diag', bandH:150, coverH:300, coverPos:50, coverFit:'cover', accent:'c1', accentCustom:'#4A6FA5', card:'border', cardAlpha:100, cardLine:'line',
   tabStyle:'binder', deco:'', decoCustom:'', tagline:'', customFont:null, customCss:''};
 const DECOS = {heart:['♡','♡'], star:['✦','✦'], moon:['☾','☽'], flower:['✿','✿'], sparkle:['⋆｡˚','˚｡⋆'], bracket:['〔','〕'], line:['—','—']};
 const THEME_PRESETS = [
@@ -577,6 +619,7 @@ const I = {
   arrowDown:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 10 6 6 6-6"/></svg>',
   pdf:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4M9 13h6M9 17h4"/></svg>',
   sheet:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M4 9h16M4 15h16M10 9v12"/></svg>',
+  music:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg>',
   check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>',
   book:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5"/></svg>',
   folder:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>',
@@ -673,13 +716,31 @@ function pairVars(p){
   const pf = fontCssOf(th.font, th, p), tf = th.titleFont ? fontCssOf(th.titleFont, th, p) : pf;
   const alpha = clamp(th.cardAlpha, 40, 100, 100);
   let v = `--c1:${c1};--c2:${c2};--acc:${acc};--on-acc:${onColor(acc)};--pf:${pf};--tf:${tf};--rad:${clamp(th.radius, 0, 28, 14)}px;`
-    + `--fs:${clamp(th.fontSize, 12, 20, 15)}px;--gapx:${clamp(th.gap, 4, 40, 16)}px;--bandH:${clamp(th.bandH, 60, 320, 150)}px;--patA:${clamp(th.patAlpha, 5, 70, 30)}%;--tint:${clamp(th.tint, 0, 45, 11)}%;`
-    + (th.bgColor && /^#[0-9a-fA-F]{6}$/.test(th.bgColor) ? `--base:color-mix(in srgb, ${th.bgColor} ${clamp(th.tint, 0, 45, 11) + 10}%, var(--bg));` : '')
+    + `--fs:${clamp(th.fontSize, 12, 20, 15)}px;--gapx:${clamp(th.gap, 4, 40, 16)}px;--bandH:${clamp(th.bandH, 60, 480, 150)}px;--coverH:${clamp(th.coverH, 120, 900, 300)}px;--coverPos:${clamp(th.coverPos, 0, 100, 50)}%;--patA:${clamp(th.patAlpha, 5, 70, 30)}%;--tint:${clamp(th.tint, 0, 45, 11)}%;`
+    + baseVars(th, clamp(th.tint, 0, 45, 11))
     + (alpha < 100 ? `--card-bg:color-mix(in srgb, var(--surface) ${alpha}%, transparent);` : '')
     + (th.cardLine === 'acc' ? `--card-line:color-mix(in srgb, var(--acc) 55%, var(--line));` : '');
   if (th.bgImage && imgSrc(th.bgImage)) v += `--bgimg:url('${imgSrc(th.bgImage)}');`;
-  if (p.cover && imgSrc(p.cover)) v += `--cimg:url('${imgSrc(p.cover)}');`;
+  const cv = coverOf(p); if (cv) v += `--cimg:url('${cv}');`;
   return v;
+}
+function mixHex(a, b){
+  const p = (h) => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+  const x = p(a), y = p(b); return '#' + x.map((v, i) => Math.round((v + y[i]) / 2).toString(16).padStart(2, '0')).join('');
+}
+function baseVars(th, tint){
+  const bc = /^#[0-9a-fA-F]{6}$/.test(th.bgColor || '') ? th.bgColor : null;
+  const mode = th.bgMode || (bc ? 'tint' : '');
+  if (!bc || !mode) return '';
+  const on = (hex) => onColor(hex) === '#FFFFFF' ? '--on-base:#F2F3F7;--on-base-muted:rgba(242,243,247,.72);' : '--on-base:#1B1D26;--on-base-muted:rgba(27,29,38,.64);';
+  if (mode === 'tint') return `--base:color-mix(in srgb, ${bc} ${tint + 10}%, var(--bg));`;
+  if (mode === 'solid') return `--base:${bc};` + on(bc);
+  if (mode === 'gradient'){ const b2 = safeColor(th.bgColor2, '#F6C8D6'); return `--base:${bc};--base-img:linear-gradient(160deg, ${bc}, ${b2});` + on(mixHex(bc, b2)); }
+  return '';
+}
+function coverOf(p){
+  const pv = S.preview && S.preview.pairId === S.route.pairId && p === S.pairs[S.route.pairId] && S.preview.cover !== undefined ? S.preview.cover : p.cover;
+  return pv ? imgSrc(pv) : '';
 }
 function fontCssOf(key, th, p){
   if (key === 'custom' && th.customFont && imgSrc(th.customFont.ref)) return `'PF-${th.customFont.ref.slice(0, 12).replace(/[^A-Za-z0-9]/g, '')}', var(--f-body)`;
@@ -854,6 +915,12 @@ async function toJpeg(file, maxDim=4096, q=.9){
 async function normalizeFile(file, {localSmall=false}={}){
   const fm = /\.(woff2|woff|ttf|otf)$/i.exec(file.name || '');
   if (fm){ if (file.size > 20*1024*1024) throw {code:'too_large'}; return new File([file], file.name, {type:'font/' + fm[1].toLowerCase()}); }
+  const am = /\.(mp3|m4a|aac|ogg|oga|opus|wav|flac|webm)$/i.exec(file.name || '');
+  if (am || (file.type || '').startsWith('audio/')){
+    if (B.remote) throw {code:'unsupported_type'};
+    const mime = {mp3:'audio/mpeg', m4a:'audio/mp4', aac:'audio/aac', ogg:'audio/ogg', oga:'audio/ogg', opus:'audio/opus', wav:'audio/wav', flac:'audio/flac', webm:'audio/webm'}[(am && am[1].toLowerCase()) || ''] || file.type || 'audio/mpeg';
+    return new File([file], file.name, {type: mime});
+  }
   if (file.type === 'application/pdf'){ if (file.size > 20*1024*1024) throw {code:'too_large'}; return file; }
   let f = file;
   if (!ACCEPT_IMG.includes(file.type) || file.size > 19.5*1024*1024){
@@ -990,6 +1057,7 @@ function render(){
   if (S.route.view === 'pair' && S.pairs[S.route.pairId]) v.innerHTML = pairView(S.route.pairId);
   else { if (S.route.view === 'pair') S.route = {view:'home', pairId:null}; v.innerHTML = homeView(); }
   if (DETAIL_REDRAW) try { DETAIL_REDRAW(); } catch(e){}
+  try { if (S.route.view === 'pair' && S.pairs[S.route.pairId]) mxLoadPair(S.route.pairId); else mxRender(); } catch(e){}
   if (focusId){ const el = document.getElementById(focusId); if (el){ el.focus(); if (sel) try { el.setSelectionRange(sel[0], sel[1]); } catch(e){} } }
 }
 function renderTop(){
@@ -1089,8 +1157,8 @@ function pairView(pid){
   const cnt = {}; all.forEach(it => cnt[it.type] = (cnt[it.type]||0) + 1);
   const visTabs = ['all', ...TYPE_ORDER.filter(t => tabs[t]), 'profile'];
   if (!visTabs.includes(S.tab)) S.tab = 'all';
-  const cover = p.cover && imgSrc(p.cover);
-  const header = th.header === 'minimal' ? '' : `<div class="pv-band ${th.header === 'cover' && cover ? 'cover' : ''}"></div>`;
+  const cover = coverOf(p);
+  const header = th.header === 'minimal' ? '' : `<div class="pv-band ${th.header === 'cover' && cover ? `cover fit-${th.coverFit || 'cover'}` : ''}"></div>`;
   let content = '';
   if (S.tab === 'profile') content = profileView(pid, p);
   else {
@@ -1139,7 +1207,7 @@ function pairView(pid){
           ${th.tagline ? `<p class="tagline">${esc(th.tagline)}</p>` : ''}
           ${p.intro ? `<p class="intro">${esc(p.intro)}</p>` : ''}
         </div>
-        ${S.canWrite ? `<div class="pv-actions"><button class="btn small" data-act="edit-pair">${I.edit}페어 정보</button><button class="btn small" data-act="customize">${I.brush}꾸미기</button><button class="btn small danger" data-act="del-pair">${I.trash}페어 삭제</button></div>` : ''}
+        ${S.canWrite ? `<div class="pv-actions"><button class="btn small" data-act="edit-pair">${I.edit}페어 정보</button><button class="btn small" data-act="customize">${I.brush}꾸미기</button><button class="btn small" data-act="music">${I.music}음악${(p.music || []).length ? ` ${(p.music || []).length}` : ''}</button><button class="btn small danger" data-act="del-pair">${I.trash}페어 삭제</button></div>` : ''}
       </div>
       <div class="tabs-scroll"><nav class="tabs" role="tablist">
         ${visTabs.map(t => `<button class="tab ${S.tab === t ? 'on' : ''}" role="tab" aria-selected="${S.tab === t}" data-act="tab" data-tab="${t}">${t === 'all' ? '타임라인' : t === 'profile' ? '프로필' : TYPES[t]}${t !== 'profile' ? `<span class="n">${t === 'all' ? all.filter(it => tabs[it.type]).length : (cnt[t]||0)}</span>` : ''}</button>`).join('')}
@@ -2004,6 +2072,7 @@ async function deletePair(id){
   try {
     const refs = new Set(); collectRefs(p, refs);
     for (const it of its){ collectRefs(it.data, refs); await del('items', it.id); for (let k = 1; k < ((it.data || {}).parts || 1); k++) { try { await del('bodies', `${it.id}_${k}`); } catch(e){} } }
+    if (MX.pairId === id){ mxStop(); MX.list = []; MX.pairId = null; mxRender(); }
     await del('pairs', id); dropAssets([...refs]);
     go({view:'home'}); toast('페어를 지웠어요.');
   } catch(e){}
@@ -2013,9 +2082,10 @@ async function deletePair(id){
 function customize(preset){
   const pid = S.route.pairId; const p = S.pairs[pid]; if (!p) return;
   closeModal(true);
-  if (!preset){ CZ_FILES.bg = null; CZ_FILES.font = null; }
+  if (!preset){ CZ_FILES.bg = null; CZ_FILES.font = null; CZ_FILES.cover = null; }
   const cur = {...DEFAULT_THEME, ...(p.theme || {})};
   S.preview = {pairId:pid, theme: preset ? {...cur, ...preset} : cur, tabs:{photo:true, tweet:true, text:true, check:true, ...(p.tabs || {})}};
+  if (CZ_FILES.cover) S.preview.cover = URL.createObjectURL(CZ_FILES.cover);
   const th = S.preview.theme; const files = {bg:null, font:null};
   const others = Object.entries(S.pairs).filter(([id]) => id !== pid);
   const seg = (key, opts) => `<div class="seg" data-key="${key}">${opts.map(([v, l, st]) => `<button type="button" data-v="${esc(v)}" class="${String(th[key] ?? '') === String(v) ? 'on' : ''}" ${st ? `style="${st}"` : ''}>${l}</button>`).join('')}</div>`;
@@ -2037,17 +2107,31 @@ function customize(preset){
     ${grp('색', `
       <div class="field"><span class="flabel">강조 색</span>${seg('accent', [['c1', esc(p.chars?.[0]?.name || '첫 캐릭터') + ' 색'], ['c2', esc(p.chars?.[1]?.name || '둘째 캐릭터') + ' 색'], ['custom', '직접 고르기']])}
         <div style="display:flex;gap:8px;align-items:center" id="cz-accwrap" ${th.accent === 'custom' ? '' : 'hidden'}><input type="color" class="colorin" id="cz-acc" value="${esc(safeColor(th.accentCustom))}"><span class="hint">강조 색</span></div></div>
-      <div class="field"><span class="flabel">바탕 색 물들이기</span>
-        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><input type="color" class="colorin" id="cz-bgc" value="${esc(safeColor(th.bgColor, '#C9D3E8'))}"><label class="check-inline"><input type="checkbox" id="cz-bgcon" ${th.bgColor ? 'checked' : ''}>바탕에 이 색 섞기</label></div></div>
-      ${rng('tint', '색 진하기', 0, 45, 1, '%')}`)}
+      ${rng('tint', '은은한 색 진하기', 0, 45, 1, '%')}`)}
     ${grp('머리 부분', `
       <div class="field"><span class="flabel">머리 모양</span>${seg('header', [['split', '색 띠'], ['cover', '커버 이미지'], ['minimal', '깔끔하게']])}</div>
       <div class="field"><span class="flabel">색 띠 무늬</span>${seg('band', [['diag', '사선 반반'], ['vert', '세로 반반'], ['stripe', '줄무늬'], ['grad', '그라데이션'], ['solid', '한 색'], ['check', '체크'], ['dots', '물방울']])}</div>
-      ${rng('bandH', '띠 높이', 60, 320, 10, 'px')}
+      <div id="cz-coverbox" style="display:flex;flex-direction:column;gap:14px" ${th.header === 'cover' ? '' : 'hidden'}>
+        <div class="field"><span class="flabel">커버 이미지</span>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><label class="btn small" for="cz-coverfile">${I.plus}${coverOf(p) ? '이미지 바꾸기' : '이미지 고르기'}</label><input type="file" id="cz-coverfile" class="sr" accept="image/*"><span class="hint" id="cz-covername">${coverOf(p) ? '설정됨' : '아직 없음'}</span></div></div>
+        ${rng('coverH', '커버 높이', 120, 900, 10, 'px')}
+        <div class="field"><span class="flabel">이미지 맞추기</span>${seg('coverFit', [['cover', '꽉 채우기'], ['width', '가로에 맞추기'], ['contain', '전체 보이기']])}</div>
+        ${rng('coverPos', '보여 줄 위치 (위 0 · 아래 100)', 0, 100, 1, '%')}
+        <span class="hint">휴대폰에서는 커버 높이가 조금 낮아져요.</span>
+      </div>
+      <div id="cz-bandbox" style="display:flex;flex-direction:column;gap:14px" ${th.header === 'split' ? '' : 'hidden'}>
+      ${rng('bandH', '띠 높이', 60, 480, 10, 'px')}
+      </div>
       <div class="field"><span class="flabel">제목 꾸밈 기호</span>${seg('deco', [['', '없음'], ['heart', '♡'], ['star', '✦'], ['moon', '☾ ☽'], ['flower', '✿'], ['sparkle', '⋆｡˚'], ['bracket', '〔 〕'], ['line', '—'], ['custom', '직접']])}
         <input class="inp" type="text" id="cz-decoc" maxlength="8" placeholder="양옆에 붙일 기호" value="${esc(th.decoCustom || '')}" ${th.deco === 'custom' ? '' : 'hidden'}></div>
       <div class="field"><label for="cz-tagline" class="flabel">한 줄 문구</label><input class="inp" type="text" id="cz-tagline" maxlength="80" placeholder="예: 우리는 결국 같은 바다로 간다" value="${esc(th.tagline || '')}"></div>`)}
     ${grp('배경', `
+      <div class="field"><span class="flabel">배경 색</span>${seg('bgMode', [['', '기본'], ['solid', '한 색으로 칠하기'], ['gradient', '그라데이션'], ['tint', '살짝 물들이기']])}
+        <div id="cz-bgcwrap" style="display:flex;flex-direction:column;gap:8px" ${th.bgMode || th.bgColor ? '' : 'hidden'}>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><input type="color" class="colorin" id="cz-bgc" value="${esc(safeColor(th.bgColor, '#FDEFF3'))}" title="배경 색"><span id="cz-bgc2wrap" ${th.bgMode === 'gradient' ? '' : 'hidden'}><input type="color" class="colorin" id="cz-bgc2" value="${esc(safeColor(th.bgColor2, '#F6C8D6'))}" title="두 번째 색"></span><span class="hint" id="cz-bgchint"></span></div>
+          <div class="swatches" id="cz-sw">${['#FFFFFF','#FBF7F0','#FDEFF3','#F3EEFF','#EAF4FF','#EAF6EF','#FFF8DC','#F2F2F2','#2A2F3D','#1E2A24','#2D1F2B','#121318'].map(c => `<button type="button" data-sw="${c}" style="--sw:${c}" title="${c}" aria-label="배경 색 ${c}"></button>`).join('')}</div>
+          <span class="hint">어두운 색을 고르면 카드 밖 글자가 밝은 색으로 바뀌어요. 무늬는 이 색 위에 그려져요.</span>
+        </div></div>
       <div class="field"><span class="flabel">무늬</span>${seg('bg', [['soft', '은은한 두 색'], ['plain', '단색'], ['dots', '도트'], ['lines', '줄노트'], ['grid', '모눈'], ['check', '체크'], ['stripe', '사선'], ['image', '이미지']])}
         <div id="cz-bgimg" ${th.bg === 'image' ? '' : 'hidden'} style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><label class="btn small" for="cz-bgfile">${I.plus}배경 이미지 고르기</label><input type="file" id="cz-bgfile" class="sr" accept="image/*"><span class="hint" id="cz-bgname">${th.bgImage ? '설정됨' : '아직 없음'}</span></div></div>
       ${rng('patAlpha', '무늬 진하기', 5, 70, 1, '%')}`)}
@@ -2079,6 +2163,8 @@ function customize(preset){
         $('#cz-accwrap', root).hidden = th.accent !== 'custom';
         $('#cz-bgimg', root).hidden = th.bg !== 'image';
         $('#cz-decoc', root).hidden = th.deco !== 'custom';
+        $('#cz-coverbox', root).hidden = th.header !== 'cover';
+        $('#cz-bandbox', root).hidden = th.header !== 'split';
       };
       $$('.seg[data-key]', root).forEach(sg => sg.addEventListener('click', e => {
         const b = e.target.closest('button[data-v]'); if (!b) return;
@@ -2088,18 +2174,28 @@ function customize(preset){
       $('#cz-presets', root).addEventListener('click', e => {
         const b = e.target.closest('button[data-p]'); if (!b) return;
         const [, pr] = THEME_PRESETS[+b.dataset.p];
-        const keep = {accent:th.accent, accentCustom:th.accentCustom, bgImage:th.bgImage, bgColor:th.bgColor, tagline:th.tagline, deco:th.deco, decoCustom:th.decoCustom, customFont:th.customFont, customCss:th.customCss, header: pr.header || (th.header === 'minimal' ? 'split' : th.header)};
+        const keep = {accent:th.accent, accentCustom:th.accentCustom, bgImage:th.bgImage, bgColor:th.bgColor, bgColor2:th.bgColor2, bgMode:th.bgMode, tagline:th.tagline, deco:th.deco, decoCustom:th.decoCustom, customFont:th.customFont, customCss:th.customCss, header: pr.header || (th.header === 'minimal' ? 'split' : th.header)};
         const pending = {...files};
         customize({...DEFAULT_THEME, ...keep, ...pr});
         Object.assign(CZ_FILES, pending);
       });
       $('#cz-acc', root).addEventListener('input', e => { th.accentCustom = e.target.value; upd(); });
-      const bgc = $('#cz-bgc', root), bgon = $('#cz-bgcon', root);
-      const setBgc = () => { th.bgColor = bgon.checked ? bgc.value : ''; upd(); };
-      bgc.addEventListener('input', () => { bgon.checked = true; setBgc(); }); bgon.addEventListener('change', setBgc);
+      const bgc = $('#cz-bgc', root), bgc2 = $('#cz-bgc2', root);
+      if (!th.bgMode && th.bgColor) th.bgMode = 'tint';
+      const bgHint = () => { $('#cz-bgchint', root).textContent = th.bgMode === 'gradient' ? '왼쪽 위 색에서 오른쪽 아래 색으로 바뀌어요' : ''; };
+      bgc.addEventListener('input', () => { th.bgColor = bgc.value; if (!th.bgMode) th.bgMode = 'solid'; upd(); });
+      bgc2.addEventListener('input', () => { th.bgColor2 = bgc2.value; upd(); });
+      $('#cz-sw', root).addEventListener('click', e => { const b = e.target.closest('[data-sw]'); if (!b) return; th.bgColor = b.dataset.sw; bgc.value = b.dataset.sw; if (!th.bgMode) th.bgMode = 'solid'; upd(); });
+      $('[data-key=bgMode]', root).addEventListener('click', () => {
+        if (th.bgMode) th.bgColor = bgc.value; else th.bgColor = '';
+        if (th.bgMode && th.bgMode !== 'tint' && th.bg === 'soft'){ th.bg = 'plain'; $$('[data-key=bg] button', root).forEach(x => x.classList.toggle('on', x.dataset.v === 'plain')); }
+        $('#cz-bgcwrap', root).hidden = !th.bgMode; $('#cz-bgc2wrap', root).hidden = th.bgMode !== 'gradient'; bgHint(); upd();
+      });
+      bgHint();
       $('#cz-decoc', root).addEventListener('input', e => { th.decoCustom = e.target.value; upd(); });
       $('#cz-tagline', root).addEventListener('input', e => { th.tagline = e.target.value; upd(); });
       let cssT; $('#cz-css', root).addEventListener('input', e => { clearTimeout(cssT); cssT = setTimeout(() => { th.customCss = e.target.value; upd(); }, 300); });
+      $('#cz-coverfile', root).addEventListener('change', e => { const f = e.target.files[0]; if (!f) return; CZ_FILES.cover = f; S.preview.cover = URL.createObjectURL(f); $('#cz-covername', root).textContent = f.name; upd(); });
       $('#cz-bgfile', root).addEventListener('change', e => { const f = e.target.files[0]; if (!f) return; files.bg = f; CZ_FILES.bg = f; th.bgImage = URL.createObjectURL(f); $('#cz-bgname', root).textContent = f.name; upd(); });
       $('#cz-fontfile', root).addEventListener('change', e => {
         const f = e.target.files[0]; if (!f) return;
@@ -2115,7 +2211,7 @@ function customize(preset){
       if (cp) cp.onclick = async () => {
         const v = $('#cz-copy', root).value; if (!v) { toast('적용할 페어를 골라 주세요.'); return; }
         const targets = v === '_all' ? others.map(([id]) => id) : [v];
-        const pick = ({font, titleFont, fontSize, layout, cols, gap, radius, bg, tint, patAlpha, header, band, bandH, card, cardAlpha, cardLine, tabStyle}) => ({font: font === 'custom' ? 'plex' : font, titleFont: titleFont === 'custom' ? '' : titleFont, fontSize, layout, cols, gap, radius, bg: bg === 'image' ? 'soft' : bg, tint, patAlpha, header, band, bandH, card, cardAlpha, cardLine, tabStyle});
+        const pick = ({font, titleFont, fontSize, layout, cols, gap, radius, bg, tint, patAlpha, header, band, bandH, coverH, coverPos, coverFit, card, cardAlpha, cardLine, tabStyle}) => ({coverH, coverPos, coverFit, font: font === 'custom' ? 'plex' : font, titleFont: titleFont === 'custom' ? '' : titleFont, fontSize, layout, cols, gap, radius, bg: bg === 'image' ? 'soft' : bg, tint, patAlpha, header, band, bandH, card, cardAlpha, cardLine, tabStyle});
         try {
           for (const t of targets){ const o = clone(S.pairs[t]); o.theme = {...DEFAULT_THEME, ...(o.theme || {}), ...pick(th)}; await put('pairs', t, o); }
           toast(`페어 ${targets.length}개에 적용했어요.`);
@@ -2126,24 +2222,27 @@ function customize(preset){
         const btn = ev.currentTarget;
         try {
           setBusy(btn, '저장 중…');
-          const oldTh = (p.theme || {});
+          const oldTh = (p.theme || {}); const drop0 = [];
           if (CZ_FILES.bg && th.bg === 'image'){ setBusy(btn); setBusy(btn, '이미지 올리는 중…'); th.bgImage = await uploadFile(CZ_FILES.bg); }
           if (CZ_FILES.font && th.customFont){ setBusy(btn); setBusy(btn, '글꼴 올리는 중…'); th.customFont = {...th.customFont, ref: await uploadFile(CZ_FILES.font)}; }
           if (th.bgImage && /^blob:/.test(th.bgImage)) th.bgImage = oldTh.bgImage || '';
           if (th.customFont && /^blob:/.test(th.customFont.ref)) th.customFont = oldTh.customFont || null;
           const out = clone(S.pairs[pid]); out.theme = {...th}; out.tabs = {...S.preview.tabs};
+          const oldCover = out.cover;
+          if (CZ_FILES.cover){ setBusy(btn); setBusy(btn, '커버 올리는 중…'); out.cover = await uploadFile(CZ_FILES.cover); }
           await put('pairs', pid, out);
-          const drop = [];
+          if (CZ_FILES.cover && oldCover && oldCover !== out.cover) drop0.push(oldCover);
+          const drop = drop0;
           if (oldTh.bgImage && oldTh.bgImage !== th.bgImage) drop.push(oldTh.bgImage);
           if (oldTh.customFont && oldTh.customFont.ref && (!th.customFont || th.customFont.ref !== oldTh.customFont.ref)) drop.push(oldTh.customFont.ref);
-          dropAssets(drop); CZ_FILES.bg = null; CZ_FILES.font = null;
+          dropAssets(drop); CZ_FILES.bg = null; CZ_FILES.font = null; CZ_FILES.cover = null;
           closeModal(); toast('꾸미기를 저장했어요.');
         } catch(e){ setBusy(btn); toast(errText(e)); }
       };
       sync(); upd();
     }});
 }
-const CZ_FILES = {bg:null, font:null};
+const CZ_FILES = {bg:null, font:null, cover:null};
 
 /* ---------- reader ---------- */
 const RD_DEFAULT = {font:'', size:17, lh:1.9, width:'normal', paper:'default', indent:false, gap:'loose'};
@@ -2285,7 +2384,7 @@ async function settings(){
       }).catch(() => { stEl.innerHTML = '<span class="hint">사용량을 불러오지 못했어요.</span>'; });
     }});
 }
-const EXT = {'image/png':'png','image/jpeg':'jpg','image/gif':'gif','image/webp':'webp','application/pdf':'pdf','image/svg+xml':'svg'};
+const EXT = {'image/png':'png','image/jpeg':'jpg','image/gif':'gif','image/webp':'webp','application/pdf':'pdf','image/svg+xml':'svg','audio/mpeg':'mp3','audio/mp4':'m4a','audio/aac':'aac','audio/ogg':'ogg','audio/opus':'opus','audio/wav':'wav','audio/flac':'flac','audio/webm':'weba','font/woff2':'woff2','font/woff':'woff','font/ttf':'ttf','font/otf':'otf'};
 async function exportZip(btn, status){
   setBusy(btn, '준비 중…');
   try {
@@ -2372,7 +2471,8 @@ async function ghHead(){
 }
 function blobToB64(blob){ return new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(',')[1] || ''); r.onerror = rej; r.readAsDataURL(blob); }); }
 function b64ToBytes(s){ const bin = atob(String(s || '').replace(/\s/g, '')); const out = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i); return out; }
-const EXT_TYPE = {png:'image/png', jpg:'image/jpeg', gif:'image/gif', webp:'image/webp', pdf:'application/pdf', svg:'image/svg+xml', woff2:'font/woff2', woff:'font/woff', ttf:'font/ttf', otf:'font/otf'};
+const EXT_TYPE = {png:'image/png', jpg:'image/jpeg', gif:'image/gif', webp:'image/webp', pdf:'application/pdf', svg:'image/svg+xml', woff2:'font/woff2', woff:'font/woff', ttf:'font/ttf', otf:'font/otf',
+  mp3:'audio/mpeg', m4a:'audio/mp4', aac:'audio/aac', ogg:'audio/ogg', opus:'audio/opus', wav:'audio/wav', flac:'audio/flac', weba:'audio/webm'};
 const TYPE_EXT = Object.fromEntries(Object.entries(EXT_TYPE).map(([k, v]) => [v, k]));
 function ghSetStatus(s){ GH.status = s; renderTop(); }
 function ghMark(){
@@ -2566,9 +2666,232 @@ function ghSettingsMount(root){
   };
 }
 
+/* ---------- music (per-pair playlist + mini player) ---------- */
+const MX = {pairId:null, list:[], idx:0, playing:false, open:false, repeat:'all', shuffle:false, vol:.7, yt:null, ytReady:null, ytFor:null};
+try { const m = JSON.parse(localStorage.getItem('jk-music') || '{}'); if (m.vol !== undefined) MX.vol = m.vol; if (m.repeat) MX.repeat = m.repeat; MX.shuffle = !!m.shuffle; } catch(e){}
+const mxSavePrefs = () => { try { localStorage.setItem('jk-music', JSON.stringify({vol:MX.vol, repeat:MX.repeat, shuffle:MX.shuffle})); } catch(e){} };
+const AUDIO_EXT = /\.(mp3|m4a|aac|ogg|oga|opus|wav|flac|webm)$/i;
+function ytId(url){
+  const m = /(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/|live\/)|music\.youtube\.com\/watch\?(?:.*&)?v=)([A-Za-z0-9_-]{11})/.exec(url || '');
+  return m ? m[1] : null;
+}
+function mxAudio(){
+  let a = $('#mx-audio');
+  if (!a){
+    a = document.createElement('audio'); a.id = 'mx-audio'; a.preload = 'metadata';
+    a.addEventListener('ended', () => mxNext(true));
+    a.addEventListener('play', () => { MX.playing = true; mxPaint(); });
+    a.addEventListener('pause', () => { if (!MX.switching){ MX.playing = false; mxPaint(); } });
+    a.addEventListener('timeupdate', mxProgress);
+    a.addEventListener('error', () => { if (a.getAttribute('src')){ toast('이 음악 파일을 재생하지 못했어요.'); MX.playing = false; mxPaint(); } });
+    document.body.appendChild(a);
+  }
+  a.volume = MX.vol;
+  return a;
+}
+function mxTrack(){ return MX.list[MX.idx]; }
+function mxLoadPair(pid){
+  const p = S.pairs[pid]; const list = (p && p.music) || [];
+  if (MX.pairId === pid && JSON.stringify(list) === JSON.stringify(MX.list)){ mxRender(); return; }
+  const same = MX.pairId === pid; const cur = mxTrack();
+  if (!same){ mxStop(); MX.idx = 0; MX.open = false; }
+  MX.pairId = pid; MX.list = clone(list);
+  if (same && cur){ const k = MX.list.findIndex(t => t.id === cur.id); MX.idx = k >= 0 ? k : 0; if (k < 0) mxStop(); }
+  if (MX.idx >= MX.list.length) MX.idx = 0;
+  mxRender();
+  if (!same && p && p.musicAuto && MX.list.length) setTimeout(() => mxPlay(0, true), 300);
+}
+function mxStop(){
+  const a = $('#mx-audio'); if (a){ a.pause(); a.removeAttribute('src'); a.load(); }
+  if (MX.yt && MX.yt.stopVideo) try { MX.yt.stopVideo(); } catch(e){}
+  MX.playing = false;
+}
+function loadYT(){
+  if (MX.ytReady) return MX.ytReady;
+  MX.ytReady = new Promise((res, rej) => {
+    if (window.YT && window.YT.Player) return res();
+    const prev = window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady = () => { if (prev) prev(); res(); };
+    const s = document.createElement('script'); s.src = 'https://www.youtube.com/iframe_api'; s.onerror = () => { MX.ytReady = null; rej(new Error('yt')); };
+    document.head.appendChild(s);
+    setTimeout(() => rej(new Error('yt-timeout')), 12000);
+  });
+  return MX.ytReady;
+}
+async function mxPlay(i, quiet){
+  if (i !== undefined){ MX.idx = i; }
+  const t = mxTrack(); if (!t) return;
+  const a = mxAudio();
+  if (t.kind === 'youtube'){
+    MX.switching = true; a.pause(); MX.switching = false;
+    if (!isStandalone()){ window.open(t.url, '_blank', 'noopener'); return; }
+    MX.open = true; mxRender();
+    try { await loadYT(); } catch(e){ if (!quiet) toast('유튜브 플레이어를 불러오지 못했어요. 인터넷 연결을 확인해 주세요.'); return; }
+    const vid = ytId(t.url); const host = $('#mx-yt'); if (!host) return;
+    if (MX.yt && MX.ytFor === vid){ MX.yt.playVideo(); return; }
+    if (MX.yt){ try { MX.yt.loadVideoById(vid); MX.ytFor = vid; MX.yt.setVolume(Math.round(MX.vol * 100)); return; } catch(e){ try { MX.yt.destroy(); } catch(x){} MX.yt = null; } }
+    host.innerHTML = '<div id="mx-yt-frame"></div>';
+    MX.ytFor = vid;
+    MX.yt = new window.YT.Player('mx-yt-frame', {width:'100%', height:'100%', videoId:vid, playerVars:{autoplay:1, playsinline:1, rel:0},
+      events:{
+        onReady: (e) => { e.target.setVolume(Math.round(MX.vol * 100)); e.target.playVideo(); },
+        onStateChange: (e) => { if (e.data === 1){ MX.playing = true; mxPaint(); } else if (e.data === 2){ MX.playing = false; mxPaint(); } else if (e.data === 0){ mxNext(true); } },
+        onError: () => { toast('이 유튜브 영상은 다른 사이트에서 재생할 수 없어요.'); MX.playing = false; mxPaint(); },
+      }});
+    return;
+  }
+  if (MX.yt) try { MX.yt.pauseVideo(); } catch(e){}
+  const src = imgSrc(t.ref); if (!src){ toast('음악 파일을 찾지 못했어요.'); return; }
+  if (a.getAttribute('src') !== src){ MX.switching = true; a.setAttribute('src', src); MX.switching = false; }
+  try { await a.play(); } catch(e){ MX.playing = false; if (!quiet) toast('재생 버튼을 한 번 더 눌러 주세요.'); }
+  mxPaint();
+}
+function mxToggle(){
+  const t = mxTrack(); if (!t) return;
+  if (MX.playing){
+    if (t.kind === 'youtube' && MX.yt) MX.yt.pauseVideo(); else mxAudio().pause();
+  } else mxPlay();
+}
+function mxNext(auto){
+  if (!MX.list.length) return;
+  if (auto && MX.repeat === 'one') return mxPlay(MX.idx);
+  let n;
+  if (MX.shuffle && MX.list.length > 1){ do { n = Math.floor(Math.random() * MX.list.length); } while (n === MX.idx); }
+  else n = MX.idx + 1;
+  if (n >= MX.list.length){ if (auto && MX.repeat === 'off'){ MX.playing = false; mxPaint(); return; } n = 0; }
+  mxPlay(n, auto);
+}
+function mxPrev(){
+  const a = $('#mx-audio'); const t = mxTrack();
+  if (t && t.kind !== 'youtube' && a && a.currentTime > 4){ a.currentTime = 0; return; }
+  mxPlay((MX.idx - 1 + MX.list.length) % MX.list.length);
+}
+const fmtSec = (s) => { s = Math.max(0, Math.floor(s || 0)); return `${Math.floor(s / 60)}:${pad(s % 60)}`; };
+function mxProgress(){
+  const a = $('#mx-audio'); const bar = $('#mx-seek'); const tm = $('#mx-time'); if (!a || !bar) return;
+  if (!MX.seeking && a.duration) bar.value = String(Math.round(a.currentTime / a.duration * 1000));
+  if (tm) tm.textContent = a.duration ? `${fmtSec(a.currentTime)} / ${fmtSec(a.duration)}` : '';
+}
+function mxVisible(){ return MX.list.length && (S.route.view === 'pair' && S.route.pairId === MX.pairId || MX.playing); }
+function mxRender(){
+  const root = $('#music-root'); if (!root) return;
+  if (!mxVisible()){ root.hidden = true; root.classList.remove('open'); document.body.classList.remove('has-mx'); return; }
+  root.hidden = false; document.body.classList.add('has-mx');
+  const p = S.pairs[MX.pairId]; const {c1, c2} = p ? pairColors(p) : {c1:'#6C8CD5', c2:'#E58FA8'};
+  root.style.setProperty('--mc1', c1); root.style.setProperty('--mc2', c2);
+  if (!$('#mx-bar', root)){
+    root.innerHTML = `<div class="mx-yt" id="mx-yt" hidden></div>
+      <div class="mx-panel" id="mx-panel">
+        <div class="mx-list" id="mx-list"></div>
+        <div class="mx-row"><label for="mx-vol" class="hint">음량</label><input type="range" id="mx-vol" min="0" max="100" value="${Math.round(MX.vol * 100)}">
+          <button class="mini" id="mx-rep" title="반복"></button><button class="mini" id="mx-shuf" title="섞어 듣기">${I.shuffle}</button>
+          <button class="btn small" id="mx-edit">${I.edit}음악 편집</button></div>
+      </div>
+      <div class="mx-bar" id="mx-bar">
+        <span class="mx-disc" id="mx-disc" aria-hidden="true"></span>
+        <button class="mx-meta" id="mx-meta" aria-expanded="false"><span class="mx-t" id="mx-title"></span><span class="mx-a" id="mx-sub"></span></button>
+        <button class="mini" id="mx-prev" aria-label="이전 곡">${I.left}</button>
+        <button class="mx-play" id="mx-play" aria-label="재생"></button>
+        <button class="mini" id="mx-next" aria-label="다음 곡">${I.right}</button>
+        <button class="mini" id="mx-x" aria-label="플레이어 숨기기">${I.x}</button>
+        <input type="range" class="mx-seek" id="mx-seek" min="0" max="1000" value="0" aria-label="재생 위치">
+        <span class="mx-time mono" id="mx-time"></span>
+      </div>`;
+    $('#mx-play', root).onclick = mxToggle;
+    $('#mx-next', root).onclick = () => mxNext(false);
+    $('#mx-prev', root).onclick = mxPrev;
+    $('#mx-meta', root).onclick = () => { MX.open = !MX.open; mxRender(); };
+    $('#mx-x', root).onclick = () => { mxStop(); MX.hidden = true; root.hidden = true; document.body.classList.remove('has-mx'); };
+    $('#mx-vol', root).oninput = (e) => { MX.vol = +e.target.value / 100; mxAudio().volume = MX.vol; if (MX.yt && MX.yt.setVolume) try { MX.yt.setVolume(+e.target.value); } catch(x){} mxSavePrefs(); };
+    $('#mx-rep', root).onclick = () => { MX.repeat = {all:'one', one:'off', off:'all'}[MX.repeat]; mxSavePrefs(); mxPaint(); };
+    $('#mx-shuf', root).onclick = () => { MX.shuffle = !MX.shuffle; mxSavePrefs(); mxPaint(); };
+    $('#mx-edit', root).onclick = () => musicForm(MX.pairId);
+    const seek = $('#mx-seek', root);
+    seek.addEventListener('input', () => { MX.seeking = true; });
+    seek.addEventListener('change', () => { const a = mxAudio(); if (a.duration) a.currentTime = +seek.value / 1000 * a.duration; MX.seeking = false; });
+    $('#mx-list', root).addEventListener('click', e => { const b = e.target.closest('[data-mx]'); if (b) mxPlay(+b.dataset.mx); });
+  }
+  if (MX.hidden && !MX.playing){ root.hidden = true; document.body.classList.remove('has-mx'); return; }
+  MX.hidden = false;
+  mxPaint();
+}
+function mxPaint(){
+  const root = $('#music-root'); if (!root || !$('#mx-bar', root)) return;
+  const t = mxTrack(); const p = S.pairs[MX.pairId];
+  root.classList.toggle('open', MX.open); root.classList.toggle('playing', MX.playing);
+  $('#mx-meta', root).setAttribute('aria-expanded', String(MX.open));
+  $('#mx-title', root).textContent = t ? (t.title || '제목 없는 곡') : '';
+  $('#mx-sub', root).textContent = t ? [t.artist, MX.pairId !== S.route.pairId && p ? pairTitle(p) : ''].filter(Boolean).join(' · ') || (t.kind === 'youtube' ? '유튜브' : '') : '';
+  $('#mx-play', root).innerHTML = MX.playing ? '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>' : '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>';
+  $('#mx-play', root).setAttribute('aria-label', MX.playing ? '일시 정지' : '재생');
+  $('#mx-rep', root).innerHTML = `<span class="mono" style="font-size:11px">${{all:'전체', one:'한곡', off:'반복X'}[MX.repeat]}</span>`;
+  $('#mx-shuf', root).classList.toggle('on', MX.shuffle);
+  $('#mx-edit', root).hidden = !S.canWrite;
+  const yt = t && t.kind === 'youtube';
+  $('#mx-yt', root).hidden = !(yt && isStandalone());
+  $('#mx-seek', root).hidden = !!yt; $('#mx-time', root).hidden = !!yt;
+  $('#mx-list', root).innerHTML = MX.list.map((x, i) => `<button class="mx-item ${i === MX.idx ? 'on' : ''}" data-mx="${i}"><span class="mono">${i === MX.idx && MX.playing ? '♪' : i + 1}</span><span class="mx-it">${esc(x.title || '제목 없는 곡')}${x.artist ? ` <span class="hint">· ${esc(x.artist)}</span>` : ''}</span>${x.kind === 'youtube' ? '<span class="pill">유튜브</span>' : ''}</button>`).join('');
+}
+function musicForm(pid){
+  const p = S.pairs[pid]; if (!p) return;
+  const st = {list: clone(p.music || [])};
+  const sa = isStandalone();
+  openModal({title:'페어 음악', wide:true, body:`
+    <p class="hint" style="margin:0">이 페어 화면 아래에 작은 플레이어가 떠요. 페어 테마곡이나 연성할 때 듣는 곡을 넣어 두세요.</p>
+    <div class="drop" id="mu-drop">${sa ? `음악 파일을 끌어다 놓거나 <label class="linkbtn" for="mu-files">파일 고르기</label> · mp3, m4a, ogg, wav, flac
+      <input type="file" id="mu-files" class="sr" accept="audio/*,.mp3,.m4a,.aac,.ogg,.oga,.opus,.wav,.flac" multiple>` : 'claude.ai 화면에서는 음악 파일을 올릴 수 없어요. GitHub에 올린 Pair Archive에서는 올릴 수 있어요. 여기서는 유튜브 링크를 넣어 주세요.'}</div>
+    <div class="field"><label for="mu-yt">유튜브 링크로 넣기</label>
+      <div style="display:flex;gap:8px"><input class="inp" type="url" id="mu-yt" placeholder="https://youtu.be/…" style="flex:1;min-width:0"><button class="btn small" type="button" id="mu-ytadd">추가</button></div>
+      <span class="hint">${sa ? '유튜브 곡은 플레이어를 펼치면 작은 영상 창으로 재생돼요. 일부 영상은 다른 사이트 재생이 막혀 있어요.' : 'claude.ai 화면에서는 유튜브 곡을 누르면 유튜브가 새 창으로 열려요.'}</span></div>
+    <div class="field"><span class="flabel">재생 목록</span><div class="grouplist" id="mu-list"></div></div>
+    <label class="check-inline"><input type="checkbox" id="mu-auto" ${p.musicAuto ? 'checked' : ''}>이 페어에 들어오면 자동으로 재생하기</label>`,
+    foot:`<button class="btn" data-m="cancel">취소</button><button class="btn primary" id="mu-save">저장</button>`,
+    onMount(root){
+      const box = $('#mu-list', root);
+      const draw = () => {
+        box.innerHTML = st.list.length ? st.list.map((t, i) => `<div class="grouprow" style="flex-wrap:wrap">
+          <span class="mono hint" style="width:1.5em">${i + 1}</span>
+          <input class="inp" id="mu-t-${i}" data-i="${i}" data-k="title" placeholder="곡 제목" value="${esc(t.title || '')}" style="flex:2 1 160px;min-width:0">
+          <input class="inp" id="mu-a-${i}" data-i="${i}" data-k="artist" placeholder="아티스트 (선택)" value="${esc(t.artist || '')}" style="flex:1 1 120px;min-width:0">
+          <span class="pill">${t.kind === 'youtube' ? '유튜브' : (t.file ? '새 파일' : '파일')}</span>
+          <button type="button" class="mini" data-op="up" data-i="${i}" title="위로">${I.arrowUp}</button>
+          <button type="button" class="mini" data-op="rm" data-i="${i}" title="빼기">${I.x}</button></div>`).join('')
+          : '<div class="hint">아직 넣은 곡이 없어요.</div>';
+      };
+      box.addEventListener('input', e => { const el = e.target; if (el.dataset.k) st.list[+el.dataset.i][el.dataset.k] = el.value; });
+      box.addEventListener('click', e => { const b = e.target.closest('[data-op]'); if (!b) return; const i = +b.dataset.i; if (b.dataset.op === 'rm') st.list.splice(i, 1); if (b.dataset.op === 'up' && i > 0) [st.list[i-1], st.list[i]] = [st.list[i], st.list[i-1]]; draw(); });
+      if (sa) bindDrop($('#mu-drop', root), $('#mu-files', root), files => {
+        const au = files.filter(f => f.type.startsWith('audio/') || AUDIO_EXT.test(f.name));
+        if (!au.length){ toast('음악 파일을 찾지 못했어요.'); return; }
+        au.forEach(f => { const base = f.name.replace(AUDIO_EXT, ''); const m = /^(.+?)\s+-\s+(.+)$/.exec(base); st.list.push({id: uid(), kind:'file', title: m ? m[2] : base, artist: m ? m[1] : '', file: f}); });
+        draw();
+      });
+      $('#mu-ytadd', root).onclick = () => {
+        const inp = $('#mu-yt', root); const url = inp.value.trim(); if (!ytId(url)){ toast('유튜브 영상 링크를 넣어 주세요.'); return; }
+        st.list.push({id: uid(), kind:'youtube', url, title:'', artist:''}); inp.value = ''; draw(); const l = $(`#mu-t-${st.list.length - 1}`, root); if (l) l.focus();
+      };
+      draw();
+      $('[data-m=cancel]', root).onclick = () => closeModal();
+      $('#mu-save', root).onclick = async (ev) => {
+        const btn = ev.currentTarget;
+        try {
+          setBusy(btn, '저장 중…'); let n = 0; const total = st.list.filter(t => t.file).length;
+          for (const t of st.list){ if (t.file){ n++; setBusy(btn); setBusy(btn, `올리는 중 ${n}/${total}`); t.ref = await uploadFile(t.file); delete t.file; } }
+          const music = st.list.map(t => t.kind === 'youtube' ? {id:t.id, kind:'youtube', url:t.url, title:(t.title || '').trim(), artist:(t.artist || '').trim()} : {id:t.id, kind:'file', ref:t.ref, title:(t.title || '').trim(), artist:(t.artist || '').trim()});
+          const out = clone(S.pairs[pid]); const old = out.music || [];
+          out.music = music; out.musicAuto = $('#mu-auto', root).checked;
+          await put('pairs', pid, out);
+          const keep = new Set(music.map(t => t.ref).filter(Boolean));
+          dropAssets(old.map(t => t.ref).filter(r => r && !keep.has(r)));
+          closeModal(); toast('음악을 저장했어요.');
+        } catch(e){ setBusy(btn); toast(e && e.code === 'unsupported_type' ? 'claude.ai 화면에서는 음악 파일을 올릴 수 없어요.' : errText(e)); }
+      };
+    }});
+}
+
 /* ---------- navigation & events ---------- */
 function go(route){
-  S.route = route; S.addMenu = false;
+  S.route = route; S.addMenu = false; if (typeof MX !== 'undefined') MX.hidden = false;
   if (route.view === 'pair'){ S.tab = 'all'; S.q = ''; S.tag = null; S.favOnly = false; S.photoFolder = null; S.photoWall = false; }
   try { history.replaceState(null, '', route.view === 'pair' ? '#p-' + route.pairId : location.pathname + location.search); } catch(e){}
   render(); window.scrollTo(0, 0);
@@ -2634,6 +2957,7 @@ document.addEventListener('click', async (e) => {
     case 'fav': { const it = clone(S.items[id]); if (!it) break; it.fav = !it.fav; try { await put('items', id, it); } catch(e){} break; }
     case 'read': openReader(id); break;
     case 'open-check': checkDetail(id); break;
+    case 'music': musicForm(S.route.pairId); break;
     case 'gh-save': ghSave().catch(() => {}); break;
     case 'gh-force': if (await confirmBox('다른 기기에서 저장한 내용을 이 브라우저 내용으로 덮어쓸까요?\n덮어쓴 내용은 GitHub 저장소 기록(커밋 내역)에서만 되찾을 수 있어요.', '덮어쓰기')) ghSave({force:true}).catch(() => {}); break;
     case 'gh-load': if (await confirmBox('이 브라우저의 기록을 GitHub에 저장된 기록으로 바꿀까요?' + (GH.cfg.dirty ? '\n이 브라우저에서 아직 저장 안 한 변경은 사라져요.' : ''), '불러오기', false)) ghLoad().catch(() => {}); break;
