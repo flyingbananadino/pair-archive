@@ -9,7 +9,7 @@ A single-file personal archive for original-character pairs: photos, tweets, wri
 - **페어별 보기**: 페어마다 타임라인, 사진, 트윗, 글, 체크리스트, 프로필 탭
 - **사진**: 카테고리 폴더로 분류, 컴퓨터 폴더째 올리기, 사진마다 설명, 낱장 모아보기
 - **트윗**: 글만 트윗 모양으로 보관, 답글·인용·타래 지원, 여러 개 한꺼번에 붙여넣기
-- **글**: PDF를 넣으면 글자를 뽑아 같은 읽기 양식으로 정리, 원본 PDF 보관, 읽기 설정, 이어 읽기
+- **글**: AO3 HTML·EPUB, PDF, Word(.docx), TXT를 넣으면 같은 읽기 양식으로 정리. AO3 글은 팬덤·커플링·등급·요약·작가 노트·챕터·기울임까지 그대로, 연재 중인 글은 다시 넣으면 업데이트. 목차, 읽기 설정, 이어 읽기, TXT로 받기
 - **체크리스트**: 구글 시트에서 복사해 붙여 넣으면 색·합친 칸·체크박스 그대로 표시, .xlsx/.csv 올리기, 시트 링크 첨부
 - **꾸미기**: 페어마다 글꼴(내 글꼴 올리기 포함), 색, 머리 띠 무늬, 커버 이미지 크기·위치, 배경 무늬, 카드·탭 모양, 프리셋, CSS 직접 넣기
 - **음악**: 페어마다 재생 목록(mp3·m4a·ogg·wav·flac 파일, 유튜브 링크), 작은 플레이어, 반복·섞어 듣기, 페어에 들어오면 자동 재생
@@ -71,4 +71,5 @@ A single-file personal archive for original-character pairs: photos, tweets, wri
 - [pdf.js](https://mozilla.github.io/pdf.js/): PDF 글자 추출
 - [JSZip](https://stuk.github.io/jszip/): 백업 .zip 만들기
 - [SheetJS](https://sheetjs.com/): .xlsx 시트 읽기
+- [mammoth](https://github.com/mwilliamson/mammoth.js): Word(.docx) 글 읽기
 - Google Fonts: Hahmlet, IBM Plex Sans KR, Gowun Dodum, Nanum Myeongjo, Gaegu, Jua
