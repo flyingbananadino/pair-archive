@@ -2087,67 +2087,273 @@ function tweetForm(pairId, id){
 }
 
 /* ---------- text (PDF → reading format) ---------- */
+/* ---------- PDF → text (glyph-level layout) ---------- */
+const PDF_CMAPS = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/cmaps/';
+const PDF_FONTS = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/standard_fonts/';
+const JOSA_END = '을를은는이가에로의도와과면게';
+const HANGUL = /[ᄀ-ᇿ㄰-㆏가-힯]/;
+const CJKCH = /[ᄀ-ᇿ⺀-鿿가-힯豈-﫿＀-￯]/;
+function mMul(a, b){ return [a[0]*b[0] + a[1]*b[2], a[0]*b[1] + a[1]*b[3], a[2]*b[0] + a[3]*b[2], a[2]*b[1] + a[3]*b[3], a[4]*b[0] + a[5]*b[2] + b[4], a[4]*b[1] + a[5]*b[3] + b[5]]; }
+const mPt = (m, x, y) => [m[0]*x + m[2]*y + m[4], m[1]*x + m[3]*y + m[5]];
+async function pageGlyphs(page, lib){
+  const OPS = lib.OPS; const ol = await page.getOperatorList();
+  const view = page.view; const out = [];
+  let ctm = [1, 0, 0, 1, 0, 0]; const stack = [];
+  let st = {font:null, size:0, Tc:0, Tw:0, Th:1, TL:0, rise:0};
+  let Tm = [1, 0, 0, 1, 0, 0], Tlm = [1, 0, 0, 1, 0, 0];
+  const fontCache = {};
+  const getFont = (name) => {
+    if (name in fontCache) return fontCache[name];
+    let f = null; try { f = page.commonObjs.get(name); } catch(e){ try { f = page.objs.get(name); } catch(x){} }
+    return (fontCache[name] = f);
+  };
+  const moveText = (tx, ty) => { Tlm = mMul([1, 0, 0, 1, tx, ty], Tlm); Tm = Tlm.slice(); };
+  const { fnArray, argsArray } = ol;
+  for (let i = 0; i < fnArray.length; i++){
+    const fn = fnArray[i], a = argsArray[i];
+    switch (fn){
+      case OPS.save: stack.push({ctm: ctm.slice(), st: {...st}}); break;
+      case OPS.restore: { const s = stack.pop(); if (s){ ctm = s.ctm; st = s.st; } break; }
+      case OPS.transform: ctm = mMul(a, ctm); break;
+      case OPS.paintFormXObjectBegin: stack.push({ctm: ctm.slice(), st: {...st}}); if (a && a[0]) ctm = mMul(a[0], ctm); break;
+      case OPS.paintFormXObjectEnd: { const s = stack.pop(); if (s){ ctm = s.ctm; st = s.st; } break; }
+      case OPS.beginText: Tm = [1, 0, 0, 1, 0, 0]; Tlm = [1, 0, 0, 1, 0, 0]; break;
+      case OPS.setCharSpacing: st.Tc = a[0]; break;
+      case OPS.setWordSpacing: st.Tw = a[0]; break;
+      case OPS.setHScale: st.Th = a[0] / 100; break;
+      case OPS.setLeading: st.TL = a[0]; break;
+      case OPS.setTextRise: st.rise = a[0]; break;
+      case OPS.setFont: st.font = getFont(a[0]); st.size = a[1]; break;
+      case OPS.moveText: moveText(a[0], a[1]); break;
+      case OPS.setLeadingMoveText: st.TL = -a[1]; moveText(a[0], a[1]); break;
+      case OPS.nextLine: moveText(0, -st.TL); break;
+      case OPS.setTextMatrix: Tm = a.slice(0, 6); Tlm = a.slice(0, 6); break;
+      case OPS.nextLineShowText: case OPS.nextLineSetSpacingShowText:
+      case OPS.showText: case OPS.showSpacedText: {
+        const glyphs = a[0]; if (!Array.isArray(glyphs)) break;
+        const f = st.font || {}; const fm = (f.fontMatrix && f.fontMatrix[0]) || 0.001; const vertical = !!f.vertical;
+        if (vertical) break;
+        const fs = st.size || 1;
+        for (const g of glyphs){
+          if (typeof g === 'number'){ Tm = mMul([1, 0, 0, 1, -g * fs / 1000 * st.Th, 0], Tm); continue; }
+          if (!g) continue;
+          const w0 = (g.width || 0) * fm * fs;
+          const adv = (w0 + st.Tc + (g.isSpace ? st.Tw : 0)) * st.Th;
+          const M = mMul(Tm, ctm);
+          const [x, y] = mPt(M, 0, st.rise); const [xe] = mPt(M, w0 * st.Th, st.rise);
+          const size = fs * Math.hypot(M[2], M[3]);
+          const horiz = Math.abs(M[1]) < Math.abs(M[0]) * 0.05 + 1e-6 && M[0] > 0;
+          const ch = (g.unicode || '').normalize('NFC');
+          if (horiz && size > 0.5 && x >= view[0] - 5 && x <= view[2] + 5 && y >= view[1] - 5 && y <= view[3] + 5)
+            out.push({ch, x, xe, y, size, space: ch ? /^\s+$/.test(ch) : !!g.isSpace});
+          Tm = mMul([1, 0, 0, 1, adv, 0], Tm);
+        }
+        break;
+      }
+    }
+  }
+  return out;
+}
+/* group glyphs into lines and decide spaces with per-line gap clustering */
+function glyphLines(glyphs){
+  const gs = glyphs.filter(g => g.ch !== '' || g.space);
+  if (!gs.length) return [];
+  const sizes = gs.filter(g => !g.space).map(g => g.size).sort((a, b) => a - b);
+  const em = sizes[Math.floor(sizes.length / 2)] || 10;
+  gs.sort((a, b) => b.y - a.y || a.x - b.x);
+  const rows = []; let cur = null;
+  for (const g of gs){
+    if (!cur || Math.abs(g.y - cur.y) > Math.max(1.5, em * 0.35)){ cur = {y: g.y, gl: []}; rows.push(cur); }
+    cur.gl.push(g);
+  }
+  const lines = [];
+  for (const r of rows){
+    const gl = r.gl.sort((a, b) => a.x - b.x);
+    const vis = gl.filter(g => !g.space && g.ch.trim());
+    if (!vis.length) continue;
+    const h = vis.map(g => g.size).sort((a, b) => a - b)[Math.floor(vis.length / 2)];
+    // gaps between consecutive visible glyphs, marking explicit space glyphs in between
+    const gaps = [];
+    for (let i = 1; i < vis.length; i++){
+      const a = vis[i - 1], b = vis[i];
+      const explicit = gl.some(g => g.space && g.x >= a.x && g.x <= b.x + 0.01 && g !== a && g !== b) || /\s$/.test(a.ch) || /^\s/.test(b.ch);
+      gaps.push({i, gap: (b.x - a.xe) / h, explicit});
+    }
+    // threshold: largest jump among implicit gaps
+    const imp = gaps.filter(g => !g.explicit).map(g => g.gap).sort((a, b) => a - b);
+    let thr = Infinity;
+    if (imp.length){
+      let best = 0, at = -1;
+      for (let k = 1; k < imp.length; k++){ const d = imp[k] - imp[k - 1]; if (d > best){ best = d; at = k; } }
+      if (best >= 0.1 && imp[at] >= 0.12) thr = (imp[at] + imp[at - 1]) / 2;
+      else if (imp[0] >= 0.2 && imp[imp.length - 1] - imp[0] < 0.1 && gaps.every(g => !g.explicit) && vis.length > 1 && vis.some(g => g.ch.length > 1)) thr = 0;
+    }
+    thr = Math.max(thr, 0.12);
+    let text = vis[0].ch; const spaceGaps = [], glyphGaps = [];
+    for (const g of gaps){
+      const sp = g.explicit || g.gap > thr;
+      if (sp){ text += ' '; spaceGaps.push(g.gap); } else glyphGaps.push(g.gap);
+      text += vis[g.i].ch;
+    }
+    text = text.replace(/\s+/g, ' ').trim();
+    const first = vis[0]; let fw = first.xe - first.x;
+    for (let k = 1; k < vis.length && /^[.,!?…~"”'’)\]」』:;]$/.test(vis[k].ch) && !(gaps[k - 1].explicit || gaps[k - 1].gap > thr); k++) fw = vis[k].xe - first.x;
+    let fWord = 0; for (let k = 0; k < vis.length; k++){ if (k > 0 && (gaps[k - 1].explicit || gaps[k - 1].gap > thr)) break; fWord = vis[k].xe - first.x; }
+    const lastV = vis[vis.length - 1];
+    const trailSpace = gl.some(g => g.space && g.x >= lastV.xe - 0.5);
+    const leadSpace = gl.some(g => g.space && g.xe <= first.x + 0.5);
+    lines.push({text, x0: first.x, x1: lastV.xe, y: r.y, h, firstCharW: fw, firstWordW: fWord, spaceGaps, glyphGaps, nGlyph: vis.length, trailSpace, leadSpace});
+  }
+  return lines;
+}
+/* fallback: pdf.js text items (when glyph data is unusable) */
+async function itemLines(page){
+  const tc = await page.getTextContent();
+  const items = tc.items.filter(x => x.str !== undefined && x.transform).map(x => ({s: x.str, x: x.transform[4], y: x.transform[5], w: x.width || 0, h: Math.abs(x.height || x.transform[3]) || 10}));
+  items.sort((a, b) => b.y - a.y || a.x - b.x);
+  const lines = []; let cur = null;
+  for (const t of items){
+    if (!t.s.trim() && (!cur || Math.abs(t.y - cur.y) > t.h * .5)) continue;
+    if (!cur || Math.abs(t.y - cur.y) > Math.max(1.5, t.h * .35)){ if (cur) lines.push(cur); cur = {text: '', x0: t.x, x1: t.x, y: t.y, h: t.h, firstCharW: t.h, firstWordW: 0}; }
+    if (cur.text && t.s && t.x - cur.x1 > t.h * .2 && !/\s$/.test(cur.text) && !/^\s/.test(t.s)) cur.text += ' ';
+    cur.text += t.s; cur.x0 = Math.min(cur.x0, t.x); cur.x1 = Math.max(cur.x1, t.x + t.w); cur.h = Math.max(cur.h, t.h);
+  }
+  if (cur) lines.push(cur);
+  return lines.map(l => { l.text = l.text.replace(/\s+/g, ' ').trim(); const fwd = (l.text.split(' ')[0] || ''); l.firstWordW = fwd.length * l.h * (CJKCH.test(fwd) ? 1 : .55); l.firstCharW = l.h * (CJKCH.test(l.text[0] || '') ? 1 : .55); return l; }).filter(l => l.text);
+}
 async function pdfExtract(file){
   await loadScript(LIB.pdf); await loadScript(LIB.pdfw);
   const lib = window.pdfjsLib; lib.GlobalWorkerOptions.workerSrc = LIB.pdfw;
-  const doc = await lib.getDocument({data: new Uint8Array(await file.arrayBuffer()), isEvalSupported:false}).promise;
+  const doc = await lib.getDocument({data: new Uint8Array(await file.arrayBuffer()), isEvalSupported:false, cMapUrl: LIB.cmaps || PDF_CMAPS, cMapPacked:true, standardFontDataUrl: LIB.fonts || PDF_FONTS}).promise;
   const pages = [];
   for (let i = 1; i <= doc.numPages; i++){
-    const tc = await (await doc.getPage(i)).getTextContent();
-    const lines = []; let cur = null;
-    for (const x of tc.items){
-      if (x.str === undefined || !x.transform) continue;
-      const t = {s:x.str, x:x.transform[4], y:x.transform[5], w:x.width || 0, h:Math.abs(x.height || x.transform[3]) || 10};
-      if (!t.s.trim() && !cur) continue;
-      if (!cur || Math.abs(t.y - cur.y) > Math.max(2, t.h * .5)){ if (cur) lines.push(cur); cur = {text:'', x0:t.x, x1:t.x, y:t.y, h:t.h}; }
-      if (cur.text && t.s && t.x - cur.x1 > t.h * .25 && !/\s$/.test(cur.text) && !/^\s/.test(t.s)) cur.text += ' ';
-      cur.text += t.s; cur.x0 = Math.min(cur.x0, t.x); cur.x1 = Math.max(cur.x1, t.x + t.w); cur.h = Math.max(cur.h, t.h);
+    const page = await doc.getPage(i);
+    let lines = null;
+    try {
+      const gl = await pageGlyphs(page, lib);
+      const named = gl.filter(g => !g.space && g.ch.trim()).length;
+      const unnamed = gl.filter(g => !g.space && !g.ch.trim()).length;
+      if (named > 0 && unnamed <= named * 0.05) lines = glyphLines(gl);
+    } catch(e){ lines = null; }
+    if (!lines || !lines.length){
+      const fb = await itemLines(page);
+      if (fb.length) lines = fb;
     }
-    if (cur) lines.push(cur);
-    pages.push(lines.map(l => ({...l, text: l.text.replace(/\s+/g, ' ').trim()})).filter(l => l.text));
+    pages.push(lines || []);
   }
   return pages;
 }
 function isSceneLine(s){ const t = (s || '').replace(/\s/g, ''); return t.length > 0 && t.length <= 12 && /^[*＊·•◆◇○●□■☆★♡♥~\-–—=_#.]+$/.test(t); }
-function composeText(pages, mode){
+/* detect whether line breaks fall between words (word wrap) or anywhere (character wrap) */
+function detectWrap(lines, right, em){
+  const full = lines.filter(l => l.next && !l.endsPara);
+  let slackBig = 0, n = 0;
+  const natSp = median(lines.filter(l => l.isLast).flatMap(l => l.spaceGaps || []));
+  const natGl = median(lines.filter(l => l.isLast).flatMap(l => l.glyphGaps || []));
+  for (const l of full){
+    if (!HANGUL.test(l.text.slice(-1)) || !HANGUL.test(l.next.text[0] || '')) continue;
+    let slack = Math.max(0, right - l.x1) / l.h;
+    if (natSp !== null) slack += (l.spaceGaps || []).reduce((s, g) => s + Math.max(0, g - natSp), 0);
+    if (natGl !== null) slack += (l.glyphGaps || []).reduce((s, g) => s + Math.max(0, g - natGl), 0);
+    n++; if (slack > Math.max(1.45, (l.next.firstCharW / l.h) * 1.4)) slackBig++;
+  }
+  if (n < 3) return 'word';
+  return slackBig / n >= 0.12 ? 'word' : 'char';
+}
+function median(a){ if (!a || !a.length) return null; const s = a.slice().sort((x, y) => x - y); return s[Math.floor(s.length / 2)]; }
+function composeText(pages, mode, joinMode = 'auto'){
   const norm = (s) => s.replace(/\d+/g, '#').trim();
   const freq = {};
   pages.forEach(ls => { new Set([ls[0], ls[1], ls[ls.length - 1], ls[ls.length - 2]].filter(Boolean).map(l => norm(l.text))).forEach(k => { freq[k] = (freq[k] || 0) + 1; }); });
   const minRep = Math.max(3, Math.ceil(pages.length * .5));
-  const noise = (l, i, ls) => /^[-–—\s]*\d{1,4}[-–—\s]*$/.test(l.text) || /^\d{1,4}\s*\/\s*\d{1,4}$/.test(l.text) || ((i < 2 || i >= ls.length - 2) && pages.length >= 3 && freq[norm(l.text)] >= minRep);
+  const noise = (l, i, ls) => /^[-–—\s]*\d{1,4}[-–—\s]*$/.test(l.text) || /^\d{1,4}\s*\/\s*\d{1,4}$/.test(l.text) || /^-\s*\d+\s*-$/.test(l.text) || ((i < 2 || i >= ls.length - 2) && pages.length >= 3 && freq[norm(l.text)] >= minRep);
   const clean = pages.map(ls => ls.filter((l, i) => !noise(l, i, ls)));
   if (mode === 'keep') return clean.map(ls => ls.map(l => l.text).join('\n')).join('\n').trim();
   const all = clean.flat(); if (!all.length) return '';
   const q = (arr, k) => arr[Math.min(arr.length - 1, Math.floor(arr.length * k))];
+  const em = median(all.map(l => l.h)) || 10;
   const left = q(all.map(l => l.x0).sort((a, b) => a - b), .1);
-  const right = q(all.map(l => l.x1).sort((a, b) => a - b), .9);
+  const right = q(all.map(l => l.x1).sort((a, b) => a - b), .97);
   const gaps = []; clean.forEach(ls => { for (let i = 1; i < ls.length; i++){ const g = ls[i-1].y - ls[i].y; if (g > 0) gaps.push(g); } });
-  gaps.sort((a, b) => a - b); const med = gaps.length ? q(gaps, .5) : 14;
-  const out = []; let cur = ''; let lastL = null;
-  const flush = () => { if (cur.trim()) out.push(cur.trim()); cur = ''; };
-  const join = (a, b) => (/-$/.test(a) && /^[a-z]/.test(b)) ? a.slice(0, -1) + b : a + ' ' + b;
-  clean.forEach(ls => ls.forEach((l, i) => {
-    if (isSceneLine(l.text)){ flush(); out.push('***'); lastL = null; return; }
-    const prev = i > 0 ? ls[i-1] : null;
-    let brk = !cur, blank = false;
-    if (cur && prev){
-      const gap = prev.y - l.y;
-      if (gap > med * 1.7) blank = true;
-      if (gap > med * 1.35 || l.x0 > left + l.h * .6 || prev.x1 < right - l.h * 2.5 || /^["“'‘「『(\-–—]/.test(l.text)) brk = true;
-    } else if (cur && !prev && lastL){
-      if (l.x0 > left + l.h * .6 || lastL.x1 < right - l.h * 2.5 || /^["“'‘「『(\-–—]/.test(l.text)) brk = true;
+  gaps.sort((a, b) => a - b); const lead = gaps.length ? q(gaps, .3) : em * 1.6;
+  const spW = median(all.flatMap(l => l.spaceGaps || [])); const spaceEm = spW !== null ? Math.max(0.2, spW) : 0.3;
+  const quote = /^["“'‘「『(\-–—]/;
+  const endPunct = /[.!?。…~♡♥"”'’」』)\]]$/;
+  const seq = [];
+  clean.forEach(ls => ls.forEach((l, i) => seq.push({l, prev: i > 0 ? ls[i - 1] : null})));
+  seq.forEach((s, k) => { s.l.next = k + 1 < seq.length ? seq[k + 1].l : null; });
+  const decide = (wrapMode) => {
+    for (let k = 0; k < seq.length; k++){
+      const {l, prev} = seq[k]; const before = k > 0 ? seq[k - 1].l : null;
+      let brk = !before, blank = false;
+      if (before){
+        const room = (right - before.x1) / l.h;
+        const fitsWord = room > (l.firstWordW / l.h) + spaceEm + 0.2;
+        const fitsChar = room > (l.firstCharW / l.h) * 1.15 + 0.35;
+        if (prev){ const vg = prev.y - l.y; if (vg > lead * 1.6) blank = true; if (vg > lead * 1.3) brk = true; }
+        if (isSceneLine(l.text) || isSceneLine(before.text)) brk = true;
+        if (l.x0 > left + l.h * .5) brk = true;
+        if (wrapMode === 'char' ? fitsChar : fitsWord) brk = true;
+        if (quote.test(l.text) && (endPunct.test(before.text) || room > 1)) brk = true;
+      }
+      seq[k].brk = brk; seq[k].blank = blank;
+      if (before) before.endsPara = brk;
     }
-    lastL = l;
-    if (brk || blank) flush();
-    if (blank && out.length && out[out.length - 1] !== '') out.push('');
-    cur = cur ? join(cur, l.text) : l.text;
-  }));
+    seq.forEach((s, k) => { s.l.isLast = k + 1 >= seq.length || seq[k + 1].brk; });
+  };
+  decide('word');
+  const natSp = median(all.filter(l => l.isLast).flatMap(l => l.spaceGaps || []));
+  const natGl = median(all.filter(l => l.isLast).flatMap(l => l.glyphGaps || []));
+  all.forEach(l => {
+    let sl = Math.max(0, right - l.x1) / l.h;
+    if (natSp !== null) sl += (l.spaceGaps || []).reduce((s, g) => s + Math.max(0, g - natSp), 0);
+    if (natGl !== null) sl += (l.glyphGaps || []).reduce((s, g) => s + Math.max(0, g - natGl), 0);
+    l.slack = sl;
+  });
+  const wrap = joinMode === 'space' ? 'word' : joinMode === 'nospace' ? 'char' : detectWrap(all, right, em);
+  if (wrap === 'char') decide('char');
+  composeText.lastWrap = wrap;
+  // vocabulary from the inside of lines, where spacing is reliable
+  const vocab = new Map(); const vocabList = [];
+  all.forEach(l => { const toks = l.text.split(' '); toks.slice(1, -1).forEach(t => { const w = (t.match(/^[^\uAC00-\uD7AF]*([\uAC00-\uD7AF]+)/) || [])[1]; if (w){ vocab.set(w, (vocab.get(w) || 0) + 1); vocabList.push(w); } }); });
+  const preCache = new Map();
+  const vocabPre = (p) => { if (preCache.has(p)) return preCache.get(p); let n = 0; for (const w of vocabList) if (w.length > p.length && w.startsWith(p)) n++; preCache.set(p, n); return n; };
+  const join = (a, b, A, B) => {
+    if (/-$/.test(a) && /^[a-z]/.test(b)) return a.slice(0, -1) + b;
+    const ca = a.slice(-1), cb = b[0] || '';
+    if (wrap === 'char' && HANGUL.test(ca) && HANGUL.test(cb)){
+      if (A && B && (A.trailSpace || B.leadSpace)) return a + ' ' + b;
+      if (A && B && A.slack !== undefined && A.slack >= (B.firstCharW / B.h) * 0.95) return a + ' ' + b;
+      const t1 = (a.match(/[\uAC00-\uD7AF]+$/) || [''])[0], t2 = (b.match(/^[\uAC00-\uD7AF]+/) || [''])[0];
+      if (joinMode !== 'auto') return a + b;
+      const g = t1 + t2; const cg = vocab.get(g) || 0, pg = vocabPre(g), c1 = vocab.get(t1) || 0, c2 = vocab.get(t2) || 0, s2 = vocabPre(t2);
+      if (cg > 0 || pg > 1) return a + b;
+      if ((c1 > 0 && (t1.length >= 2 || c1 >= 2)) && (c2 > 0 || s2 > 0)) return a + ' ' + b;
+      if (c1 >= 2 && t1.length >= 2) return a + ' ' + b;
+      if (t1.length >= 2 && JOSA_END.includes(t1.slice(-1))) return a + ' ' + b;
+      if (g.length >= 8) return a + ' ' + b;
+      return a + b;
+    }
+    if (wrap === 'char' && CJKCH.test(ca) && /^[,.!?…~)\]」』”’]/.test(cb)) return a + b;
+    return a + ' ' + b;
+  };
+  const out = []; let cur = ''; let prevL = null;
+  const flush = () => { if (cur.trim()) out.push(cur.trim()); cur = ''; };
+  for (const s of seq){
+    const t = s.l.text;
+    if (isSceneLine(t)){ flush(); out.push('***'); prevL = null; continue; }
+    if (s.brk || s.blank) flush();
+    if (s.blank && out.length && out[out.length - 1] !== '') out.push('');
+    cur = cur ? join(cur, t, prevL, s.l) : t;
+    prevL = s.l;
+  }
   flush();
   return out.join('\n').replace(/\n{3,}/g, '\n\n').trim();
 }
+
 function textForm(pairId, id){
   const old = id ? S.items[id] : null;
-  const st = {docs:[], mode:'reflow', pdf: old?.data?.pdf || ''};
+  const st = {docs:[], mode:'reflow', join:'auto', pdf: old?.data?.pdf || ''};
   openModal({title: old ? '글 수정' : 'PDF로 글 넣기', wide:true, body:`
     <div class="drop" id="f-drop">PDF를 끌어다 놓거나 <label class="linkbtn" for="f-pdf">PDF 고르기</label>${old ? '' : ' · 여러 개 한 번에 가능'}<br><span class="hint">글자를 뽑아서 다른 글과 같은 읽기 양식으로 정리해요.</span>
       <input type="file" id="f-pdf" accept="application/pdf,.pdf" class="sr" ${old ? '' : 'multiple'}></div>
@@ -2155,6 +2361,9 @@ function textForm(pairId, id){
     <div class="field"><span class="flabel">줄바꿈 정리</span>
       <div class="seg" id="f-mode"><button type="button" data-v="reflow" class="on">문단으로 자동 정리</button><button type="button" data-v="keep">PDF 줄바꿈 그대로</button></div>
       <span class="hint">자동 정리는 페이지 번호와 머리말을 빼고, 줄 끝에서 끊긴 문장을 이어 붙여요.</span></div>
+    <div class="field" id="f-joinwrap"><span class="flabel">줄 끝에서 이어 붙일 때</span>
+      <div class="seg" id="f-join"><button type="button" data-v="auto" class="on">자동으로 판단</button><button type="button" data-v="space">띄어서 잇기</button><button type="button" data-v="nospace">붙여서 잇기</button></div>
+      <span class="hint" id="f-joinhint">PDF를 넣으면 줄바꿈 방식을 알아서 판단해요. 낱말 중간에 띄어쓰기가 생기면 '붙여서', 낱말이 붙어 버리면 '띄어서'를 골라 보세요.</span></div>
     <div id="f-multi"></div>
     <div id="f-single" style="display:flex;flex-direction:column;gap:16px">
       <div class="row2">
@@ -2184,10 +2393,21 @@ function textForm(pairId, id){
       };
       $('#f-multi', root).addEventListener('input', e => { const i = e.target.dataset.i; if (i !== undefined) st.docs[+i].title = e.target.value; });
       const applyDocs = () => {
-        st.docs.forEach(d => { d.body = composeText(d.pages, st.mode); });
+        st.docs.forEach(d => { d.body = composeText(d.pages, st.mode, st.join); d.wrap = composeText.lastWrap; });
+        $('#f-joinwrap', root).hidden = st.mode === 'keep';
+        if (st.docs.length && st.join === 'auto'){
+          const w = st.docs.map(d => d.wrap).filter(Boolean);
+          $('#f-joinhint', root).textContent = w.length ? (w.every(x => x === 'char') ? '글자 단위로 줄이 바뀐 문서로 읽었어요. 줄 끝 낱말을 붙여서 이었고, 띄어쓰기가 있던 자리로 보이는 곳만 띄웠어요.' : w.every(x => x === 'word') ? '띄어쓰기 단위로 줄이 바뀐 문서로 읽었어요. 줄 끝을 띄어서 이었어요.' : '문서마다 줄바꿈 방식을 따로 판단했어요.') + ' 결과가 이상하면 다른 방식을 골라 보세요.' : '';
+        }
         if (st.docs.length === 1){ body.value = st.docs[0].body; if (!$('#f-title', root).value) $('#f-title', root).value = st.docs[0].title; count(); }
         drawMulti();
       };
+      $('#f-join', root).addEventListener('click', e => {
+        const b = e.target.closest('button'); if (!b) return; st.join = b.dataset.v;
+        $$('#f-join button', root).forEach(x => x.classList.toggle('on', x === b));
+        if (st.join !== 'auto') $('#f-joinhint', root).textContent = st.join === 'space' ? '줄 끝을 모두 띄어서 이어요.' : '한글끼리 만나는 줄 끝은 모두 붙여서 이어요.';
+        if (st.docs.length) applyDocs();
+      });
       $('#f-mode', root).addEventListener('click', e => {
         const b = e.target.closest('button'); if (!b) return; st.mode = b.dataset.v;
         $$('#f-mode button', root).forEach(x => x.classList.toggle('on', x === b));
