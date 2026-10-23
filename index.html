@@ -610,6 +610,100 @@ mark.hl.flash{outline:2px solid var(--racc); outline-offset:2px}
   .tx{gap:9px}
 }
 
+/* content warning */
+.cw-card{position:relative}
+.cw-cover{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; text-align:center; padding:26px 16px; min-height:150px;
+  background:repeating-linear-gradient(135deg, color-mix(in srgb, var(--acc) 7%, var(--card-bg, var(--surface))) 0 12px, var(--card-bg, var(--surface)) 12px 24px)}
+.cw-cover b{font-size:16px}
+.cw-ico{width:40px; height:40px; border-radius:50%; background:color-mix(in srgb, var(--acc) 16%, var(--surface)); color:color-mix(in srgb, var(--acc) 75%, var(--ink)); display:flex; align-items:center; justify-content:center}
+.cw-ico .ico{width:20px; height:20px}
+.cw-cover .btn{margin-top:6px}
+
+/* tag picker */
+.tagpick{display:flex; flex-wrap:wrap; gap:6px; align-items:center; min-height:40px; padding:5px 8px; border:1px solid var(--line); border-radius:10px; background:var(--bg); cursor:text}
+.tagpick:focus-within{border-color:var(--brand); outline:2px solid color-mix(in srgb, var(--brand) 40%, transparent)}
+.tp-chip{display:inline-flex; align-items:center; gap:2px; padding:2px 4px 2px 9px; border-radius:99px; background:color-mix(in srgb, var(--brand) 14%, var(--surface)); color:var(--ink); font-size:13px; font-weight:500}
+.tp-chip button{width:20px; height:20px; border:0; background:none; color:var(--muted); display:inline-flex; align-items:center; justify-content:center; padding:0; border-radius:50%}
+.tp-chip button:hover{background:var(--sunk); color:var(--ink)}
+.tp-chip button .ico{width:12px; height:12px}
+.tp-in{flex:1 1 120px; min-width:80px; border:0 !important; outline:0 !important; background:transparent !important; padding:4px 2px !important; min-height:0 !important; font-size:14px}
+.tp-drop{display:flex; flex-direction:column; max-height:220px; overflow:auto; border:1px solid var(--line); border-radius:10px; background:var(--surface); padding:4px; box-shadow:0 12px 26px -16px rgba(0,0,0,.35)}
+.tp-opt{display:flex; justify-content:space-between; align-items:center; gap:10px; border:0; background:none; text-align:left; padding:8px 10px; border-radius:8px; font-size:14px; color:var(--ink)}
+.tp-opt:hover, .tp-opt:focus{background:var(--sunk)}
+.tp-opt.new{justify-content:flex-start; gap:6px; color:var(--brand)}
+.tp-opt .ico{width:14px; height:14px}
+
+/* calendar */
+.cal-head{display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin:18px 0 8px}
+.cal-head h2{font-family:var(--pf); font-size:22px; min-width:7.5em; text-align:center; color:var(--on-base)}
+.cal-legend{display:flex; gap:12px; flex-wrap:wrap; margin-bottom:10px; color:var(--on-base-muted)}
+.cal-legend span{display:inline-flex; align-items:center; gap:5px}
+.cal-legend i, .cal-dots i{width:7px; height:7px; border-radius:50%; display:inline-block}
+.dt-photo{background:var(--c1)} .dt-tweet{background:var(--acc)} .dt-text{background:var(--c2)} .dt-check{background:var(--muted)} .dt-ev{background:#E0A82E}
+.cal{display:grid; grid-template-columns:repeat(7, minmax(0, 1fr)); gap:4px; background:var(--card-bg, var(--surface)); border:1px solid var(--card-line, var(--line)); border-radius:var(--rad); padding:8px}
+.cal-w{text-align:center; font-size:12px; font-weight:600; color:var(--muted); padding:4px 0}
+.cal-w.sun, .cal-c.sun .cal-n{color:var(--danger)}
+.cal-c{display:flex; flex-direction:column; align-items:stretch; gap:2px; min-height:78px; padding:5px 6px; border:1px solid transparent; border-radius:10px; background:none; text-align:left; color:var(--ink); min-width:0; overflow:hidden}
+.cal-c.pad{pointer-events:none}
+.cal-c:hover{background:var(--sunk)}
+.cal-c.today .cal-n{background:var(--acc); color:var(--on-acc); border-radius:99px; padding:0 7px; align-self:flex-start}
+.cal-c.sel{border-color:var(--acc); background:color-mix(in srgb, var(--acc) 10%, transparent)}
+.cal-n{font-family:var(--f-mono); font-size:12.5px; font-weight:500}
+.cal-ev{font-size:10.5px; line-height:1.35; padding:1px 5px; border-radius:5px; background:color-mix(in srgb, #E0A82E 22%, var(--surface)); color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.cal-ev.ev-birthday{background:color-mix(in srgb, var(--c2) 24%, var(--surface))}
+.cal-dots{display:flex; align-items:center; gap:3px; margin-top:auto}
+.cal-dots em{font-style:normal; font-family:var(--f-mono); font-size:10px; color:var(--muted); margin-left:2px}
+@media (max-width:560px){ .cal{padding:4px; gap:2px} .cal-c{min-height:56px; padding:3px} .cal-ev{font-size:9.5px; padding:0 3px} .cal-head h2{font-size:18px; min-width:6.5em} }
+
+/* multi select */
+.card.selmode{cursor:pointer; position:relative; outline:2px solid transparent; outline-offset:2px; transition:outline-color .12s}
+.card.selmode > *:not(.selbox){pointer-events:none}
+.card.selmode.picked{outline-color:var(--acc)}
+.selbox{position:absolute; top:10px; right:10px; z-index:4; width:26px; height:26px; border-radius:8px; border:2px solid var(--line); background:var(--surface); display:flex; align-items:center; justify-content:center; color:var(--on-acc)}
+.selbox svg{width:16px; height:16px}
+.card.picked .selbox{background:var(--acc); border-color:var(--acc)}
+.bulkbar{position:fixed; left:50%; transform:translateX(-50%); bottom:max(16px, calc(env(safe-area-inset-bottom, 0px) + 12px)); z-index:44; display:flex; align-items:center; gap:6px; padding:8px 10px; background:var(--surface); color:var(--ink); border:1px solid var(--line); border-radius:16px; box-shadow:0 18px 40px -16px rgba(0,0,0,.45); max-width:calc(100% - 32px); overflow-x:auto; font-family:var(--f-body); font-size:14px}
+.bulkbar b{white-space:nowrap; padding:0 6px}
+.bb-sep{width:1px; height:22px; background:var(--line); flex:none}
+.bulkbar .btn{flex:none}
+body:has(.bulkbar) .toast{bottom:max(84px, calc(env(safe-area-inset-bottom, 0px) + 80px))}
+body:has(.tv) .toast{bottom:max(80px, calc(env(safe-area-inset-bottom, 0px) + 76px))}
+body.has-mx .bulkbar{bottom:max(130px, calc(env(safe-area-inset-bottom, 0px) + 126px))}
+
+/* tweet viewer */
+.tv{position:fixed; inset:0; z-index:56; display:flex; flex-direction:column; background:color-mix(in srgb, var(--bg) 82%, var(--acc)); padding:env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px); font-family:var(--pf)}
+.tv-top{display:flex; align-items:center; gap:12px; padding:10px 16px; font-family:var(--f-body)}
+.tv-btn{width:38px; height:38px; border-radius:10px; border:1px solid var(--line); background:var(--surface); display:inline-flex; align-items:center; justify-content:center; color:var(--ink)}
+.tv-count{font-size:14px; color:var(--ink)}
+.tv-meta{margin-left:auto; display:flex; align-items:center; gap:8px; font-size:12px; color:var(--muted)}
+.tv-progress{height:3px; background:color-mix(in srgb, var(--line) 70%, transparent)}
+.tv-progress span{display:block; height:100%; background:var(--acc); transition:width .2s}
+.tv-stage{flex:1; min-height:0; display:flex; align-items:center; gap:14px; padding:18px 16px}
+.tv-nav{flex:none; width:46px; height:46px; border-radius:50%; border:1px solid var(--line); background:var(--surface); color:var(--ink); display:flex; align-items:center; justify-content:center; box-shadow:0 8px 20px -12px rgba(0,0,0,.4)}
+.tv-nav:disabled{opacity:.35}
+.tv-scroll{flex:1; min-width:0; max-height:100%; overflow-y:auto; display:flex; justify-content:center; align-items:flex-start; padding:4px 2px 30px}
+.tv-card{background:var(--surface); --card-bg:var(--surface); width:min(600px, 100%); margin:auto 0; border:1px solid var(--line); border-radius:20px; box-shadow:0 24px 50px -28px rgba(0,0,0,.45); padding:8px 6px 10px; animation:tvin .22s ease}
+.tv-card .tws{padding:16px 18px 4px}
+.tv-card .tx-text{font-size:17px}
+.tv-card .tx-text.sm{font-size:15px}
+.tv-tags{display:flex; flex-wrap:wrap; gap:6px; padding:4px 18px 8px; font-size:12.5px}
+.tv-tags .tg{color:color-mix(in srgb, var(--acc) 65%, var(--ink))}
+.tv-cw{border-radius:16px}
+.tv-card.in-r{animation:tvr .24s ease} .tv-card.in-l{animation:tvl .24s ease}
+@keyframes tvin{from{opacity:0; transform:scale(.98)} to{opacity:1; transform:none}}
+@keyframes tvr{from{opacity:0; transform:translateX(40px)} to{opacity:1; transform:none}}
+@keyframes tvl{from{opacity:0; transform:translateX(-40px)} to{opacity:1; transform:none}}
+.tv-hint{text-align:center; padding:0 16px 14px; font-family:var(--f-body)}
+@media (max-width:560px){ .tv-nav{position:absolute; bottom:max(18px, env(safe-area-inset-bottom, 0px)); width:44px; height:44px} .tv-nav.prev{left:18px} .tv-nav.next{right:18px} .tv-stage{padding:10px 10px 70px} .tv-hint{display:none} .tv-card .tx-text{font-size:16px} }
+
+/* home quote */
+.hq{position:relative; border-radius:18px; padding:2px; background:linear-gradient(120deg, var(--c1), var(--c2))}
+.hq-main{display:flex; flex-direction:column; gap:10px; width:100%; text-align:left; border:0; border-radius:16px; background:var(--surface); color:var(--ink); padding:22px 56px 18px 24px; position:relative}
+.hq-mark{position:absolute; left:14px; top:-6px; font-family:var(--f-display); font-size:64px; line-height:1; color:color-mix(in srgb, var(--c1) 55%, var(--surface))}
+.hq-t{font-family:var(--hqf); font-size:clamp(17px, 2.4vw, 21px); line-height:1.75; white-space:pre-wrap; position:relative}
+.hq-src{font-size:12.5px; color:var(--muted)}
+.hq-next{position:absolute; right:12px; top:12px}
+
 /* customize groups */
 .czg{border-top:1px solid var(--line); padding-top:12px}
 .czg summary{font-weight:700; font-size:14px; cursor:pointer; list-style:none; display:flex; justify-content:space-between; align-items:center}
@@ -666,6 +760,7 @@ mark.hl.flash{outline:2px solid var(--racc); outline-offset:2px}
 <div id="modal-root"></div>
 <div id="confirm-root"></div>
 <div id="rd-root"></div>
+<div id="tv-root"></div>
 <div id="lb-root"></div>
 <div id="music-root" hidden></div>
 <div id="toast-root" aria-live="polite"></div>
@@ -762,6 +857,10 @@ const I = {
   reply:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
   quote:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14l4 4 4-4M8 18V8a4 4 0 0 1 4-4h8"/></svg>',
   feather:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4c-6 0-12 4-14 12l-2 4M6 16h7l4-4"/><path d="M20 4c0 6-3 9-7 12"/></svg>',
+  cards:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="12" height="16" rx="2"/><path d="M3 7v10M21 7v10"/></svg>',
+  checksq:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="m8 12 3 3 5-6"/></svg>',
+  eye:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
+  eyeOff:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.6 5.1A10 10 0 0 1 12 5c6.5 0 10 7 10 7a17 17 0 0 1-3 3.9M6.6 6.6A17 17 0 0 0 2 12s3.5 7 10 7a9.6 9.6 0 0 0 5.4-1.6M3 3l18 18M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>',
   check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>',
   book:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5"/></svg>',
   folder:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>',
@@ -776,7 +875,7 @@ const S = {
   got:{pairs:false, items:false},
   mode:'loading', canWrite:true,
   route:{view:'home', pairId:null},
-  bodies:{}, photoWall:false, trashItems:{}, trashPairs:{}, auSel:null, auType:'all', auFilter:null, seriesSel:null, hlAll:false, reorder:null, formAU:'', lockReset:false,
+  bodies:{}, photoWall:false, trashItems:{}, trashPairs:{}, revealed:new Set(), sel:{on:false, ids:new Set()}, visIds:[], calYM:null, calDay:null, homeQ:null, formDate:'', auSel:null, auType:'all', auFilter:null, seriesSel:null, hlAll:false, reorder:null, formAU:'', lockReset:false,
   tab:'all', q:'', gq:'', tag:null, favOnly:false, sortAsc:false, addMenu:false,
   preview:null,
 };
@@ -924,6 +1023,7 @@ function clRows(d){
 }
 const readMinutes = (n) => Math.max(1, Math.round(n / 500));
 function excerptOf(it){
+  if (it.id && isHidden(it)) return '가려 둔 기록이에요';
   const d = it.data || {};
   if (it.type === 'photo') return d.desc || (d.images||[]).map(x => x.caption).filter(Boolean)[0] || '';
   if (it.type === 'tweet') return (d.tweets||[])[0]?.text || '';
@@ -932,6 +1032,7 @@ function excerptOf(it){
   return '';
 }
 function displayTitle(it){
+  if (it.id && isHidden(it)) return `가려진 ${TYPES[it.type] || '기록'} · ${it.cw}`;
   if (it.title) return it.title;
   if (it.type === 'tweet'){ const t = (it.data?.tweets||[])[0]; const s = (t && t.text || '').replace(/\s+/g, ' ').trim(); return s ? (s.length > 30 ? s.slice(0, 30) + '…' : s) : '트윗'; }
   return TYPES[it.type] + ' 기록';
@@ -1193,7 +1294,7 @@ function schedule(){ if (!rafId) rafId = requestAnimationFrame(() => { rafId = 0
 function render(){
   const ae = document.activeElement; const focusId = ae && ae.id && $('#view').contains(ae) ? ae.id : null;
   const sel = focusId && 'selectionStart' in ae ? [ae.selectionStart, ae.selectionEnd] : null;
-  LB_SETS = {};
+  LB_SETS = {}; S.visIds = [];
   renderTop(); renderNote();
   const v = $('#view');
   if (S.mode === 'loading'){ v.innerHTML = '<div class="loading">기록을 불러오는 중…</div>'; return; }
@@ -1202,6 +1303,7 @@ function render(){
   if (S.route.view === 'pair' && S.pairs[S.route.pairId]) v.innerHTML = pairView(S.route.pairId);
   else { if (S.route.view === 'pair') S.route = {view:'home', pairId:null}; v.innerHTML = homeView(); }
   if (DETAIL_REDRAW) try { DETAIL_REDRAW(); } catch(e){}
+  if (TV) try { tvPaint(true); } catch(e){}
   try { if (S.route.view === 'pair' && S.pairs[S.route.pairId]) mxLoadPair(S.route.pairId); else mxRender(); } catch(e){}
   if (focusId){ const el = document.getElementById(focusId); if (el){ el.focus(); if (sel) try { el.setSelectionRange(sel[0], sel[1]); } catch(e){} } }
 }
@@ -1261,7 +1363,7 @@ function homeView(){
   } else {
     const ro = S.reorder;
     const order = ro ? ro.list.map(id => [id, S.pairs[id]]).filter(x => x[1]) : pairs;
-    body = annivHTML() + memoriesHTML() + `<div class="sec-h"><h2>페어</h2><div style="display:flex;gap:6px;flex-wrap:wrap">
+    body = homeQuoteHTML() + annivHTML() + memoriesHTML() + `<div class="sec-h"><h2>페어</h2><div style="display:flex;gap:6px;flex-wrap:wrap">
         ${ro ? `<span class="hint" style="align-self:center">끌어서 옮기거나 화살표를 눌러요</span><button class="btn small" data-act="reorder-cancel">취소</button><button class="btn small primary" data-act="reorder-done">완료</button>`
           : `${nItems ? `<button class="btn small" data-act="random">${I.shuffle}아무 기록이나 펼치기</button>` : ''}${S.canWrite && pairs.length > 1 ? `<button class="btn small" data-act="reorder-start">${I.sort}순서 바꾸기</button>` : ''}`}</div></div>
       <div class="shelf ${ro ? 'reordering' : ''}">${order.map(([id, p], i) => ro ? reorderCard(id, p, i, order.length) : pairCard(id, p)).join('')}
@@ -1320,13 +1422,14 @@ function pairView(pid){
   const p = S.pairs[pid]; const th = themeOf(p); const tabs = tabsOf(p);
   const all = itemsOf(pid);
   const cnt = {}; all.forEach(it => cnt[it.type] = (cnt[it.type]||0) + 1);
-  const visTabs = ['all', ...TYPE_ORDER.filter(t => tabs[t]), 'au', 'profile'];
+  const visTabs = ['all', ...TYPE_ORDER.filter(t => tabs[t]), 'au', 'cal', 'profile'];
   if (!visTabs.includes(S.tab)) S.tab = 'all';
   const cover = coverOf(p);
   const header = th.header === 'minimal' ? '' : `<div class="pv-band ${th.header === 'cover' && cover ? `cover fit-${th.coverFit || 'cover'}` : ''}"></div>`;
   let content = '';
   if (S.tab === 'profile') content = profileView(pid, p);
   else if (S.tab === 'au') content = auView(pid, p, all, th, tabs);
+  else if (S.tab === 'cal') content = calView(pid, p, all, th, tabs);
   else {
     let list = all.filter(it => (S.tab === 'all' ? tabs[it.type] : it.type === S.tab));
     list = list.filter(it => auMatch(it, S.auFilter, p));
@@ -1354,7 +1457,9 @@ function pairView(pid){
       ? `<div class="addwrap"><button class="btn primary" data-act="add-menu" aria-expanded="${S.addMenu}">${I.plus}기록 추가</button>
           ${S.addMenu ? `<div class="addmenu">${TYPE_ORDER.filter(t => tabs[t]).map(t => `<button data-act="add" data-type="${t}">${TYPES[t]}</button>`).join('')}</div>` : ''}</div>`
       : `<button class="btn primary" data-act="add" data-type="${S.tab}">${I.plus}${TYPES[S.tab]} 추가</button>`) : '';
-    const extra = S.tab === 'photo' ? `<button class="btn toggle ${S.photoWall ? 'on' : ''}" data-act="wall" aria-pressed="${S.photoWall}">${I.grid}낱장으로 보기</button>` : '';
+    const extra = (S.tab === 'photo' ? `<button class="btn toggle ${S.photoWall ? 'on' : ''}" data-act="wall" aria-pressed="${S.photoWall}">${I.grid}낱장으로 보기</button>` : '')
+      + (S.tab === 'tweet' && list.length ? `<button class="btn" data-act="tv-start">${I.cards}한 장씩 보기</button>` : '')
+      + (S.canWrite && list.length ? `<button class="btn toggle ${S.sel.on ? 'on' : ''}" data-act="sel-mode" aria-pressed="${S.sel.on}">${I.checksq}선택</button>` : '');
     content = `
       <div class="toolbar">
         <label class="search" for="pq">${I.search}<input id="pq" type="search" placeholder="이 페어에서 찾기" value="${esc(S.q)}" autocomplete="off"></label>
@@ -1384,10 +1489,11 @@ function pairView(pid){
         ${S.canWrite ? `<div class="pv-actions"><button class="btn small" data-act="edit-pair">${I.edit}페어 정보</button><button class="btn small" data-act="customize">${I.brush}꾸미기</button><button class="btn small" data-act="music">${I.music}음악${(p.music || []).length ? ` ${(p.music || []).length}` : ''}</button><button class="btn small danger" data-act="del-pair">${I.trash}페어 삭제</button></div>` : ''}
       </div>
       <div class="tabs-scroll"><nav class="tabs" role="tablist">
-        ${visTabs.map(t => `<button class="tab ${S.tab === t ? 'on' : ''}" role="tab" aria-selected="${S.tab === t}" data-act="tab" data-tab="${t}">${t === 'all' ? '타임라인' : t === 'profile' ? '프로필' : t === 'au' ? 'AU' : TYPES[t]}${t !== 'profile' ? `<span class="n">${t === 'all' ? all.filter(it => tabs[it.type]).length : t === 'au' ? ausOf(p).length : (cnt[t]||0)}</span>` : ''}</button>`).join('')}
+        ${visTabs.map(t => `<button class="tab ${S.tab === t ? 'on' : ''}" role="tab" aria-selected="${S.tab === t}" data-act="tab" data-tab="${t}">${t === 'all' ? '타임라인' : t === 'profile' ? '프로필' : t === 'au' ? 'AU' : t === 'cal' ? '달력' : TYPES[t]}${t !== 'profile' && t !== 'cal' ? `<span class="n">${t === 'all' ? all.filter(it => tabs[it.type]).length : t === 'au' ? ausOf(p).length : (cnt[t]||0)}</span>` : ''}</button>`).join('')}
       </nav></div>
       ${content}
     </div>
+    ${bulkBarHTML()}
   </div>`;
 }
 function folderSection(p, items){
@@ -1429,11 +1535,11 @@ function emptyFeed(total){
 }
 function feedHTML(list, th, p){
   const layout = th.layout;
-  if (S.tab !== 'all') return `<div class="feed layout-${layout}">${list.map(it => cardHTML(it, p)).join('')}</div>`;
+  if (S.tab !== 'all') return `<div class="feed layout-${layout}">${list.map(it => cardOut(it, p)).join('')}</div>`;
   const groups = []; let cur = null;
   list.forEach(it => { const k = itemDate(it).slice(0, 7); if (!cur || cur.k !== k){ cur = {k, items:[]}; groups.push(cur); } cur.items.push(it); });
   return groups.map(g => { const [y, m] = g.k.split('-'); return `<div class="month"><h2>${y === '0000' ? '날짜 없음' : `${+y}년 ${+m}월`}</h2><span class="line"></span><span class="mono">${g.items.length}</span></div>
-    <div class="feed layout-${layout}">${g.items.map(it => cardHTML(it, p)).join('')}</div>`; }).join('');
+    <div class="feed layout-${layout}">${g.items.map(it => cardOut(it, p)).join('')}</div>`; }).join('');
 }
 function avatarHTML(ref, name, color, cls=''){
   const src = imgSrc(ref); const c = safeColor(color, '#8A90A2');
@@ -1455,6 +1561,7 @@ function footHTML(it){
     ${it.type === 'tweet' ? '' : `<span class="mono">${esc(fmtDate(itemDate(it)))}</span>`}
     <span class="tags">${S.tab !== 'au' ? auBadge(it) : ''}${(it.tags||[]).map(t => `<span class="tg">#${esc(t)}</span>`).join('')}</span>
     <span class="acts">
+      ${it.type === 'tweet' ? `<button class="mini" data-act="tv-open" data-id="${esc(it.id)}" title="한 장씩 크게 보기" aria-label="한 장씩 크게 보기">${I.cards}</button>` : ''}
       ${S.canWrite ? `<button class="mini ${it.fav ? 'fav-on' : ''}" data-act="fav" data-id="${esc(it.id)}" title="즐겨찾기" aria-pressed="${!!it.fav}">${it.fav ? I.starOn : I.star}</button>
       <button class="mini" data-act="edit" data-id="${esc(it.id)}" title="수정">${I.edit}</button>
       <button class="mini" data-act="delete" data-id="${esc(it.id)}" title="삭제">${I.trash}</button>` : (it.fav ? `<span class="mini fav-on">${I.starOn}</span>` : '')}
@@ -1577,12 +1684,18 @@ function setBusy(btn, label){ if (!btn) return; if (label){ btn.dataset.l = btn.
 
 function commonFields(it, pairId = S.route.pairId){
   return `${auField(it, pairId)}<div class="row2">
-    <div class="field"><label for="f-date">날짜</label><input type="date" id="f-date" value="${esc(it?.date || todayStr())}"></div>
-    <div class="field"><label for="f-tags">태그</label><input type="text" id="f-tags" placeholder="쉼표로 구분 · 예: 연성, 커미션" value="${esc((it?.tags||[]).join(', '))}"></div>
+    <div class="field"><label for="f-date">날짜</label><input type="date" id="f-date" value="${esc(it?.date || S.formDate || todayStr())}"></div>
+    ${tagPickHTML('f-tags', it?.tags || [])}
   </div>
+  ${cwFieldHTML(it)}
   <label class="check-inline"><input type="checkbox" id="f-fav" ${it?.fav ? 'checked' : ''}>즐겨찾기에 넣기</label>`;
 }
-function readCommon(root){ return {date: $('#f-date', root).value || todayStr(), tags: parseTags($('#f-tags', root).value), fav: $('#f-fav', root).checked}; }
+function readCommon(root){
+  const q = $('#f-tags-q', root);
+  const out = {date: $('#f-date', root).value || todayStr(), tags: parseTags($('#f-tags', root).value + (q ? ',' + q.value : '')), fav: $('#f-fav', root).checked};
+  const cw = readCW(root); if (cw !== undefined) out.cw = cw;
+  return out;
+}
 function baseItem(pairId, type, old){
   const now = new Date().toISOString();
   return {pairId, type, title:'', date:'', tags:[], fav:false, createdAt: old?.createdAt || now, updatedAt: now, data:{}};
@@ -2558,6 +2671,10 @@ function closeReader(){
   schedule();
 }
 async function openReader(id, opts={}){
+  if (S.items[id] && S.items[id].cw && !S.revealed.has(id)){
+    if (!await confirmBox(`'${S.items[id].cw}' 표시를 해 둔 글이에요. 열어서 볼까요?`, '열기', false)) return;
+    S.revealed.add(id); schedule();
+  }
   const it = S.items[id]; if (!it) return; const p = S.pairs[it.pairId]; const th = themeOf(p);
   if (RD && RD.cleanup) RD.cleanup();
   const pr = rdPrefs(); RD = {id, pr};
@@ -3524,7 +3641,7 @@ function applyHighlights(box, hls){
 }
 function highlightsSection(pid){
   const quotes = [];
-  itemsOf(pid).filter(it => it.type === 'text').forEach(it => (it.data?.highlights || []).forEach(h => quotes.push({it, h})));
+  itemsOf(pid).filter(it => it.type === 'text' && !isHidden(it)).forEach(it => (it.data?.highlights || []).forEach(h => quotes.push({it, h})));
   if (!quotes.length) return '';
   quotes.sort((a, b) => String(b.h.at).localeCompare(String(a.h.at)));
   const shown = S.hlAll ? quotes : quotes.slice(0, 4);
@@ -3747,11 +3864,303 @@ let LAST_ACT = Date.now();
 ['pointerdown', 'keydown', 'wheel', 'touchstart'].forEach(ev => document.addEventListener(ev, () => { LAST_ACT = Date.now(); }, {passive:true}));
 setInterval(() => { const L = lockOf(); if (L && +L.idle > 0 && isUnlocked() && Date.now() - LAST_ACT > L.idle * 60000) lockNow(); }, 20000);
 
+/* ---------- content warnings (spoiler / sensitive) ---------- */
+const CW_PRESETS = ['스포일러', '민감한 내용'];
+const isHidden = (it) => !!(it && it.cw) && !S.revealed.has(it.id);
+function cwFieldHTML(it){
+  const cw = (it && it.cw) || ''; const mode = !cw ? '' : CW_PRESETS.includes(cw) ? cw : 'custom';
+  return `<div class="field"><span class="flabel">가리기</span>
+    <div class="seg" id="f-cwseg">${[['', '안 가림'], ['스포일러', '스포일러'], ['민감한 내용', '민감한 내용'], ['custom', '직접 쓰기']].map(([v, l]) => `<button type="button" data-v="${v}" class="${mode === v ? 'on' : ''}">${l}</button>`).join('')}</div>
+    <input type="text" class="inp" id="f-cwtext" placeholder="예: 사망 소재, 유혈 묘사" value="${esc(mode === 'custom' ? cw : '')}" ${mode === 'custom' ? '' : 'hidden'}>
+    <input type="hidden" id="f-cw" value="${esc(mode)}">
+    <span class="hint">가린 기록은 목록에서 내용과 제목이 가려지고, 눌러야 보여요.</span></div>`;
+}
+function readCW(root){
+  const h = $('#f-cw', root); if (!h) return undefined;
+  return h.value === 'custom' ? ($('#f-cwtext', root).value.trim() || '주의') : h.value;
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('#f-cwseg button'); if (!b) return;
+  $$('#f-cwseg button').forEach(x => x.classList.toggle('on', x === b));
+  $('#f-cw').value = b.dataset.v; const t = $('#f-cwtext'); t.hidden = b.dataset.v !== 'custom'; if (!t.hidden) t.focus();
+});
+function cwCardHTML(it){
+  return `<article class="card cw-card" id="it-${esc(it.id)}"><div class="cw-cover">
+    <span class="cw-ico" aria-hidden="true">${I.eyeOff}</span>
+    <b>${esc(it.cw)}</b><span class="hint">${TYPES[it.type] || '기록'} · 가려 둔 기록이에요</span>
+    <button class="btn small" data-act="cw-show" data-id="${esc(it.id)}">${I.eye}내용 보기</button></div>${footHTML(it)}</article>`;
+}
+
+/* ---------- tag picker ---------- */
+function tagCounts(pairId){
+  const all = {}, mine = {};
+  Object.values(S.items).forEach(it => (it.tags || []).forEach(t => { all[t] = (all[t] || 0) + 1; if (it.pairId === pairId) mine[t] = (mine[t] || 0) + 1; }));
+  return Object.keys(all).sort((a, b) => (mine[b] || 0) - (mine[a] || 0) || all[b] - all[a] || a.localeCompare(b, 'ko')).map(t => ({t, n: mine[t] || 0, all: all[t]}));
+}
+function tagPickHTML(hiddenId, tags, label='태그', placeholder='태그를 고르거나 새로 쓰기'){
+  const inId = hiddenId + '-q';
+  return `<div class="field tpfield"><label for="${inId}">${label}</label>
+    <div class="tagpick" data-tp="${hiddenId}">${tpChips(tags)}<input class="tp-in" id="${inId}" data-tp="${hiddenId}" placeholder="${placeholder}" autocomplete="off" enterkeyhint="done"></div>
+    <div class="tp-drop" id="${hiddenId}-drop" hidden></div>
+    <input type="hidden" id="${hiddenId}" value="${esc((tags || []).join(', '))}"></div>`;
+}
+function tpChips(tags){ return (tags || []).map(t => `<span class="tp-chip">#${esc(t)}<button type="button" data-tprm="${esc(t)}" aria-label="${esc(t)} 태그 빼기">${I.x}</button></span>`).join(''); }
+function tpGet(hid){ return parseTags(($('#' + hid) || {}).value || ''); }
+function tpSet(hid, tags){
+  const h = $('#' + hid); if (!h) return; h.value = tags.join(', ');
+  const wrap = $(`.tagpick[data-tp="${hid}"]`); $$('.tp-chip', wrap).forEach(x => x.remove());
+  wrap.insertAdjacentHTML('afterbegin', tpChips(tags));
+}
+function tpDrop(hid){
+  const drop = $('#' + hid + '-drop'), inp = $('#' + hid + '-q'); if (!drop || !inp) return;
+  const q = inp.value.trim().replace(/^#/, ''); const have = new Set(tpGet(hid));
+  const list = tagCounts(S.route.pairId).filter(x => !have.has(x.t) && (!q || x.t.toLowerCase().includes(q.toLowerCase()))).slice(0, 30);
+  const exact = list.some(x => x.t === q) || have.has(q);
+  if (!list.length && !q){ drop.hidden = true; return; }
+  drop.innerHTML = (q && !exact ? `<button type="button" class="tp-opt new" data-tpadd="${esc(q)}">${I.plus}<b>#${esc(q)}</b> 새 태그로 넣기</button>` : '')
+    + list.map(x => `<button type="button" class="tp-opt" data-tpadd="${esc(x.t)}"><span>#${esc(x.t)}</span><span class="hint mono">${x.n ? `이 페어 ${x.n}` : `다른 페어 ${x.all}`}</span></button>`).join('')
+    + (!list.length && exact ? '<div class="hint" style="padding:8px 10px">이미 넣은 태그예요.</div>' : '');
+  drop.hidden = false; drop.dataset.for = hid;
+}
+function tpAdd(hid, t){
+  t = String(t || '').trim().replace(/^#+/, ''); if (!t) return;
+  const tags = tpGet(hid); if (!tags.includes(t)) tags.push(t);
+  tpSet(hid, tags); const inp = $('#' + hid + '-q'); inp.value = ''; inp.focus(); tpDrop(hid);
+}
+document.addEventListener('focusin', e => { const i = e.target.closest && e.target.closest('.tp-in'); if (i) tpDrop(i.dataset.tp); });
+document.addEventListener('input', e => { const i = e.target.closest && e.target.closest('.tp-in'); if (!i) return; if (/[,，]/.test(i.value)){ i.value.split(/[,，]/).slice(0, -1).forEach(t => tpAdd(i.dataset.tp, t)); i.value = i.value.split(/[,，]/).pop(); } tpDrop(i.dataset.tp); });
+document.addEventListener('keydown', e => {
+  const i = e.target.closest && e.target.closest('.tp-in'); if (!i) return; const hid = i.dataset.tp;
+  if (e.key === 'Enter'){ e.preventDefault(); if (i.value.trim()) tpAdd(hid, i.value); else { const f = $(`#${hid}-drop .tp-opt`); if (f && !$('#' + hid + '-drop').hidden) tpAdd(hid, f.dataset.tpadd); } }
+  else if (e.key === 'Backspace' && !i.value){ const tags = tpGet(hid); tags.pop(); tpSet(hid, tags); tpDrop(hid); }
+  else if (e.key === 'Escape'){ const d = $('#' + hid + '-drop'); if (d && !d.hidden){ e.stopPropagation(); d.hidden = true; } }
+}, true);
+document.addEventListener('mousedown', e => { if (e.target.closest('.tp-drop') || e.target.closest('[data-tprm]')) e.preventDefault(); });
+document.addEventListener('click', e => {
+  const a = e.target.closest('[data-tpadd]'); if (a){ tpAdd(a.closest('.tp-drop').dataset.for, a.dataset.tpadd); return; }
+  const r = e.target.closest('[data-tprm]'); if (r){ const hid = r.closest('.tagpick').dataset.tp; tpSet(hid, tpGet(hid).filter(t => t !== r.dataset.tprm)); tpDrop(hid); return; }
+  const w = e.target.closest('.tagpick'); if (w && !e.target.closest('.tp-in')) $('.tp-in', w).focus();
+  $$('.tp-drop').forEach(d => { if (!d.hidden && !e.target.closest('.tpfield')) d.hidden = true; });
+});
+
+/* ---------- calendar ---------- */
+function monthEvents(p, y, m){
+  const out = {}; const add = (d, label, kind) => { (out[d] = out[d] || []).push({label, kind}); };
+  const dim = new Date(y, m, 0).getDate(); const md = (mm, dd) => `${pad(mm)}-${pad(dd)}`;
+  (p.chars || []).forEach(c => { if (c.birthday && +c.birthday.slice(0, 2) === m && +c.birthday.slice(3) <= dim) add(+c.birthday.slice(3), `${c.name || '캐릭터'} 생일`, 'birthday'); });
+  (p.annivs || []).forEach(a => {
+    if (!a.date) return; const [ay, am, ad] = a.date.split('-').map(Number);
+    if (a.yearly){ if (am === m && y >= ay) add(ad, `${a.name}${y > ay ? ` ${y - ay}주년` : ''}`, 'custom'); }
+    else if (ay === y && am === m) add(ad, a.name, 'custom');
+  });
+  if (p.since && /^\d{4}-\d{2}-\d{2}$/.test(p.since)){
+    const [sy, sm, sd] = p.since.split('-').map(Number); const start = new Date(sy, sm - 1, sd);
+    if (sm === m && y > sy) add(sd, `${y - sy}주년`, 'anniv');
+    if (sm === m && y === sy) add(sd, '시작한 날', 'anniv');
+    for (let d = 1; d <= dim; d++){ const n = Math.round((new Date(y, m - 1, d) - start) / 86400000) + 1; if (n > 0 && n % 100 === 0) add(d, `D+${n}`, 'dday'); }
+  }
+  return out;
+}
+function calView(pid, p, all, th, tabs){
+  const t = new Date(); if (!S.calYM) S.calYM = `${t.getFullYear()}-${pad(t.getMonth() + 1)}`;
+  const [y, m] = S.calYM.split('-').map(Number);
+  const first = new Date(y, m - 1, 1), dim = new Date(y, m, 0).getDate(), lead = first.getDay();
+  const ev = monthEvents(p, y, m);
+  const vis = all.filter(it => tabs[it.type]);
+  const byDay = {}; vis.forEach(it => { const d = itemDate(it); if (d.slice(0, 7) === S.calYM) (byDay[+d.slice(8, 10)] = byDay[+d.slice(8, 10)] || []).push(it); });
+  const today = todayStr();
+  let cells = '';
+  for (let i = 0; i < lead; i++) cells += '<span class="cal-c pad"></span>';
+  for (let d = 1; d <= dim; d++){
+    const ds = `${S.calYM}-${pad(d)}`; const its = byDay[d] || []; const es = ev[d] || [];
+    const types = TYPE_ORDER.filter(tp => its.some(it => it.type === tp));
+    cells += `<button class="cal-c ${ds === today ? 'today' : ''} ${ds === S.calDay ? 'sel' : ''} ${es.length ? 'has-ev' : ''} ${(new Date(y, m - 1, d)).getDay() === 0 ? 'sun' : ''}" data-act="cal-day" data-d="${ds}" aria-label="${m}월 ${d}일 기록 ${its.length}개">
+      <span class="cal-n">${d}</span>
+      ${es.slice(0, 2).map(e => `<span class="cal-ev ev-${e.kind}">${esc(e.label)}</span>`).join('')}
+      ${its.length ? `<span class="cal-dots">${types.map(tp => `<i class="dt-${tp}"></i>`).join('')}${its.length > 1 ? `<em>${its.length}</em>` : ''}</span>` : ''}
+    </button>`;
+  }
+  const mCount = Object.values(byDay).reduce((n, a) => n + a.length, 0);
+  let dayHTML = '';
+  if (S.calDay && S.calDay.slice(0, 7) === S.calYM){
+    const d = +S.calDay.slice(8); const its = (byDay[d] || []).slice().sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)));
+    const wd = WD[new Date(y, m - 1, d).getDay()];
+    dayHTML = `<div class="sec-h" style="margin:22px 0 10px"><h2 style="font-family:var(--pf)">${m}월 ${d}일 (${wd})</h2>${S.canWrite ? `<div class="addwrap"><button class="btn small primary" data-act="add-menu">${I.plus}이날 기록 추가</button>${S.addMenu ? `<div class="addmenu">${TYPE_ORDER.filter(tp => tabs[tp]).map(tp => `<button data-act="add" data-type="${tp}" data-date="${S.calDay}">${TYPES[tp]}</button>`).join('')}</div>` : ''}</div>` : ''}</div>
+      ${(ev[d] || []).length ? `<div class="chips" style="margin:0 0 12px">${ev[d].map(e => `<span class="chip on">${esc(e.label)}</span>`).join('')}</div>` : ''}
+      ${its.length ? feedHTML(its, th, p) : '<div class="empty"><p>이날 넣은 기록이 없어요.</p></div>'}`;
+  }
+  return `<div class="cal-head">
+      <button class="mini" data-act="cal-mv" data-d="-1" aria-label="지난달">${I.left}</button>
+      <h2>${y}년 ${m}월</h2>
+      <button class="mini" data-act="cal-mv" data-d="1" aria-label="다음 달">${I.right}</button>
+      <button class="btn small" data-act="cal-today">오늘</button>
+      <span class="hint" style="margin-left:auto">이달 기록 ${mCount}개</span>
+    </div>
+    <div class="cal-legend hint">${TYPE_ORDER.filter(tp => tabs[tp]).map(tp => `<span><i class="dt-${tp}"></i>${TYPES[tp]}</span>`).join('')}<span><i class="dt-ev"></i>생일·기념일</span></div>
+    <div class="cal">${WD.map((w, i) => `<span class="cal-w ${i === 0 ? 'sun' : ''}">${w}</span>`).join('')}${cells}</div>
+    ${dayHTML}`;
+}
+
+/* ---------- multi select ---------- */
+function decorateCard(html, it){
+  if (!S.sel.on) return html;
+  const on = S.sel.ids.has(it.id);
+  return html.replace('<article class="card', `<article data-selid="${esc(it.id)}" class="card selmode ${on ? 'picked' : ''}`)
+    .replace(/(<article[^>]*>)/, `$1<span class="selbox" aria-hidden="true">${on ? I.check : ''}</span>`);
+}
+function cardOut(it, p){
+  S.visIds.push(it.id);
+  return decorateCard(isHidden(it) ? cwCardHTML(it) : cardHTML(it, p), it);
+}
+function bulkBarHTML(){
+  if (!S.sel.on) return '';
+  const n = S.sel.ids.size; const sel = [...S.sel.ids].map(id => S.items[id]).filter(Boolean);
+  const allPhotos = n && sel.every(it => it.type === 'photo');
+  const dis = n ? '' : 'disabled';
+  return `<div class="bulkbar" role="toolbar" aria-label="선택한 기록 고치기">
+    <b class="mono">${n}개 선택</b>
+    <button class="btn small" data-act="sel-all">${S.visIds.length && S.visIds.every(id => S.sel.ids.has(id)) ? '모두 풀기' : '보이는 것 모두'}</button>
+    <span class="bb-sep"></span>
+    <button class="btn small" data-act="bulk" data-op="au" ${dis}>AU</button>
+    <button class="btn small" data-act="bulk" data-op="tags" ${dis}>태그</button>
+    <button class="btn small" data-act="bulk" data-op="cw" ${dis}>가리기</button>
+    ${allPhotos ? `<button class="btn small" data-act="bulk" data-op="folder">폴더</button>` : ''}
+    <button class="btn small" data-act="bulk" data-op="fav" ${dis}>${I.star}</button>
+    <button class="btn small danger" data-act="bulk" data-op="trash" ${dis}>${I.trash}</button>
+    <button class="btn small primary" data-act="sel-done">완료</button>
+  </div>`;
+}
+async function bulkApply(fn, msg){
+  const ids = [...S.sel.ids].filter(id => S.items[id]); let n = 0;
+  try { for (const id of ids){ const it = clone(S.items[id]); if (fn(it) !== false){ it.updatedAt = new Date().toISOString(); await put('items', id, it); n++; } } toast(msg.replace('%n', n)); }
+  catch(e){ toast(errText(e)); }
+}
+function bulkAction(op){
+  const pid = S.route.pairId; const p = S.pairs[pid]; const ids = [...S.sel.ids].filter(id => S.items[id]);
+  if (!ids.length) return;
+  if (op === 'fav'){ const allFav = ids.every(id => S.items[id].fav); return bulkApply(it => { it.fav = !allFav; }, allFav ? '%n개를 즐겨찾기에서 뺐어요.' : '%n개를 즐겨찾기에 넣었어요.'); }
+  if (op === 'trash'){
+    return confirmBox(`선택한 기록 ${ids.length}개를 휴지통으로 옮길까요?\n${TRASH_DAYS}일 안에는 되살릴 수 있어요.`, '휴지통으로').then(async ok => {
+      if (!ok) return; const at = new Date().toISOString();
+      try { for (const id of ids){ const it = clone(S.items[id]); it.trashedAt = at; await put('items', id, it); } S.sel.ids.clear(); toast(`${ids.length}개를 휴지통으로 옮겼어요.`); } catch(e){}
+    });
+  }
+  if (op === 'au'){
+    openModal({title:`AU 바꾸기 · ${ids.length}개`, body:`${auField({au:''}, pid)}`, foot:`<button class="btn" data-m="cancel">취소</button><button class="btn primary" id="b-ok">바꾸기</button>`,
+      onMount(root){ $('[data-m=cancel]', root).onclick = () => closeModal();
+        $('#b-ok', root).onclick = async () => { const s = $('#f-au', root); const au = s.value === '_new' ? await ensureAU(pid, $('#f-aunew', root).value) : s.value; closeModal(); bulkApply(it => { it.au = au; }, '%n개의 AU를 바꿨어요.'); }; }});
+    return;
+  }
+  if (op === 'tags'){
+    const cur = {}; ids.forEach(id => (S.items[id].tags || []).forEach(t => { cur[t] = (cur[t] || 0) + 1; }));
+    openModal({title:`태그 바꾸기 · ${ids.length}개`, body:`${tagPickHTML('b-tags', [], '넣을 태그')}
+      ${Object.keys(cur).length ? `<div class="field"><span class="flabel">뺄 태그 (눌러서 고르기)</span><div class="chips" id="b-rm" style="margin:0">${Object.entries(cur).sort((a, b) => b[1] - a[1]).map(([t, c]) => `<button type="button" class="chip" data-t="${esc(t)}">#${esc(t)} <span class="mono">${c}</span></button>`).join('')}</div></div>` : ''}`,
+      foot:`<button class="btn" data-m="cancel">취소</button><button class="btn primary" id="b-ok">적용</button>`,
+      onMount(root){ $('[data-m=cancel]', root).onclick = () => closeModal();
+        const rm = $('#b-rm', root); if (rm) rm.addEventListener('click', e => { const c = e.target.closest('.chip'); if (c) c.classList.toggle('on'); });
+        $('#b-ok', root).onclick = () => {
+          const addT = tpGet('b-tags'); const pending = $('#b-tags-q', root).value.trim(); if (pending) addT.push(pending.replace(/^#/, ''));
+          const rmT = $$('#b-rm .chip.on', root).map(c => c.dataset.t);
+          if (!addT.length && !rmT.length){ toast('넣거나 뺄 태그를 골라 주세요.'); return; }
+          closeModal(); bulkApply(it => { const s = new Set((it.tags || []).filter(t => !rmT.includes(t))); addT.forEach(t => s.add(t)); it.tags = [...s]; }, '%n개의 태그를 바꿨어요.');
+        }; }});
+    return;
+  }
+  if (op === 'cw'){
+    openModal({title:`가리기 · ${ids.length}개`, body: cwFieldHTML({cw: ''}), foot:`<button class="btn" data-m="cancel">취소</button><button class="btn primary" id="b-ok">적용</button>`,
+      onMount(root){ $('[data-m=cancel]', root).onclick = () => closeModal();
+        $('#b-ok', root).onclick = () => { const cw = readCW(root); closeModal(); bulkApply(it => { it.cw = cw; }, cw ? '%n개를 가렸어요.' : '%n개의 가리기를 풀었어요.'); }; }});
+    return;
+  }
+  if (op === 'folder'){
+    openModal({title:`폴더 옮기기 · ${ids.length}개`, body:`<div class="field"><label for="f-folder">폴더</label><select id="f-folder">${folderOptions(p, '')}</select><input type="text" class="inp" id="f-newfolder" placeholder="새 폴더 이름" hidden></div>`,
+      foot:`<button class="btn" data-m="cancel">취소</button><button class="btn primary" id="b-ok">옮기기</button>`,
+      onMount(root){ $('[data-m=cancel]', root).onclick = () => closeModal();
+        const sel = $('#f-folder', root); sel.addEventListener('change', () => { $('#f-newfolder', root).hidden = sel.value !== '_new'; });
+        $('#b-ok', root).onclick = async () => { const f = sel.value === '_new' ? await ensureFolder(pid, $('#f-newfolder', root).value) : sel.value; closeModal(); bulkApply(it => { if (it.type !== 'photo') return false; it.folder = f; }, '%n개를 옮겼어요.'); }; }});
+  }
+}
+document.addEventListener('click', e => {
+  if (!S.sel.on) return;
+  const card = e.target.closest('article[data-selid]'); if (!card) return;
+  e.preventDefault(); e.stopPropagation();
+  const id = card.dataset.selid; if (S.sel.ids.has(id)) S.sel.ids.delete(id); else S.sel.ids.add(id);
+  render();
+}, true);
+
+/* ---------- tweet viewer (one by one) ---------- */
+let TV = null;
+function openTwViewer(ids, start=0){
+  ids = ids.filter(id => S.items[id] && S.items[id].type === 'tweet'); if (!ids.length) return;
+  TV = {ids, i: Math.max(0, Math.min(ids.length - 1, start)), dir:0};
+  document.documentElement.style.overflow = 'hidden';
+  tvPaint();
+}
+function closeTV(){ TV = null; $('#tv-root').innerHTML = ''; document.documentElement.style.overflow = ''; }
+function tvGo(d){ if (!TV) return; const n = TV.i + d; if (n < 0 || n >= TV.ids.length) return; TV.i = n; TV.dir = d; tvPaint(); }
+function tvPaint(keep){
+  if (!TV) return;
+  TV.ids = TV.ids.filter(id => S.items[id]); if (!TV.ids.length) return closeTV(); if (TV.i >= TV.ids.length) TV.i = TV.ids.length - 1;
+  const id = TV.ids[TV.i]; const it = {id, ...S.items[id]}; const p = S.pairs[it.pairId]; if (!p) return closeTV();
+  const old = $('#tv-scroll'); const st = keep && old ? old.scrollTop : 0;
+  const au = auOf(it); const ts = it.data?.tweets || [];
+  const body = isHidden(it)
+    ? `<div class="cw-cover tv-cw"><span class="cw-ico">${I.eyeOff}</span><b>${esc(it.cw)}</b><span class="hint">가려 둔 트윗이에요</span><button class="btn small" data-act="cw-show" data-id="${esc(id)}">${I.eye}내용 보기</button></div>`
+    : `${threadHTML(it, p)}${it.data?.note ? `<div class="tw-note">${I.edit}${esc(it.data.note)}</div>` : ''}`;
+  $('#tv-root').innerHTML = `<div class="tv" role="dialog" aria-modal="true" aria-label="트윗 한 장씩 보기" style="${pairVars(p)}">
+    <div class="tv-top">
+      <button class="tv-btn" id="tv-x" aria-label="닫기">${I.x}</button>
+      <span class="tv-count mono">${TV.i + 1} / ${TV.ids.length}</span>
+      <span class="tv-meta">${ts.length > 1 ? `<span class="pill">타래 ${ts.length}</span>` : ''}${au ? auBadge(it) : ''}${it.fav ? `<span class="fav-on" style="display:inline-flex">${I.starOn}</span>` : ''}<span class="mono">${esc(fmtDate(itemDate(it)))}</span></span>
+    </div>
+    <div class="tv-progress"><span style="width:${(TV.i + 1) / TV.ids.length * 100}%"></span></div>
+    <div class="tv-stage">
+      <button class="tv-nav prev" id="tv-prev" aria-label="이전 트윗" ${TV.i === 0 ? 'disabled' : ''}>${I.left}</button>
+      <div class="tv-scroll" id="tv-scroll"><article class="card tv-card ${TV.dir > 0 ? 'in-r' : TV.dir < 0 ? 'in-l' : ''}">${body}
+        ${(it.tags || []).length ? `<div class="tv-tags">${it.tags.map(t => `<span class="tg">#${esc(t)}</span>`).join('')}</div>` : ''}</article></div>
+      <button class="tv-nav next" id="tv-next" aria-label="다음 트윗" ${TV.i === TV.ids.length - 1 ? 'disabled' : ''}>${I.right}</button>
+    </div>
+    <div class="tv-hint hint">← → 키나 옆으로 밀어서 넘겨요</div>
+  </div>`;
+  TV.dir = 0;
+  const sc = $('#tv-scroll'); if (keep) sc.scrollTop = st;
+  $('#tv-x').onclick = closeTV; $('#tv-prev').onclick = () => tvGo(-1); $('#tv-next').onclick = () => tvGo(1);
+  let sx = null, sy = null;
+  sc.addEventListener('touchstart', e => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, {passive:true});
+  sc.addEventListener('touchend', e => { if (sx === null) return; const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy; if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.4) tvGo(dx < 0 ? 1 : -1); sx = null; });
+}
+document.addEventListener('keydown', e => {
+  if (!TV || $('#lb-root').innerHTML || $('#modal-root').innerHTML) return;
+  if (e.key === 'ArrowRight'){ e.preventDefault(); tvGo(1); }
+  else if (e.key === 'ArrowLeft'){ e.preventDefault(); tvGo(-1); }
+  else if (e.key === 'Escape'){ e.preventDefault(); e.stopImmediatePropagation(); closeTV(); }
+}, true);
+
+/* ---------- home quote ---------- */
+function allQuotes(){
+  const out = [];
+  Object.entries(S.items).forEach(([id, it]) => { if (it.type !== 'text' || !S.pairs[it.pairId] || isHidden({id, ...it})) return; (it.data?.highlights || []).forEach(h => out.push({id, it, h})); });
+  return out;
+}
+function homeQuoteHTML(){
+  const qs = allQuotes(); if (!qs.length) return '';
+  let q = qs.find(x => x.h.id === S.homeQ); if (!q){ q = qs[Math.floor(Math.random() * qs.length)]; S.homeQ = q.h.id; }
+  const p = S.pairs[q.it.pairId]; const {c1, c2} = pairColors(p);
+  return `<div class="hq" style="--c1:${c1};--c2:${c2};--hqf:${(FONTS[(p.theme || {}).font] || FONTS.plex).css}">
+    <button class="hq-main" data-act="hl-open" data-id="${esc(q.id)}" data-hl="${esc(q.h.id)}">
+      <span class="hq-mark" aria-hidden="true">“</span>
+      <span class="hq-t">${esc(q.h.text)}</span>
+      <span class="hq-src">${esc(q.it.title || '제목 없는 글')} · ${esc(pairTitle(p))}</span>
+    </button>
+    ${qs.length > 1 ? `<button class="mini hq-next" data-act="hq-next" title="다른 문장" aria-label="다른 문장 보기">${I.shuffle}</button>` : ''}
+  </div>`;
+}
+
 /* ---------- navigation & events ---------- */
 function go(route){
   S.route = route; S.addMenu = false; if (typeof MX !== 'undefined') MX.hidden = false;
   if (route.view === 'pair'){ S.tab = 'all'; S.q = ''; S.tag = null; S.favOnly = false; S.photoFolder = null; S.photoWall = false; S.auSel = null; S.auFilter = null; S.seriesSel = null; S.hlAll = false; }
-  S.reorder = null;
+  S.reorder = null; S.sel.on = false; S.sel.ids.clear(); S.calDay = null; if (TV) closeTV();
   try { history.replaceState(null, '', route.view === 'pair' ? '#p-' + route.pairId : location.pathname + location.search); } catch(e){}
   render(); window.scrollTo(0, 0);
 }
@@ -3780,7 +4189,7 @@ document.addEventListener('click', async (e) => {
     case 'edit-pair': pairForm(S.route.pairId); break;
     case 'customize': customize(); break;
     case 'settings': settings(); break;
-    case 'tab': S.tab = el.dataset.tab; S.tag = null; S.addMenu = false; S.photoFolder = null; S.seriesSel = null; render(); break;
+    case 'tab': S.tab = el.dataset.tab; S.tag = null; S.addMenu = false; S.photoFolder = null; S.seriesSel = null; S.sel.ids.clear(); render(); break;
     case 'folder': S.photoFolder = el.dataset.folder || null; S.tag = null; render(); { const t = $('.tabs-scroll'); if (t) t.scrollIntoView({block:'start'}); } break;
     case 'new-folder': folderForm(S.route.pairId, null); break;
     case 'edit-folder': folderForm(S.route.pairId, el.dataset.folder); break;
@@ -3802,7 +4211,18 @@ document.addEventListener('click', async (e) => {
     case 'fav-only': S.favOnly = !S.favOnly; render(); break;
     case 'sort': S.sortAsc = !S.sortAsc; render(); break;
     case 'add-menu': S.addMenu = !S.addMenu; render(); break;
-    case 'add': S.addMenu = false; S.formAU = el.dataset.au !== undefined ? el.dataset.au : ''; render(); FORMS[el.dataset.type](S.route.pairId, null); S.formAU = ''; break;
+    case 'add': S.addMenu = false; S.formAU = el.dataset.au !== undefined ? el.dataset.au : ''; S.formDate = el.dataset.date || ''; render(); FORMS[el.dataset.type](S.route.pairId, null); S.formAU = ''; S.formDate = ''; break;
+    case 'cw-show': S.revealed.add(id); render(); break;
+    case 'sel-mode': S.sel.on = !S.sel.on; S.sel.ids.clear(); render(); break;
+    case 'sel-done': S.sel.on = false; S.sel.ids.clear(); render(); break;
+    case 'sel-all': { const all = S.visIds.length && S.visIds.every(x => S.sel.ids.has(x)); S.visIds.forEach(x => all ? S.sel.ids.delete(x) : S.sel.ids.add(x)); render(); break; }
+    case 'bulk': bulkAction(el.dataset.op); break;
+    case 'cal-day': S.calDay = S.calDay === el.dataset.d ? null : el.dataset.d; S.addMenu = false; render(); break;
+    case 'cal-mv': { const [cy, cm] = S.calYM.split('-').map(Number); const dt = new Date(cy, cm - 1 + (+el.dataset.d), 1); S.calYM = `${dt.getFullYear()}-${pad(dt.getMonth() + 1)}`; S.calDay = null; render(); break; }
+    case 'cal-today': { const t = new Date(); S.calYM = `${t.getFullYear()}-${pad(t.getMonth() + 1)}`; S.calDay = todayStr(); render(); break; }
+    case 'tv-start': openTwViewer(S.visIds.slice(), 0); break;
+    case 'tv-open': { const ids = S.visIds.filter(x => S.items[x] && S.items[x].type === 'tweet'); openTwViewer(ids.includes(id) ? ids : [id], Math.max(0, ids.indexOf(id))); break; }
+    case 'hq-next': { const qs = allQuotes(); if (qs.length > 1){ let q; do { q = qs[Math.floor(Math.random() * qs.length)]; } while (q.h.id === S.homeQ); S.homeQ = q.h.id; render(); } break; }
     case 'edit': { const it = S.items[id]; if (it) FORMS[it.type](it.pairId, id); break; }
     case 'trash': openTrash(); break;
     case 'au-sel': S.auSel = el.dataset.au || null; S.auType = 'all'; S.addMenu = false; render(); break;
