@@ -704,6 +704,14 @@ body.has-mx .bulkbar{bottom:max(130px, calc(env(safe-area-inset-bottom, 0px) + 1
 .hq-src{font-size:12.5px; color:var(--muted)}
 .hq-next{position:absolute; right:12px; top:12px}
 
+.tlbar{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:-6px 0 14px}
+.tlbar > .hint{color:var(--on-base-muted)}
+.tlseg button{padding:6px 12px}
+.tlsec .month{flex-wrap:wrap}
+.tlsec .month .btn{margin-left:4px}
+.tlmore{display:flex; margin:4px auto 0}
+.tltile .fcover .ico{width:30px; height:30px}
+
 /* customize groups */
 .czg{border-top:1px solid var(--line); padding-top:12px}
 .czg summary{font-weight:700; font-size:14px; cursor:pointer; list-style:none; display:flex; justify-content:space-between; align-items:center}
@@ -782,7 +790,7 @@ const TYPES = {photo:'사진', tweet:'트윗', text:'글', check:'체크리스�
 const TYPE_ORDER = ['photo','tweet','text','check'];
 const DEFAULT_THEME = {font:'plex', titleFont:'', fontSize:15, layout:'masonry', cols:'auto', gap:16, radius:14, bg:'soft', bgImage:'', bgColor:'', bgColor2:'#F6C8D6', bgMode:'', tint:11, patAlpha:30,
   header:'split', band:'diag', bandH:150, coverH:300, coverPos:50, coverFit:'cover', accent:'c1', accentCustom:'#4A6FA5', card:'border', cardAlpha:100, cardLine:'line',
-  tabStyle:'binder', deco:'', decoCustom:'', tagline:'', customFont:null, customCss:''};
+  tabStyle:'binder', tlView:'date', deco:'', decoCustom:'', tagline:'', customFont:null, customCss:''};
 const DECOS = {heart:['♡','♡'], star:['✦','✦'], moon:['☾','☽'], flower:['✿','✿'], sparkle:['⋆｡˚','˚｡⋆'], bracket:['〔','〕'], line:['—','—']};
 const THEME_PRESETS = [
   ['기본', {}],
@@ -875,7 +883,7 @@ const S = {
   got:{pairs:false, items:false},
   mode:'loading', canWrite:true,
   route:{view:'home', pairId:null},
-  bodies:{}, photoWall:false, trashItems:{}, trashPairs:{}, revealed:new Set(), sel:{on:false, ids:new Set()}, visIds:[], calYM:null, calDay:null, homeQ:null, formDate:'', auSel:null, auType:'all', auFilter:null, seriesSel:null, hlAll:false, reorder:null, formAU:'', lockReset:false,
+  bodies:{}, photoWall:false, trashItems:{}, trashPairs:{}, tlView:null, tlOpen:new Set(), revealed:new Set(), sel:{on:false, ids:new Set()}, visIds:[], calYM:null, calDay:null, homeQ:null, formDate:'', auSel:null, auType:'all', auFilter:null, seriesSel:null, hlAll:false, reorder:null, formAU:'', lockReset:false,
   tab:'all', q:'', gq:'', tag:null, favOnly:false, sortAsc:false, addMenu:false,
   preview:null,
 };
@@ -1467,10 +1475,11 @@ function pairView(pid){
         <button class="btn" data-act="sort" title="정렬 바꾸기">${I.sort}${S.sortAsc ? '오래된 순' : '최신 순'}</button>
         ${extra}${addBtn}
       </div>
+      ${S.tab === 'all' ? tlBarHTML(p) : ''}
       ${auChipsHTML(p)}
       ${tagSet.size ? `<div class="chips">${[...tagSet].sort().map(t => `<button class="chip ${S.tag === t ? 'on' : ''}" data-act="tag" data-tag="${esc(t)}">#${esc(t)}</button>`).join('')}</div>` : ''}
       ${folderHTML}${seriesHTML}
-      ${list.length ? (S.tab === 'photo' && S.photoWall ? wallHTML(list) : feedHTML(list, th, p)) : emptyFeed(all.filter(it => S.tab === 'all' ? tabs[it.type] : it.type === S.tab).length)}`;
+      ${list.length ? (S.tab === 'photo' && S.photoWall ? wallHTML(list) : S.tab === 'all' && tlViewOf(p) === 'type' ? tlTypeHTML(list, th, p, tabs) : S.tab === 'all' && tlViewOf(p) === 'folder' ? tlFolderHTML(list, p, tabs) : feedHTML(list, th, p)) : emptyFeed(all.filter(it => S.tab === 'all' ? tabs[it.type] : it.type === S.tab).length)}`;
   }
   const deco = th.deco === 'custom' ? [th.decoCustom || '', th.decoCustom || ''] : (DECOS[th.deco] || ['', '']);
   return `${pairExtraStyle(p)}<div class="pairview bg-${th.bg === 'image' && !th.bgImage ? 'plain' : th.bg} cs-${th.card} band-${th.band} tabs-${th.tabStyle} cols-${th.cols} ${(+th.cardAlpha || 100) < 100 ? 'glass' : ''}" id="pairview" style="${pairVars(p)}">
@@ -1495,6 +1504,67 @@ function pairView(pid){
     </div>
     ${bulkBarHTML()}
   </div>`;
+}
+/* ---------- timeline views ---------- */
+const TL_VIEWS = [['date', '날짜순'], ['type', '종류별'], ['folder', '폴더로 보기']];
+const tlViewOf = (p) => S.tlView || themeOf(p).tlView || 'date';
+function tlBarHTML(p){
+  const v = tlViewOf(p); const def = themeOf(p).tlView || 'date';
+  return `<div class="tlbar"><span class="hint">보기</span><div class="seg tlseg">${TL_VIEWS.map(([k, l]) => `<button type="button" data-act="tl-view" data-v="${k}" class="${v === k ? 'on' : ''}" aria-pressed="${v === k}">${l}</button>`).join('')}</div>
+    ${v !== def && S.canWrite ? `<button class="linkbtn" data-act="tl-default" data-v="${v}" style="font-size:13px">이 보기를 기본으로</button>` : `<span class="hint">${v === def ? '기본 보기' : ''}</span>`}</div>`;
+}
+function plainFeed(list, th, p){ return `<div class="feed layout-${th.layout}">${list.map(it => cardOut(it, p)).join('')}</div>`; }
+function tlTypeHTML(list, th, p, tabs){
+  const N = 6;
+  return TYPE_ORDER.filter(t => tabs[t]).map(t => {
+    const its = list.filter(it => it.type === t); if (!its.length) return '';
+    const open = S.tlOpen.has(t); const shown = open ? its : its.slice(0, N);
+    return `<section class="tlsec">
+      <div class="month"><h2>${TYPES[t]}</h2><span class="line"></span><span class="mono">${its.length}</span>
+        <button class="btn small" data-act="tab" data-tab="${t}">${TYPES[t]} 탭으로 ${I.right}</button></div>
+      ${plainFeed(shown, th, p)}
+      ${its.length > N ? `<button class="btn small tlmore" data-act="tl-more" data-t="${t}">${open ? '접기' : `${its.length - N}개 더 보기`}</button>` : ''}
+    </section>`;
+  }).join('');
+}
+function tlCover(its){
+  for (const it of [...its].sort((a, b) => itemDate(b).localeCompare(itemDate(a)))){
+    const d = it.data || {};
+    const imgs = it.type === 'photo' ? d.images : it.type === 'tweet' ? (d.tweets || []).flatMap(t => [...(t.images || []), ...(t.replyImages || []), ...((t.quote && t.quote.images) || [])]) : [];
+    if (isHidden(it)) continue;
+    const x = (imgs || []).find(i => imgSrc(i.ref)); if (x) return imgSrc(x.ref);
+  }
+  return '';
+}
+function tlTile(label, its, attrs, icon, sub){
+  const cover = tlCover(its); const last = its.length ? its.map(itemDate).sort().pop() : '';
+  return `<button class="fcard tltile" data-act="tl-open" ${attrs}><span class="fcover">${cover ? `<img src="${esc(cover)}" alt="" loading="lazy">` : icon}</span>
+    <span class="fname">${esc(label)}</span><span class="fmeta mono">${its.length}개${last && last !== '0000-00-00' ? ` · ${esc(fmtDate(last))}` : ''}${sub ? ` · ${esc(sub)}` : ''}</span></button>`;
+}
+function tlFolderHTML(list, p, tabs){
+  const TICON = {photo:I.image, tweet:I.reply, text:I.book, check:I.checksq};
+  const types = TYPE_ORDER.filter(t => tabs[t]);
+  let html = `<div class="sec-h" style="margin:4px 0 10px"><h2 style="font-family:var(--pf)">종류</h2></div>
+    <div class="folders">${types.map(t => tlTile(TYPES[t], list.filter(it => it.type === t), `data-tab="${t}"`, TICON[t])).join('')}</div>`;
+  const folders = (p.folders || []);
+  if (tabs.photo && folders.length){
+    const photos = list.filter(it => it.type === 'photo');
+    const none = photos.filter(it => !it.folder || !folders.some(f => f.id === it.folder));
+    html += `<div class="sec-h" style="margin:24px 0 10px"><h2 style="font-family:var(--pf)">사진 폴더</h2></div>
+      <div class="folders">${folders.map(f => tlTile(f.name, photos.filter(it => it.folder === f.id), `data-tab="photo" data-folder="${esc(f.id)}"`, I.folder)).join('')}
+      ${none.length ? tlTile('미분류', none, `data-tab="photo" data-folder="_none"`, I.folder) : ''}</div>`;
+  }
+  const ss = seriesOf(p);
+  if (tabs.text && ss.length){
+    html += `<div class="sec-h" style="margin:24px 0 10px"><h2 style="font-family:var(--pf)">글 시리즈</h2></div>
+      <div class="folders">${ss.map(s => tlTile(s.name, list.filter(it => it.type === 'text' && it.series === s.id), `data-tab="text" data-s="${esc(s.id)}"`, I.book)).join('')}</div>`;
+  }
+  const aus = ausOf(p);
+  if (aus.length){
+    html += `<div class="sec-h" style="margin:24px 0 10px"><h2 style="font-family:var(--pf)">AU</h2></div>
+      <div class="folders">${aus.map(a => tlTile(a.name, list.filter(it => it.au === a.id), `data-tab="au" data-au="${esc(a.id)}"`, `<span class="dot" style="--dc:${safeColor(a.color)};width:22px;height:22px"></span>`)).join('')}</div>`;
+  }
+  return html;
 }
 function folderSection(p, items){
   const folders = p.folders || [];
@@ -2551,6 +2621,7 @@ function customize(preset){
       ${rng('gap', '카드 사이 간격', 4, 40, 2, 'px')}`)}
     ${grp('탭', `
       <div class="field"><span class="flabel">탭 모양</span>${seg('tabStyle', [['binder', '바인더 색인'], ['pill', '알약'], ['under', '밑줄'], ['sticker', '스티커']])}</div>
+      <div class="field"><span class="flabel">타임라인 기본 보기</span>${seg('tlView', TL_VIEWS)}<span class="hint">페어에 들어오면 타임라인이 이 방식으로 먼저 보여요.</span></div>
       <div class="field"><span class="flabel">보일 탭</span><div style="display:flex;flex-wrap:wrap;gap:12px">${TYPE_ORDER.map(t => `<label class="check-inline"><input type="checkbox" id="cz-tab-${t}" data-tab="${t}" ${S.preview.tabs[t] ? 'checked' : ''}>${TYPES[t]}</label>`).join('')}</div></div>`)}
     ${grp('고급', `
       <div class="field"><label for="cz-css" class="flabel">CSS 직접 넣기</label>
@@ -2617,7 +2688,7 @@ function customize(preset){
       if (cp) cp.onclick = async () => {
         const v = $('#cz-copy', root).value; if (!v) { toast('적용할 페어를 골라 주세요.'); return; }
         const targets = v === '_all' ? others.map(([id]) => id) : [v];
-        const pick = ({font, titleFont, fontSize, layout, cols, gap, radius, bg, tint, patAlpha, header, band, bandH, coverH, coverPos, coverFit, card, cardAlpha, cardLine, tabStyle}) => ({coverH, coverPos, coverFit, font: font === 'custom' ? 'plex' : font, titleFont: titleFont === 'custom' ? '' : titleFont, fontSize, layout, cols, gap, radius, bg: bg === 'image' ? 'soft' : bg, tint, patAlpha, header, band, bandH, card, cardAlpha, cardLine, tabStyle});
+        const pick = ({font, titleFont, fontSize, layout, cols, gap, radius, bg, tint, patAlpha, header, band, bandH, coverH, coverPos, coverFit, card, cardAlpha, cardLine, tabStyle, tlView}) => ({tlView, coverH, coverPos, coverFit, font: font === 'custom' ? 'plex' : font, titleFont: titleFont === 'custom' ? '' : titleFont, fontSize, layout, cols, gap, radius, bg: bg === 'image' ? 'soft' : bg, tint, patAlpha, header, band, bandH, card, cardAlpha, cardLine, tabStyle});
         try {
           for (const t of targets){ const o = clone(S.pairs[t]); o.theme = {...DEFAULT_THEME, ...(o.theme || {}), ...pick(th)}; await put('pairs', t, o); }
           toast(`페어 ${targets.length}개에 적용했어요.`);
@@ -4159,7 +4230,7 @@ function homeQuoteHTML(){
 /* ---------- navigation & events ---------- */
 function go(route){
   S.route = route; S.addMenu = false; if (typeof MX !== 'undefined') MX.hidden = false;
-  if (route.view === 'pair'){ S.tab = 'all'; S.q = ''; S.tag = null; S.favOnly = false; S.photoFolder = null; S.photoWall = false; S.auSel = null; S.auFilter = null; S.seriesSel = null; S.hlAll = false; }
+  if (route.view === 'pair'){ S.tlView = null; S.tlOpen.clear(); S.tab = 'all'; S.q = ''; S.tag = null; S.favOnly = false; S.photoFolder = null; S.photoWall = false; S.auSel = null; S.auFilter = null; S.seriesSel = null; S.hlAll = false; }
   S.reorder = null; S.sel.on = false; S.sel.ids.clear(); S.calDay = null; if (TV) closeTV();
   try { history.replaceState(null, '', route.view === 'pair' ? '#p-' + route.pairId : location.pathname + location.search); } catch(e){}
   render(); window.scrollTo(0, 0);
@@ -4212,6 +4283,13 @@ document.addEventListener('click', async (e) => {
     case 'sort': S.sortAsc = !S.sortAsc; render(); break;
     case 'add-menu': S.addMenu = !S.addMenu; render(); break;
     case 'add': S.addMenu = false; S.formAU = el.dataset.au !== undefined ? el.dataset.au : ''; S.formDate = el.dataset.date || ''; render(); FORMS[el.dataset.type](S.route.pairId, null); S.formAU = ''; S.formDate = ''; break;
+    case 'tl-view': S.tlView = el.dataset.v; render(); break;
+    case 'tl-default': { const o = clone(S.pairs[S.route.pairId]); o.theme = {...DEFAULT_THEME, ...(o.theme || {}), tlView: el.dataset.v}; S.tlView = null; try { await put('pairs', S.route.pairId, o); toast('타임라인 기본 보기를 바꿨어요.'); } catch(e){} break; }
+    case 'tl-more': { const t = el.dataset.t; if (S.tlOpen.has(t)) S.tlOpen.delete(t); else S.tlOpen.add(t); render(); break; }
+    case 'tl-open': {
+      S.tab = el.dataset.tab; S.tag = null; S.addMenu = false; S.photoFolder = el.dataset.folder || null; S.seriesSel = el.dataset.s || null; S.auSel = el.dataset.au || null; S.auType = 'all'; S.sel.ids.clear();
+      render(); const tsc = $('.tabs-scroll'); if (tsc) tsc.scrollIntoView({block:'start'}); break;
+    }
     case 'cw-show': S.revealed.add(id); render(); break;
     case 'sel-mode': S.sel.on = !S.sel.on; S.sel.ids.clear(); render(); break;
     case 'sel-done': S.sel.on = false; S.sel.ids.clear(); render(); break;
