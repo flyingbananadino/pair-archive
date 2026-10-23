@@ -532,6 +532,84 @@ mark.hl.flash{outline:2px solid var(--racc); outline-offset:2px}
 .twthumbs{margin-top:6px; align-items:center}
 .tw-ctx .tw-media{margin-top:6px; border-radius:10px}
 
+/* tweets v3: view */
+.tws{padding:14px 16px 6px; display:flex; flex-direction:column}
+.tx{display:flex; gap:12px; min-width:0}
+.tx-rail{display:flex; flex-direction:column; align-items:center; flex:none; width:24px}
+.tx-dot{width:24px; height:24px; border-radius:50%; background:var(--acc); color:var(--on-acc); font-family:var(--f-mono); font-size:11px; display:flex; align-items:center; justify-content:center; flex:none}
+.tx-line{flex:1; width:2px; margin:4px 0; background:color-mix(in srgb, var(--acc) 35%, var(--line)); border-radius:2px; min-height:14px}
+.tx.last .tx-line{display:none}
+.tx-main{flex:1; min-width:0; display:flex; flex-direction:column; gap:10px; padding-bottom:16px}
+.tx.thread .tx-main{padding-top:1px}
+.tx-text{white-space:pre-wrap; word-break:break-word; font-size:15.5px; line-height:1.68; letter-spacing:-.005em}
+.tx-text.sm{font-size:14px; line-height:1.6; color:var(--muted)}
+.tx-text a, .tx-text .mention, .tx-text .hashtag{color:color-mix(in srgb, var(--acc) 70%, var(--ink)); text-decoration:none; font-weight:500}
+.tx-lbl{display:flex; align-items:center; gap:5px; font-size:11.5px; font-weight:600; color:var(--muted); letter-spacing:.02em}
+.tx-lbl .ico{width:13px; height:13px}
+.tx-orig{background:color-mix(in srgb, var(--sunk) 70%, var(--surface)); border-radius:14px; padding:10px 12px; display:flex; flex-direction:column; gap:6px}
+.tx-curve{display:flex; align-items:flex-end; gap:6px; margin:-8px 0 -4px 14px; font-size:11.5px; font-weight:600; color:color-mix(in srgb, var(--acc) 70%, var(--ink))}
+.tx-curve span{width:14px; height:16px; border-left:2px solid color-mix(in srgb, var(--acc) 45%, var(--line)); border-bottom:2px solid color-mix(in srgb, var(--acc) 45%, var(--line)); border-bottom-left-radius:10px; margin-bottom:6px}
+.tx-quote{border:1px solid var(--line); border-radius:14px; padding:10px 12px; display:flex; flex-direction:column; gap:6px}
+.tx-media{border-radius:14px; overflow:hidden; border:1px solid var(--line)}
+.tx-media .collage{background:var(--line)}
+.tx-orig .tx-media, .tx-quote .tx-media{border-radius:10px}
+.tw-note{display:flex; gap:8px; align-items:flex-start; margin:0 16px 12px; padding:9px 12px; border-radius:12px; background:color-mix(in srgb, var(--acc) 9%, var(--surface)); font-size:13px; white-space:pre-wrap; color:var(--muted)}
+.tw-note .ico{width:14px; height:14px; margin-top:3px; flex:none; color:color-mix(in srgb, var(--acc) 70%, var(--ink))}
+
+/* tweets v3: composer */
+.cmp-wrap{border:1px solid var(--line); border-radius:16px; padding:14px 14px 2px; background:var(--surface); display:flex; flex-direction:column}
+.cmp{display:flex; gap:12px; min-width:0; border-radius:12px; transition:background .15s}
+.cmp.over{background:color-mix(in srgb, var(--acc) 8%, transparent); outline:2px dashed color-mix(in srgb, var(--acc) 50%, transparent)}
+.cmp-rail{display:flex; flex-direction:column; align-items:center; flex:none; width:28px}
+.cmp-dot{width:28px; height:28px; border-radius:50%; background:var(--acc); color:var(--on-acc, #fff); font-family:var(--f-mono); font-size:12px; display:flex; align-items:center; justify-content:center; flex:none}
+.cmp-dot .ico{width:15px; height:15px}
+.cmp-line{flex:1; width:2px; margin:4px 0; background:color-mix(in srgb, var(--acc) 35%, var(--line)); border-radius:2px}
+.cmp.last .cmp-line{display:none}
+.cmp-main{flex:1; min-width:0; display:flex; flex-direction:column; gap:8px}
+.cmp-ta{width:100%; border:0; outline:0; background:transparent; resize:none; font:inherit; font-size:16.5px; line-height:1.6; padding:2px 0; min-height:2.4em; color:var(--ink); overflow:hidden}
+.cmp-ta::placeholder{color:color-mix(in srgb, var(--muted) 80%, transparent)}
+.cmp-ta.sm{font-size:14.5px; min-height:1.8em}
+.cmp-lbl{display:flex; align-items:center; gap:5px; font-size:12px; font-weight:600; color:var(--muted)}
+.cmp-lbl .ico{width:13px; height:13px}
+.cmp-lbl .mini{margin-left:auto; width:26px; height:26px}
+.cmp-orig{background:color-mix(in srgb, var(--sunk) 70%, var(--surface)); border-radius:14px; padding:8px 12px 2px; display:flex; flex-direction:column; gap:4px}
+.cmp-curve{width:14px; height:14px; margin:-6px 0 -6px 12px; border-left:2px solid color-mix(in srgb, var(--acc) 45%, var(--line)); border-bottom:2px solid color-mix(in srgb, var(--acc) 45%, var(--line)); border-bottom-left-radius:10px}
+.cmp-quote{border:1px solid var(--line); border-radius:14px; padding:8px 12px 2px; display:flex; flex-direction:column; gap:4px}
+.cmp-tools{display:flex; flex-wrap:wrap; align-items:center; gap:2px; padding:2px 0 6px}
+.cmp-tools.main{border-top:1px solid color-mix(in srgb, var(--line) 70%, transparent); padding:6px 0 14px; margin-top:2px}
+.cmp-tool{display:inline-flex; align-items:center; gap:5px; height:32px; padding:0 10px; border-radius:99px; border:0; background:transparent; color:color-mix(in srgb, var(--acc) 75%, var(--ink)); font-size:13px; font-weight:500; cursor:pointer; white-space:nowrap}
+.cmp-tool:hover{background:color-mix(in srgb, var(--acc) 12%, transparent)}
+.cmp-tool .ico{width:16px; height:16px}
+.cmp-sp{flex:1}
+.cmp-cnt{font-size:12px; color:var(--muted); padding:0 6px}
+.cmp-cnt.near{color:#B7791F}
+.cmp-cnt.over{color:var(--danger); font-weight:600}
+.cmp-media{display:grid; gap:4px; border-radius:14px; overflow:hidden}
+.cmp-media.n1{grid-template-columns:1fr}
+.cmp-media.n2, .cmp-media.n3, .cmp-media.n4{grid-template-columns:1fr 1fr}
+.cmp-img{position:relative; display:block; height:150px; max-width:100%; background:var(--sunk)}
+.cmp-media.n1 .cmp-img{height:210px}
+.cmp-orig .cmp-img, .cmp-quote .cmp-img{height:110px}
+.cmp-orig .cmp-media.n1 .cmp-img, .cmp-quote .cmp-media.n1 .cmp-img{height:150px}
+.cmp-media{max-width:460px}
+.cmp-img img{width:100%; height:100%; object-fit:cover; display:block}
+.cmp-img button{position:absolute; top:6px; right:6px; width:28px; height:28px; border-radius:50%; border:0; background:rgba(15,16,20,.72); color:#fff; display:flex; align-items:center; justify-content:center; padding:0}
+.cmp-img button .ico{width:14px; height:14px}
+.cmp-under{display:flex; align-items:center; gap:14px; flex-wrap:wrap}
+.cmp-more{display:inline-flex; align-items:center; gap:6px; height:36px; padding:0 14px; border-radius:99px; border:1.5px dashed var(--line); background:transparent; color:var(--ink); font-weight:500}
+.cmp-more:hover{border-color:var(--brand); color:var(--brand)}
+.cmp-opts summary{font-size:13px}
+@media (max-width:560px){
+  .cmp-wrap{padding:12px 10px 2px}
+  .cmp{gap:8px}
+  .cmp-rail{width:22px}
+  .cmp-dot{width:22px; height:22px; font-size:10px}
+  .cmp-tool span{display:none}
+  .cmp-tool{padding:0 9px}
+  .tws{padding:12px 12px 4px}
+  .tx{gap:9px}
+}
+
 /* customize groups */
 .czg{border-top:1px solid var(--line); padding-top:12px}
 .czg summary{font-weight:700; font-size:14px; cursor:pointer; list-style:none; display:flex; justify-content:space-between; align-items:center}
@@ -680,6 +758,10 @@ const I = {
   sheet:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M4 9h16M4 15h16M10 9v12"/></svg>',
   music:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg>',
   pin:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17v5M9 3h6l-1 6 4 4H6l4-4z"/></svg>',
+  image:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></svg>',
+  reply:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
+  quote:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14l4 4 4-4M8 18V8a4 4 0 0 1 4-4h8"/></svg>',
+  feather:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4c-6 0-12 4-14 12l-2 4M6 16h7l4-4"/><path d="M20 4c0 6-3 9-7 12"/></svg>',
   check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>',
   book:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5"/></svg>',
   folder:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>',
@@ -1388,7 +1470,7 @@ function cardHTML(it, p){
   if (it.type === 'tweet'){
     return `<article class="card" id="it-${esc(it.id)}">${it.title ? `<div class="card-body" style="padding-bottom:0"><div class="card-title">${esc(it.title)}</div></div>` : ''}
       ${threadHTML(it, p)}
-      ${d.note ? `<div class="tw-note">${esc(d.note)}</div>` : ''}
+      ${d.note ? `<div class="tw-note">${I.edit}${esc(d.note)}</div>` : ''}
       ${d.url ? `<div style="padding:0 16px 12px"><a class="sheetlink" href="${esc(d.url)}" target="_blank" rel="noopener noreferrer">${I.link}<span class="u">${esc(d.url)}</span></a></div>` : ''}
       ${footHTML(it)}</article>`;
   }
@@ -1434,17 +1516,21 @@ function checksHTML(itemId, rows){
 }
 function qText(q){ return !q ? '' : typeof q === 'string' ? q : (q.text || ''); }
 function threadHTML(it, p){
-  const ts = it.data?.tweets || [];
-  return ts.map((t, i) => tweetHTML(t, `${it.id}:${i}`, ts.length > 1 ? `${i + 1}/${ts.length}` : '')).join('');
+  const ts = it.data?.tweets || []; const n = ts.length;
+  return `<div class="tws">${ts.map((t, i) => tweetHTML(t, `${it.id}:${i}`, i, n)).join('')}</div>`;
 }
-function tweetHTML(t, key, idx){
-  const quote = qText(t.quote); const qImgs = (t.quote && t.quote.images) || [];
-  return `<div class="tw2">
-    ${idx ? `<span class="tw-idx">${idx}</span>` : ''}
-    ${t.reply || (t.replyImages || []).length ? `<div class="tw-ctx"><div class="tw-lbl">답글을 단 트윗</div>${t.reply ? `<div class="tw-text">${linkify(t.reply)}</div>` : ''}${(t.replyImages || []).length ? `<div class="tw-media">${collageHTML(t.replyImages, key + ':r')}</div>` : ''}</div><div class="tw-lbl">↳ 내 답글</div>` : ''}
-    ${t.text ? `<div class="tw-text">${linkify(t.text)}</div>` : ''}
-    ${(t.images || []).length ? `<div class="tw-media">${collageHTML(t.images, key)}</div>` : ''}
-    ${quote || qImgs.length ? `<div class="tw-quote"><div class="tw-lbl">인용한 트윗</div>${quote ? `<div class="tw-text">${linkify(quote)}</div>` : ''}${qImgs.length ? `<div class="tw-media">${collageHTML(qImgs, key + ':q')}</div>` : ''}</div>` : ''}
+function tweetHTML(t, key, i=0, n=1){
+  const quote = qText(t.quote); const qImgs = (t.quote && t.quote.images) || []; const rImgs = t.replyImages || [];
+  const isReply = !!(t.reply || rImgs.length);
+  return `<div class="tx ${n > 1 ? 'thread' : ''} ${i === n - 1 ? 'last' : ''}">
+    ${n > 1 ? `<div class="tx-rail"><span class="tx-dot">${i + 1}</span><span class="tx-line"></span></div>` : ''}
+    <div class="tx-main">
+      ${isReply ? `<div class="tx-orig"><div class="tx-lbl">${I.reply}답글을 단 트윗</div>${t.reply ? `<div class="tx-text sm">${linkify(t.reply)}</div>` : ''}${rImgs.length ? `<div class="tx-media">${collageHTML(rImgs, key + ':r')}</div>` : ''}</div>
+        <div class="tx-curve"><span></span>내 답글</div>` : ''}
+      ${t.text ? `<div class="tx-text">${linkify(t.text)}</div>` : ''}
+      ${(t.images || []).length ? `<div class="tx-media">${collageHTML(t.images, key)}</div>` : ''}
+      ${quote || qImgs.length ? `<div class="tx-quote"><div class="tx-lbl">${I.quote}인용한 트윗</div>${quote ? `<div class="tx-text sm">${linkify(quote)}</div>` : ''}${qImgs.length ? `<div class="tx-media">${collageHTML(qImgs, key + ':q')}</div>` : ''}</div>` : ''}
+    </div>
   </div>`;
 }
 function profileView(pid, p){
@@ -1659,21 +1745,30 @@ function splitTweets(text){
 }
 const newTw = (text='') => ({text, reply:'', quote:'', showR:false, showQ:false, images:[], rImages:[], qImages:[]});
 const TW_IMG_KEY = {t:'images', r:'rImages', q:'qImages'};
-function twImgsHTML(t, i, k){
+function twWeight(s){
+  let n = 0; for (const ch of String(s || '')) n += /[ᄀ-ᇿ　-鿿가-힯豈-﫿＀-￯]/.test(ch) ? 2 : 1;
+  return n;
+}
+function cmpThumbs(t, i, k){
+  const arr = t[TW_IMG_KEY[k]] || []; if (!arr.length) return '';
+  return `<div class="cmp-media n${Math.min(arr.length, 4)}">${arr.map((x, j) => `<span class="cmp-img"><img src="${esc(x.preview || imgSrc(x.ref))}" alt=""><button type="button" data-op="rmimg" data-i="${i}" data-k="${k}" data-j="${j}" aria-label="사진 빼기">${I.x}</button></span>`).join('')}</div>`;
+}
+function cmpImgBtn(t, i, k, label){
   const arr = t[TW_IMG_KEY[k]] || [];
-  return `<div class="thumbs twthumbs">${arr.map((x, j) => `<span class="thumb"><img src="${esc(x.preview || imgSrc(x.ref))}" alt=""><button type="button" data-op="rmimg" data-i="${i}" data-k="${k}" data-j="${j}" aria-label="사진 빼기">${I.x}</button></span>`).join('')}
-    ${arr.length < 4 ? `<label class="btn small" for="f-img-${k}-${i}">${I.plus}사진${arr.length ? '' : ' 넣기'}</label><input type="file" id="f-img-${k}-${i}" class="sr" accept="image/*" multiple data-img="${k}" data-i="${i}">` : '<span class="hint">사진은 4장까지 넣을 수 있어요</span>'}</div>`;
+  if (arr.length >= 4) return '';
+  return `<label class="cmp-tool" for="f-img-${k}-${i}" title="${label}">${I.image}<span>${label}</span></label><input type="file" id="f-img-${k}-${i}" class="sr" accept="image/*" multiple data-img="${k}" data-i="${i}">`;
 }
 function tweetForm(pairId, id){
   const old = id ? S.items[id] : null;
   const st = {tweets: old
     ? (old.data.tweets || []).map(t => ({text:t.text || '', reply:t.reply || '', quote:qText(t.quote), showR:!!(t.reply || (t.replyImages || []).length), showQ:!!(qText(t.quote) || (t.quote && (t.quote.images || []).length)), images:clone(t.images || []), rImages:clone(t.replyImages || []), qImages:clone((t.quote && t.quote.images) || [])}))
     : [newTw()]};
-  openModal({title: old ? '트윗 수정' : '트윗 넣기', wide:true, body:`
-    <div id="f-tw" style="display:flex;flex-direction:column;gap:12px"></div>
-    <div style="display:flex;flex-wrap:wrap;gap:8px">
-      <button class="btn small" type="button" id="f-addtw">${I.plus}이어지는 트윗 (타래)</button>
-      ${old ? '' : `<button class="btn small" type="button" id="f-bulkbtn">여러 트윗 한꺼번에 붙여넣기</button>`}
+  const p = S.pairs[pairId];
+  openModal({title: old ? '트윗 고치기' : '트윗 넣기', wide:true, body:`
+    <div class="cmp-wrap" id="f-tw" style="--acc:${esc(accOf(p))}"></div>
+    <div class="cmp-under">
+      <button class="cmp-more" type="button" id="f-addtw">${I.plus}이어서 쓰기 (타래)</button>
+      ${old ? '' : `<button class="linkbtn" type="button" id="f-bulkbtn" style="font-size:13px">여러 트윗 한꺼번에 붙여넣기</button>`}
     </div>
     <div id="f-bulk" hidden style="display:flex;flex-direction:column;gap:6px">
       <textarea class="inp" id="f-bulktext" rows="7" placeholder="트윗을 붙여 넣고, 트윗 사이에 --- 한 줄을 넣어 나눠 주세요."></textarea>
@@ -1681,35 +1776,81 @@ function tweetForm(pairId, id){
     </div>
     <div class="field" id="f-modewrap" hidden><span class="flabel">트윗이 여러 개예요</span>
       <div class="seg" id="f-mode"><button type="button" data-v="thread" class="on">타래 하나로 묶기</button><button type="button" data-v="each">트윗마다 따로 저장</button></div></div>
-    <div class="field"><label for="f-note">메모 (선택)</label><textarea id="f-note" rows="2" placeholder="어떤 맥락에서 쓴 트윗인지">${esc(old?.data?.note || '')}</textarea></div>
-    ${commonFields(old)}`,
-    foot:`<button class="btn" data-m="cancel">취소</button><button class="btn primary" id="f-save">저장</button>`,
+    <details class="czg cmp-opts" ${old ? 'open' : ''}><summary>날짜 · AU · 태그 · 메모</summary><div class="czb">
+      ${commonFields(old, pairId)}
+      <div class="field"><label for="f-note">메모 (선택)</label><textarea id="f-note" rows="2" placeholder="어떤 맥락에서 쓴 트윗인지">${esc(old?.data?.note || '')}</textarea></div>
+    </div></details>`,
+    foot:`<span class="hint left" style="align-self:center">사진은 칸에 바로 붙여 넣거나 끌어다 놓아도 돼요</span><button class="btn" data-m="cancel">취소</button><button class="btn primary" id="f-save">${old ? '저장' : '넣기'}</button>`,
     onMount(root){
       const box = $('#f-tw', root); let mode = 'thread';
       const sync = () => $$('textarea[data-k]', box).forEach(el => { st.tweets[+el.dataset.i][el.dataset.k] = el.value; });
-      const draw = () => {
-        const n = st.tweets.length;
-        box.innerHTML = st.tweets.map((t, i) => `<div class="twblock">
-          <div class="tb-head"><b>${n > 1 ? `${i + 1}번째 트윗` : '트윗'}</b>
-            ${i > 0 ? `<button type="button" class="mini" data-op="up" data-i="${i}" title="위로">${I.arrowUp}</button>` : ''}
-            ${n > 1 ? `<button type="button" class="mini" data-op="rm" data-i="${i}" title="이 트윗 빼기">${I.trash}</button>` : ''}</div>
-          ${t.showR ? `<div class="field twsub"><label for="f-r-${i}">답글을 단 원래 트윗</label><textarea id="f-r-${i}" data-i="${i}" data-k="reply" rows="2" placeholder="내가 답글을 단 트윗 내용">${esc(t.reply)}</textarea>${twImgsHTML(t, i, 'r')}</div>` : ''}
-          <div class="field"><label for="f-t-${i}">${t.showR ? '내 답글' : '트윗 내용'}</label><textarea id="f-t-${i}" data-i="${i}" data-k="text" rows="4">${esc(t.text)}</textarea>${twImgsHTML(t, i, 't')}</div>
-          ${t.showQ ? `<div class="field twsub"><label for="f-q-${i}">인용한 트윗</label><textarea id="f-q-${i}" data-i="${i}" data-k="quote" rows="2" placeholder="내가 인용한 트윗 내용">${esc(t.quote)}</textarea>${twImgsHTML(t, i, 'q')}</div>` : ''}
-          <div style="display:flex;flex-wrap:wrap;gap:6px">
-            <button type="button" class="btn small" data-op="r" data-i="${i}">${t.showR ? '답글 빼기' : '↳ 답글로 만들기'}</button>
-            <button type="button" class="btn small" data-op="q" data-i="${i}">${t.showQ ? '인용 빼기' : '인용 넣기'}</button>
-          </div></div>`).join('');
-        $('#f-modewrap', root).hidden = !!old || n < 2;
+      const grow = (ta) => { ta.style.height = 'auto'; ta.style.height = Math.min(ta.scrollHeight + 2, 420) + 'px'; };
+      const count = (i) => {
+        const c = $(`#f-cnt-${i}`, box); if (!c) return; const w = twWeight(st.tweets[i].text);
+        c.textContent = `${w}/280`; c.classList.toggle('over', w > 280); c.classList.toggle('near', w > 250 && w <= 280);
       };
-      box.addEventListener('input', e => { const el = e.target; if (el.dataset.k && el.tagName === 'TEXTAREA') st.tweets[+el.dataset.i][el.dataset.k] = el.value; });
+      const draw = (focus) => {
+        const n = st.tweets.length;
+        box.innerHTML = st.tweets.map((t, i) => `<div class="cmp ${n > 1 ? 'thread' : ''} ${i === n - 1 ? 'last' : ''}" data-ci="${i}">
+          <div class="cmp-rail"><span class="cmp-dot">${n > 1 ? i + 1 : I.feather}</span><span class="cmp-line"></span></div>
+          <div class="cmp-main">
+            ${t.showR ? `<div class="cmp-orig">
+                <div class="cmp-lbl">${I.reply}답글을 단 원래 트윗<button type="button" class="mini" data-op="r" data-i="${i}" aria-label="답글 원본 빼기">${I.x}</button></div>
+                <textarea class="cmp-ta sm" id="f-r-${i}" data-i="${i}" data-k="reply" rows="1" placeholder="원래 트윗 내용을 붙여 넣어 주세요">${esc(t.reply)}</textarea>
+                ${cmpThumbs(t, i, 'r')}
+                <div class="cmp-tools">${cmpImgBtn(t, i, 'r', '원본 사진')}</div>
+              </div><div class="cmp-curve" aria-hidden="true"></div>` : ''}
+            <textarea class="cmp-ta" id="f-t-${i}" data-i="${i}" data-k="text" rows="2" placeholder="${t.showR ? '내 답글' : (i > 0 ? '이어지는 트윗' : '트윗 내용')}">${esc(t.text)}</textarea>
+            ${cmpThumbs(t, i, 't')}
+            ${t.showQ ? `<div class="cmp-quote">
+                <div class="cmp-lbl">${I.quote}인용한 트윗<button type="button" class="mini" data-op="q" data-i="${i}" aria-label="인용 빼기">${I.x}</button></div>
+                <textarea class="cmp-ta sm" id="f-q-${i}" data-i="${i}" data-k="quote" rows="1" placeholder="인용한 트윗 내용을 붙여 넣어 주세요">${esc(t.quote)}</textarea>
+                ${cmpThumbs(t, i, 'q')}
+                <div class="cmp-tools">${cmpImgBtn(t, i, 'q', '인용 사진')}</div>
+              </div>` : ''}
+            <div class="cmp-tools main">
+              ${cmpImgBtn(t, i, 't', '사진')}
+              ${t.showR ? '' : `<button type="button" class="cmp-tool" data-op="r" data-i="${i}">${I.reply}<span>답글 원본</span></button>`}
+              ${t.showQ ? '' : `<button type="button" class="cmp-tool" data-op="q" data-i="${i}">${I.quote}<span>인용</span></button>`}
+              <span class="cmp-sp"></span>
+              <span class="cmp-cnt mono" id="f-cnt-${i}" title="트위터 기준 글자 수 (한글은 2자로 셈)"></span>
+              ${n > 1 && i > 0 ? `<button type="button" class="mini" data-op="up" data-i="${i}" title="위로">${I.arrowUp}</button>` : ''}
+              ${n > 1 ? `<button type="button" class="mini" data-op="rm" data-i="${i}" title="이 트윗 빼기">${I.trash}</button>` : ''}
+            </div>
+          </div></div>`).join('');
+        $$('textarea', box).forEach(grow);
+        st.tweets.forEach((_, i) => count(i));
+        $('#f-modewrap', root).hidden = !!old || n < 2;
+        if (focus) { const el = $('#' + focus, box); if (el){ el.focus(); el.setSelectionRange(el.value.length, el.value.length); } }
+      };
+      const addImgs = (i, k, files) => {
+        const t = st.tweets[i]; const key = TW_IMG_KEY[k];
+        const imgs = files.filter(f => f.type.startsWith('image/') || /\.(heic|heif)$/i.test(f.name));
+        if (!imgs.length) return false;
+        const room = 4 - t[key].length; imgs.slice(0, room).forEach(f => t[key].push({file:f, preview:URL.createObjectURL(f)}));
+        if (imgs.length > room) toast('사진은 4장까지만 넣었어요.');
+        return true;
+      };
+      box.addEventListener('input', e => {
+        const el = e.target; if (el.tagName !== 'TEXTAREA' || !el.dataset.k) return;
+        st.tweets[+el.dataset.i][el.dataset.k] = el.value; grow(el); if (el.dataset.k === 'text') count(+el.dataset.i);
+      });
+      box.addEventListener('paste', e => {
+        const el = e.target; if (el.tagName !== 'TEXTAREA' || !el.dataset.k) return;
+        const files = Array.from((e.clipboardData && e.clipboardData.files) || []); if (!files.length) return;
+        sync(); const k = {text:'t', reply:'r', quote:'q'}[el.dataset.k];
+        if (addImgs(+el.dataset.i, k, files)){ e.preventDefault(); draw(el.id); }
+      });
+      box.addEventListener('dragover', e => { const c = e.target.closest('.cmp'); if (!c) return; e.preventDefault(); c.classList.add('over'); });
+      box.addEventListener('dragleave', e => { const c = e.target.closest('.cmp'); if (c && !c.contains(e.relatedTarget)) c.classList.remove('over'); });
+      box.addEventListener('drop', e => {
+        const c = e.target.closest('.cmp'); if (!c) return; e.preventDefault(); c.classList.remove('over'); sync();
+        const zone = e.target.closest('.cmp-orig') ? 'r' : e.target.closest('.cmp-quote') ? 'q' : 't';
+        if (addImgs(+c.dataset.ci, zone, Array.from(e.dataTransfer.files || []))) draw();
+      });
       box.addEventListener('change', e => {
         const el = e.target; if (!el.dataset.img) return; sync();
-        const t = st.tweets[+el.dataset.i]; const key = TW_IMG_KEY[el.dataset.img]; t[key] = t[key] || [];
-        const files = Array.from(el.files || []).filter(f => f.type.startsWith('image/') || /\.(heic|heif)$/i.test(f.name));
-        files.slice(0, 4 - t[key].length).forEach(f => t[key].push({file:f, preview:URL.createObjectURL(f)}));
-        if (files.length > 4) toast('사진은 4장까지만 넣었어요.');
-        draw();
+        addImgs(+el.dataset.i, el.dataset.img, Array.from(el.files || [])); draw();
       });
       box.addEventListener('click', e => {
         const b = e.target.closest('[data-op]'); if (!b) return; sync(); const i = +b.dataset.i; const op = b.dataset.op;
@@ -1718,11 +1859,9 @@ function tweetForm(pairId, id){
         if (op === 'up') [st.tweets[i-1], st.tweets[i]] = [st.tweets[i], st.tweets[i-1]];
         if (op === 'r') st.tweets[i].showR = !st.tweets[i].showR;
         if (op === 'q') st.tweets[i].showQ = !st.tweets[i].showQ;
-        draw();
-        const focusId = op === 'r' && st.tweets[i]?.showR ? `f-r-${i}` : op === 'q' && st.tweets[i]?.showQ ? `f-q-${i}` : null;
-        if (focusId) $('#' + focusId, root)?.focus();
+        draw(op === 'r' && st.tweets[i]?.showR ? `f-r-${i}` : op === 'q' && st.tweets[i]?.showQ ? `f-q-${i}` : null);
       });
-      $('#f-addtw', root).onclick = () => { sync(); st.tweets.push(newTw()); draw(); $(`#f-t-${st.tweets.length - 1}`, root)?.focus(); };
+      $('#f-addtw', root).onclick = () => { sync(); st.tweets.push(newTw()); draw(`f-t-${st.tweets.length - 1}`); };
       const bb = $('#f-bulkbtn', root); if (bb) bb.onclick = () => { const b = $('#f-bulk', root); b.hidden = !b.hidden; if (!b.hidden) $('#f-bulktext', root).focus(); };
       const bo = $('#f-bulkok', root); if (bo) bo.onclick = () => {
         sync(); const parts = splitTweets($('#f-bulktext', root).value); if (!parts.length) return;
@@ -1731,7 +1870,7 @@ function tweetForm(pairId, id){
         $('#f-bulktext', root).value = ''; $('#f-bulk', root).hidden = true; draw(); toast(`트윗 ${parts.length}개로 나눴어요.`);
       };
       $('#f-mode', root).addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; mode = b.dataset.v; $$('#f-mode button', root).forEach(x => x.classList.toggle('on', x === b)); });
-      draw();
+      draw(old ? null : 'f-t-0');
       $('[data-m=cancel]', root).onclick = () => closeModal();
       $('#f-save', root).onclick = async (ev) => {
         sync(); const btn = ev.currentTarget;
