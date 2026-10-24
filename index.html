@@ -1421,7 +1421,7 @@ function homeView(){
   } else {
     const ro = S.reorder;
     const order = ro ? ro.list.map(id => [id, S.pairs[id]]).filter(x => x[1]) : pairs;
-    body = homeQuoteHTML() + annivHTML() + memoriesHTML() + `<div class="sec-h"><h2>페어</h2><div style="display:flex;gap:6px;flex-wrap:wrap">
+    body = homeQuoteHTML() + annivHTML() + `<div class="sec-h"><h2>페어</h2><div style="display:flex;gap:6px;flex-wrap:wrap">
         ${ro ? `<span class="hint" style="align-self:center">끌어서 옮기거나 화살표를 눌러요</span><button class="btn small" data-act="reorder-cancel">취소</button><button class="btn small primary" data-act="reorder-done">완료</button>`
           : `${nItems ? `<button class="btn small" data-act="random">${I.shuffle}아무 기록이나 펼치기</button>` : ''}${S.canWrite && pairs.length > 1 ? `<button class="btn small" data-act="reorder-start">${I.sort}순서 바꾸기</button>` : ''}`}</div></div>
       <div class="shelf ${ro ? 'reordering' : ''}">${order.map(([id, p], i) => ro ? reorderCard(id, p, i, order.length) : pairCard(id, p)).join('')}
